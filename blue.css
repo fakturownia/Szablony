@@ -129,7 +129,7 @@
 	strong{text-transform:uppercase;color:#00a6f0;}
 	td.text_left{font-weight:bold;}
 	html body .buyer,
-	html body .seller{padding:20px 10px;width:30%;min-width:284px;}
+	html body .seller{padding:20px 10px;width:30%;}
 	table.main_inv_table{margin:15px auto 20px auto;}
 
 	#exchange_currency {margin-top:20px;}

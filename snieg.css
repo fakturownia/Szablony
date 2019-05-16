@@ -35,15 +35,15 @@
 	table th,
 	table td{margin:0;padding:0;}
 	th.width0,
-	td.width0{min-width:17px;width:1%;}
+	td.width0{width:1%;}
 	th.width1,
-	td.width1{width:3%;min-width:17px;}
+	td.width1{width:3%;}
 	th.width2,
-	td.width2{width:9%;min-width:45px;}
+	td.width2{width:9%;}
 	th.width3,
-	td.width3{min-width:46px;width:13%;}
+	td.width3{width:13%;}
 	th.width4,
-	td.width4{width:30%;min-width:100px;}
+	td.width4{width:30%;}
 	
 	.invoice_outline table.main_inv_table td{border-bottom:1px solid #ddd;padding:4px 0;}
 	.invoice_outline table.main_inv_table .no_border td,

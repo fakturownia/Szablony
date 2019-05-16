@@ -1,0 +1,12 @@
+{{#if payment_url}}
+    <p style="clear: both">
+        <a class="pull-right btn btn-default btn-print" id="pay-online-button"
+           style="margin-bottom:10px;" href="{{payment_url}}">{{tt "account.pay_online_button"}}&nbsp;&raquo;</a>
+    </p>
+{{/if}}
+{{#if sign_document_url}}
+    <p style="clear: both">
+        <a class="pull-right btn btn-default btn-print" id="sign-document-button"
+           style="margin-bottom:10px; margin-top: -5px;" href="{{sign_document_url}}">{{tt "invoice.signature_view"}}&nbsp;&raquo;</a>
+    </p>
+{{/if}}

@@ -4,7 +4,7 @@
 Szablony faktur
 ---------------
 
-Korzystając z naszego systemu do fakturownia, masz dostęp do kilku wzorów faktur. Jeśli któryś z nich nie spełnia twoich oczekiwań możesz 
+Korzystając z naszego systemu do fakturownia, masz dostęp do kilku wzorów faktur. Jeśli któryś z nich nie spełnia twoich oczekiwań możesz
 przygotować własny szablon. Wystarczy zalogować się do swojego konta (jeśli go jeszcze nie masz to
 [tu możesz założyć darmowe konto](https://app.fakturownia.pl/signup) ) i wejść w Ustawienia > Ustawienia konta > Szablony. Następnie kliknij "dodaj nowy szablon" i otworzy się okno do edycji kodu, dzięki któremu możesz przygotować indywidualny szablon.
 
@@ -20,7 +20,7 @@ Szablony są tworzone przy wykorzystaniu znaczników  [Handlebars](http://handle
 
 Zmienne których można używać w szablonach:
 
-```shell
+```htmlbars
 {{document_type}}
 {{kind}} - typ
 {{number}} - numer
@@ -88,7 +88,7 @@ Zmienne których można używać w szablonach:
 {{additional_info}}
 {{department}} - dział / oddział firmy - dostępne są pola id, name, kind ... np {{department.id}} {{department.name}}
 
-{{#each positions}} : 
+{{#each positions}} :
   {{no}}
   {{item}} - nazwa produktu/usługi
   {{additional_info}} - dodatkowe pole na pozycjach faktury
@@ -100,14 +100,14 @@ Zmienne których można używać w szablonach:
   {{total_price_net}} - wartość netto
   {{total_price_gross}} - wartość brutto
   {{tax}} - stawka vat
-  {{tax_value}} - wartość vat 
+  {{tax_value}} - wartość vat
 {{/each}}
 
-{{#each summary}} : 
+{{#each summary}} :
   {{total_price_net}}
   {{total_price_gross}}
   {{tax}}
-  {{tax_value}} 
+  {{tax_value}}
 {{/each}}
 
 {{footer}}
@@ -119,14 +119,14 @@ Zmienne których można używać w szablonach:
 Szablony e-maili
 ---------------
 Można tworzyć szablony e-maili które będą wysyłane do klientów. Są 2 szablony dla standardowego wysyłania faktury oraz
-do wysyłania przypomnień o niezapłaconych fakturyach. Tworząc szablony używa się tych samych zmiennych co przy szablonach 
+do wysyłania przypomnień o niezapłaconych fakturyach. Tworząc szablony używa się tych samych zmiennych co przy szablonach
 faktrur i korzysta się także z [Handlebars](http://handlebarsjs.com/).
 
 Domyślne szablon wysyłania faktur:
-```shell
+```htmlbars
 Dzień dobry,
 
-dziękujemy za skorzystanie z naszych usług. 
+dziękujemy za skorzystanie z naszych usług.
 Załączam dokument {{document_type}} {{number}} na kwotę {{total_price_gross}} brutto.
 
 Link do podglądu {{view_url}}
@@ -136,7 +136,7 @@ Link do podglądu {{view_url}}
 ```
 
 Domyślne szablon przypomnienia o niezapłaconej fakturze:
-```shell
+```htmlbars
 Dzień dobry,
 
 przypominamy o zaległej płatności za {{document_type}} {{number}} na kwotę {{total_price_gross}} brutto.
@@ -152,23 +152,23 @@ Funkcje dostępne w szablonach faktur i e-maili
 
 w szablonach dostepne są następujące funkcje:
 
-```shell
+```htmlbars
   if
   for
-  eq 
+  eq
   not_eq
   lt
   gt
   tt
   include
   include_in_col
-  in 
+  in
   not_in
 ```
 
 Przykład wywołania funkcji:
 
-```shell  
+```htmlbars
 {{#if val1 }}
   ok
 {{else}}
@@ -206,7 +206,7 @@ Podczas importu samodzienie można ustawiać jakie kolumny i wiersze są importo
 
 Można importować Faktury, Klientów, Produkty
 
-Dodatkowo dostępne są opcje importu: Sprzedaż na ALLEGRO.PL (XML), Zakupy w ACTION S.A. (CSV), Zakupy w ABC DATA S.A. (XML), Faktury, klienci i produkty z CDN optima 
+Dodatkowo dostępne są opcje importu: Sprzedaż na ALLEGRO.PL (XML), Zakupy w ACTION S.A. (CSV), Zakupy w ABC DATA S.A. (XML), Faktury, klienci i produkty z CDN optima
 
 
 API

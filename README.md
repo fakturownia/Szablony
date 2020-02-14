@@ -123,7 +123,7 @@ do wysyłania przypomnień o niezapłaconych fakturyach. Tworząc szablony używ
 faktrur i korzysta się także z [Handlebars](http://handlebarsjs.com/).
 
 Domyślne szablon wysyłania faktur:
-```shell
+```htmlbars
 Dzień dobry,
 
 dziękujemy za skorzystanie z naszych usług.
@@ -136,7 +136,7 @@ Link do podglądu {{view_url}}
 ```
 
 Domyślne szablon przypomnienia o niezapłaconej fakturze:
-```shell
+```htmlbars
 Dzień dobry,
 
 przypominamy o zaległej płatności za {{document_type}} {{number}} na kwotę {{total_price_gross}} brutto.
@@ -152,7 +152,7 @@ Funkcje dostępne w szablonach faktur i e-maili
 
 w szablonach dostepne są następujące funkcje:
 
-```shell
+```htmlbars
   if
   for
   eq

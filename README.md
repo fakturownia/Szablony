@@ -413,11 +413,20 @@ w szablonach dostepne są następujące funkcje:
   not_eq
   lt
   gt
+  or
+  and
   tt
   include
   include_in_col
   in
   not_in
+  to_uppercase
+  replace
+  inc
+  dec
+  abs
+  if_created_after_date
+  inline_partial
 ```
 
 Przykład wywołania funkcji:
@@ -433,22 +442,34 @@ Przykład wywołania funkcji:
   <17
 }}
 
-{{#mt val1 17 }}
+{{#gt val1 17 }}
   >17
 {{else}}
  <17
 }}
 
 {{#eq department_id "123"}}
-  info dla danego departamento
+  info dla danego departamentu
 {{else}}
   info dla innych departamentow
 {{/eq}}
 
-
 {{#for size_from size_to}}
     no: {{no}}
 {{/for}}
+
+{{inline_partial "partial1" "{{document_type}} {{number}}: {{total_price_gross_with_currency}} {{tt 'invoice.gross'}}<br>"}}
+{{>partial1}}
+
+{{#inline_partial "partial2"}}
+  {{#eq lang "pl"}}
+    Dzień dobry,
+  {{else}}
+    Hello,
+  {{/eq}}
+  {{>partial1}}
+{{/inline_partial}}
+{{>partial2}}
 ```
 
 

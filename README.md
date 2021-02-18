@@ -86,7 +86,6 @@ Zmienne których można używać w szablonach:
 {{total_price_net_in_main_currency}}
 {{total_price_gross_in_main_currency}}
 {{additional_info}}
-{{department}} - dział / oddział firmy - dostępne są pola id, name, kind ... np {{department.id}} {{department.name}}
 
 {{#each positions}} :
   {{no}}
@@ -109,6 +108,35 @@ Zmienne których można używać w szablonach:
   {{tax}}
   {{tax_value}}
 {{/each}}
+
+{{client}} :
+{{client.accounting_id}} - identyfikator w programie księgowym
+{{client.additional_accounting_id}}
+{{client.discount}} - domyślny rabat %
+{{client.email}} - e-mail
+{{client.first_name}} - imię
+{{client.last_name}} - nazwisko
+{{client.name}} - nazwa firmy
+{{client.panel_link}}
+{{client.panel_link_unpaid}}
+{{client.panel_url}} - link do panelu klienta
+
+{{department}} :
+{{department.bank_account}} - numer konta bankowego
+{{department.bank_iban}} - number iban
+{{department.bank_name}}
+{{department.bank_swift}} - swift
+{{department.capital}} - kapitał zakładowy
+{{department.capital_currency}}
+{{department.capital_kind}}
+{{department.footer_content}} - treść stopki
+{{department.footer_kind}}
+{{department.id}}
+{{department.kind}} - forma prawna
+{{department.name}} - nazwa firmy lub działu
+{{department.own_footer}} - własna treść stopki
+{{department.tax_kind}}
+{{department.tax_no}} - numer nip
 
 {{footer}}
 ```

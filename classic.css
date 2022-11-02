@@ -259,7 +259,7 @@
 
 /* ------------------------------------------------- */
 
-	/* INVOICE TITLE */
+	/* INVOICE TITLE (FR ONLY) */
 	#title {
 		clear: both;
 		display: block;
@@ -412,6 +412,7 @@
 	.main_inv_table tbody { font-size: 10pt;}
 	.main_inv_table th { font-weight: normal;font-size:9pt; }
 	table td.empty {border:0;}
+	/* .ean_code{font-size: 0.8em;} */
 
 	table.main_inv_table td, table.main_inv_table th,
 	.totals_inv_table td, .totals_inv_table th {
@@ -522,10 +523,10 @@
 			text-decoration: none;
 		}
 
-	/* PRODUCT CODE */
+	/* PRODUCT CODE (FR ONLY) */
 	.code_col { text-align: left; }
 
-	/* EXTRA DATA */
+	/* EXTRA DATA (PKWiU - pl) */
 	.additional_info_col {}
 
 	/* DISCOUNT IN % */
@@ -733,6 +734,22 @@
 	/* DO NOT MODIFY */
 	#description_footer {
 		display: none;
+	}
+
+	#description_footer.description_footer_fr {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 
 	/* DO NOT MODIFY */

@@ -161,6 +161,15 @@
 						{{/if}}
 					</td>
 				</tr>
+
+				{{#if show_client_phone_on_invoice}}
+					<tr>
+						<td class="tab-cell text-left">
+							{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}
+						</td>
+					</tr>
+				{{/if}}
+
 				{{#and show_buyer_note buyer_note}}
 					<tr>
 						<td class="tab-cell text-left">
@@ -269,6 +278,20 @@
 
 				<div class="clear"> </div>
 
+				{{#eq kind 'estimate'}}
+					{{#eq locale 'fr'}}
+						{{#if prepayment_required}}
+							<p id="prepayment_required">
+							<span>{{tt "invoice.prepayment"}}
+							{{#not_eq prepayment_required 'Exact amount'}}
+								{{prepayment_required}}%
+							{{/not_eq}} :</span>
+								{{prepayment_required_exact_amount}}
+							</p>
+						{{/if}}
+					{{/eq}}
+				{{/eq}}
+
 				{{#if show_interest_rate}}
 					<p class="half-space-top">
 						<span>{{tt "invoice.interest_note"}} :</span>
@@ -310,6 +333,14 @@
 						{{{notes}}}
 					</p>
 				{{/if}}
+
+				{{#eq locale 'fr'}}
+					{{#if conditional_notes}}
+						<p id="cond_notes" class="half-space-top">
+							{{{conditional_notes}}}
+						</p>
+					{{/if}}
+				{{/eq}}
 
 				{{#if gocardless_subscription}}
 					<br/>
@@ -378,6 +409,19 @@
 													{{ total_price_net }}
 												</td>
 											</tr>
+										{{else}}
+											{{#eq locale 'fr'}}
+												{{#if_created_after_date '2022-03-30'}}
+													<tr>
+														<th class="gray">
+															{{tt "invoice.total_price_net" }}
+														</th>
+														<td class="number">
+															{{ total_price_net_without_discount }}
+														</td>
+													</tr>
+												{{/if_created_after_date}}
+											{{/eq}}
 										{{/if}}
 									{{/if}}
 								{{else}}
@@ -410,6 +454,21 @@
 												{{ total_price_gross }}
 											</td>
 										</tr>
+									{{else}}
+										{{#eq locale 'fr'}}
+											{{#if_created_after_date '2022-06-24'}}
+												{{#eq kind 'final'}}
+													<tr>
+														<th class="gray">
+															{{tt "invoice.total_price_gross" }}
+														</th>
+														<td class="number">
+															{{ total_price_gross_without_discount }}
+														</td>
+													</tr>
+												{{/eq}}
+											{{/if_created_after_date}}
+										{{/eq}}
 									{{/if}}
 								{{/unless}}
 
@@ -623,6 +682,9 @@
 				{{#if stamp_below_sign_url}}
 					<img src="{{stamp_url}}" alt="stamp" style="max-width:40%"/>
 				{{/if}}
+        {{#if sec_stamp_url}}
+          <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:0px;margin-left:190px;height:150px" src="{{sec_stamp_url}}" />
+        {{/if}}
 			</div>
 			<div id="buyer_sign">
 				{{#not_eq locale 'fr'}}
@@ -648,7 +710,7 @@
 
 
 {{#if department.name}}
-	<section id="description_footer">
+	<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
 		<div id="company_info_footer">
 			<span>{{>company_info_footer}}</span>
 		</div>

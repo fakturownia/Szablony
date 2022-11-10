@@ -1,4 +1,4 @@
-{{#if canceled }}
+{{# if canceled }}
 	<div style="text-align: center; font-size: 12px;">
 		<h3>{{ tt "invoice.kind_options.canceled" }}</h3>
 		{{ tt "invoice.cancel_reason" }}: {{ cancel_reason }}
@@ -23,10 +23,24 @@
 				<p style="margin-bottom: 6pt;">
 					{{ correction }}
 				</p>
+			{{else if receipt}}
+				<p style="margin-bottom: 6pt;">
+					{{ receipt }}
+				</p>
+			{{else if proforma}}
+				<p style="margin-bottom: 6pt;">
+					{{ proforma }}
+				</p>
 			{{/if}}
 			{{#eq kind 'vat_mp'}}
 				<p><small>{{tt "invoice.cash_accounting"}}</small></p>
 			{{/eq}}
+
+			{{#and act_of_acceptance invoice_act_of_acceptance}}
+				<b>{{tt "invoice.invoice_act_of_acceptance"}}:</b>
+				{{invoice_act_of_acceptance}}
+				<br>
+			{{/and}}
 
 			{{#if print_option}}
 				<p>{{print_option}}</p>
@@ -36,14 +50,30 @@
 			{{/if}}
 
 			<p><span>
-			{{tt "invoice.issue_date"}}:
+			{{#not_eq locale 'fr'}}
+				{{#if accounting_doc}}
+					{{tt "invoice.issue_date"}}:
+				{{else}}
+					{{tt "invoice.print_date"}}:
+				{{/if}}
+			{{else}}
+				{{tt "invoice.issue_date"}}:
+			{{/not_eq}}
 			</span>
 			{{issue_date}}</p>
 
 			{{#if_created_after_date '2016-09-19'}}
-				{{#and show_sell_date sell_date}}
-					<p id="sell_date_field"><span>{{{sell_date_kind}}}:</span> {{sell_date}}</p>
-				{{/and}}
+				{{#not_eq locale 'fr'}}
+					{{#if accounting_doc}}
+						{{#if sell_date}}
+							<p id="sell_date_field"><span>{{{sell_date_kind}}}:</span> {{sell_date}}</p>
+						{{/if}}
+					{{/if}}
+				{{else}}
+					{{#and show_sell_date sell_date}}
+						<p id="sell_date_field"><span>{{{sell_date_kind}}}:</span> {{sell_date}}</p>
+					{{/and}}
+				{{/not_eq}}
 			{{else}}
 				{{#if accounting_doc}}
 					{{#if sell_date}}
@@ -51,6 +81,24 @@
 					{{/if}}
 				{{/if}}
 			{{/if_created_after_date}}
+
+			{{#eq locale 'cz'}}
+				{{#if payment_reference_number}}
+					<p id="payment_reference_number_field">
+						<span>{{tt "invoice.payment_reference_number"}}:</span>
+						{{payment_reference_number}}
+					</p>
+				{{/if}}
+				{{#if seller_trade_register_cz}}
+					<p> {{seller_trade_register_cz}}</p>
+        {{/if}}
+				{{#if reverse_charge_code}}
+					<p id="reverse_charge_code_field">
+						<span>{{tt "invoice.reverse_charge_code"}}:</span>
+						{{reverse_charge_code}}
+					</p>
+				{{/if}}
+			{{/eq}}
 
 			{{#if type_of_payment}}
 					<p id="type_of_payment_field">
@@ -107,15 +155,21 @@
 			<p>{{{company}}}</p>
 			<p>{{{address}}}</p>
 			{{#if tax_no}}
-				<p style="margin-bottom: 0.5em;">{{seller_tax_no_kind}} {{tax_no}}</p>
+				<p {{#not_eq locale 'cz'}}style="margin-bottom: 0.5em;"{{/not_eq}}>{{seller_tax_no_kind}} {{tax_no}}</p>
 			{{/if}}
+
+			{{#eq locale 'cz'}}
+				{{#if seller_register_number}}
+					<p> {{tt "invoice.register_number"}} {{seller_register_number}}</p>
+				{{/if}}
+			{{/eq}}
 
 			{{#if email}}
 				<p>{{email}}</p>
 			{{/if}}
 
 			{{#if www}}
-				<p>{{www}}</p>
+				<p>{{{www}}}</p>
 			{{/if}}
 
 			{{#if phone}}
@@ -125,8 +179,14 @@
 				<p>{{tt 'department.fax'}}: {{fax}}</p>
 			{{/if}}
 			{{#or bank bank_account}}
-				{{#if bank}}<p style="margin-top: 0.5em;">{{bank}}</p>{{/if}}
-				{{#if bank_account}}<p class="nowrap-lines">{{{bank_account}}}</p>{{/if}}
+				{{#eq locale 'uk'}}
+					{{#if bank_account_name_uk}}<p style="margin-top: 0.5em;"><strong>{{tt "invoice.bank_account_name_uk"}}:</strong> {{bank_account_name_uk}}</p>{{/if}}
+					{{#if sort_code_uk}}<p class="nowrap-lines"><strong>{{tt "invoice.sort_code_uk"}}:</strong> {{sort_code_uk}}</p>{{/if}}
+				{{/eq}}
+				{{#if bank}}<p style="{{#not_eq locale 'uk'}}margin-top: 0.5em;{{/not_eq}}">
+				{{#eq locale 'uk'}} <strong>{{tt "invoice.seller_bank"}}:</strong> {{/eq}} {{bank}}</p>{{/if}}
+				{{#if bank_account}}<p class="nowrap-lines">{{#eq locale 'uk'}}<strong>{{tt "invoice.seller_bank_account"}}:</strong> {{/eq}}{{{bank_account}}}</p>{{/if}}
+				{{#if use_iban}}<p class="nowrap-lines">IBAN {{{bank_iban}}}</p>{{/if}}
 			{{/or}}
 			{{#if swift}}
 				<p class="nowrap-lines">{{tt "department.bank_swift"}}: {{swift}}</p>
@@ -144,26 +204,42 @@
 		<div id="buyer">
 			<p>
 				{{#and client_url show_links }}
-					<a href="{{{client_url}}}" class="incognito-link">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
+					<a href="{{{client_url}}}" class="{{#eq locale 'fr'}}incognito-link{{/eq}}">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
 				{{else}}
 					{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}
 				{{/and}}
 			</p>
 			<p>{{{buyer_address}}}</p>
-			{{#if buyer_company}}
-				{{#if buyer_tax_no}}
-					<p>{{buyer_tax_no_kind}} {{buyer_tax_no}}</p>
-				{{/if}}
+			{{#if buyer_tax_no}}
+				<p>{{buyer_tax_no_kind}} {{buyer_tax_no}}</p>
 			{{/if}}
 
-			{{#and show_buyer_note buyer_note}}
-				<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
-			{{/and}}
+			{{#eq locale 'cz'}}
+				{{#if buyer_register_number}}
+					<p> {{tt "invoice.register_number"}} {{buyer_register_number}}</p>
+				{{/if}}
+			{{/eq}}
+
+			{{#eq locale 'fr'}}
+				{{#and show_buyer_note buyer_note}}
+					<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
+				{{/and}}
+			{{else}}
+				{{#if_created_after_date '2016-10-11'}}
+					{{#and show_buyer_note buyer_note}}
+						<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
+					{{/and}}
+				{{/if_created_after_date}}
+			{{/eq}}
 
 			{{#and use_delivery_address delivery_address}}
 				<p style="margin-top: 0.5em;" id="delivery_address"><strong>{{delivery_address_name}}</strong><br/>
 				{{{delivery_address}}}</p>
 			{{/and}}
+
+			{{#if show_client_phone_on_invoice}}
+				<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+			{{/if}}
 		</div>
 
 		{{#if recipient_present}}
@@ -197,22 +273,33 @@
 
 
 	{{#eq kind 'correction'}}
-		{{#not_eq kind 'maintenance_request'}}
-			<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
-			{{>positions}}
+		{{#eq locale 'pl'}}
+			<!-- if you want to customize 'positions_correction', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions_correction.hbs.html  -->
+			{{>positions_correction}}
 		{{else}}
-			{{>positions_without_prices}}
-		{{/not_eq}}
+			{{#include 'delivery_note_no_p maintenance_request' kind}}
+				{{>positions_without_prices}}
+			{{else}}
+				<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
+				{{>positions}}
+			{{/include}}
+		{{/eq}}
 	{{else}}
-		{{#not_eq kind 'maintenance_request'}}
+		{{#include 'delivery_note_no_p maintenance_request' kind}}
+			{{>positions_without_prices}}
+		{{else}}
 			<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
 			{{>positions}}
-		{{else}}
-			{{>positions_without_prices}}
-		{{/not_eq}}
+		{{/include}}
 	{{/eq}}
 
-	{{#if final}}
+  {{#not_eq locale 'fr'}}
+    {{#if sec_stamp_url}}
+      <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-30px;margin-left:50px;height:120px" src="{{sec_stamp_url}}" />
+    {{/if}}
+	{{/not_eq}}
+
+  {{#if final}}
 		<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
 		{{>advances}}
 	{{/if}}
@@ -220,7 +307,9 @@
 	<div class="clean space-top"></div>
 	<!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals.handlebars  -->
 	<!-- if you want to customize 'totals', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/totals.hbs.html  -->
-	{{>totals}}
+	{{#not_eq kind 'delivery_note_no_p'}}
+		{{>totals}}
+	{{/not_eq}}
 
 	{{#if has_corrected_content}}
 		{{>corrected_content}}
@@ -228,110 +317,187 @@
 
 
 	<div class="nobreak">
-	<section id="summary">
 
-		{{#if notes}}
-			<p>
-			<span>{{tt "invoice.description"}}:</span>
-			{{{notes}}}
-			</p>
-		{{/if}}
+	{{#not_eq kind 'delivery_note_no_p'}}
 
-    {{#if split_payment}}
-      <p>{{split_payment_note}}</p>
-    {{/if}}
+		<section id="summary">
 
-		{{#if gocardless_subscription}}
-			<br/>
-			<strong>{{tt 'account.gocardless.sub_info'}}</strong>
-			<br/>
-			<strong>{{tt 'subscription.interval_unit'}} :</strong> {{subscription_interval_unit}}
-			{{#if subscription_month}}
-				<br/>
-				<strong>{{tt 'subscription.month' }} :</strong> {{subscription_month}}
-			{{/if}}
-			{{#if subscription_day_of_month}}
-				<br/>
-				<strong>{{tt 'subscription.day_of_month'}} :</strong> {{subscription_day_of_month}}
-			{{/if}}
-			{{#if subscription_count}}
-				<br/>
-				<strong>{{tt 'subscription.count'}} :</strong> {{subscription_count}}
-			{{/if}}
-		{{/if}}
+			{{#not_eq locale 'fr'}}
+				{{#if correction_reason}}
+					<p>
+						<span>{{tt "invoice.correction_reason"}}:</span>
+						{{{correction_reason}}}
+					</p>
+				{{/if}}
+			{{/not_eq}}
 
-
-		{{#not_eq kind 'maintenance_request'}}
-			<p id="absolute_outstanding_field">
-				<span>{{#if negative_outstanding}}{{tt "invoice.to_receive"}}{{else}}{{tt "invoice.to_pay"}}{{/if}}:</span>
-				{{absolute_outstanding}}
-			</p>
-			{{#if absolute_outstanding_in_words}}
-				<p id="absolute_outstanding_in_words_field">
-					<span>{{tt "invoice.in_words"}}:</span>
-					{{{absolute_outstanding_in_words}}}
+			{{#if notes}}
+				<p>
+				<span>{{tt "invoice.description"}}:</span>
+				{{{notes}}}
 				</p>
 			{{/if}}
-		{{/not_eq}}
 
-	{{#if exempt_tax_kind}}
-	  <br/>
-	  <p>{{exempt_tax_kind}}</p>
-	{{/if}}
+			{{#eq locale 'fr'}}
+				{{#if conditional_notes}}
+					<p>
+					{{{conditional_notes}}}
+					</p>
+				{{/if}}
+			{{/eq}}
+
+			{{#if should_print_gtu_codes}}
+				<p>{{gtu_codes_note}}</p>
+			{{/if}}
+			{{#if should_print_procedure_designations}}
+				<p>{{procedure_designations_note}}</p>
+			{{/if}}
+
+			{{#if split_payment}}
+				<p>{{split_payment_note}}</p>
+			{{/if}}
+
+			{{#if gocardless_subscription}}
+				<br/>
+				<strong>{{tt 'account.gocardless.sub_info'}}</strong>
+				<br/>
+				<strong>{{tt 'subscription.interval_unit'}} :</strong> {{subscription_interval_unit}}
+				{{#if subscription_month}}
+					<br/>
+					<strong>{{tt 'subscription.month' }} :</strong> {{subscription_month}}
+				{{/if}}
+				{{#if subscription_day_of_month}}
+					<br/>
+					<strong>{{tt 'subscription.day_of_month'}} :</strong> {{subscription_day_of_month}}
+				{{/if}}
+				{{#if subscription_count}}
+					<br/>
+					<strong>{{tt 'subscription.count'}} :</strong> {{subscription_count}}
+				{{/if}}
+			{{/if}}
 
 
-		{{#not_eq kind 'maintenance_request'}}
-			{{#or paid show_paid_when_zero}}
-				<p id="paid_field">
-					<span>{{tt "invoice.paid"}}:</span>
-					{{#if paid}}
-						{{paid}}
-					{{else}}
-						{{zero_with_currency}}
+			{{#eq locale 'fr'}}
+				{{#not_eq kind 'maintenance_request'}}
+					<p id="absolute_outstanding_field">
+						<span>{{#if negative_outstanding}}{{tt "invoice.to_receive"}}{{else}}{{tt "invoice.to_pay"}}{{/if}}:</span>
+						{{absolute_outstanding}}
+					</p>
+					{{#if absolute_outstanding_in_words}}
+						<p id="absolute_outstanding_in_words_field">
+							<span>{{tt "invoice.in_words"}}:</span>
+							{{{absolute_outstanding_in_words}}}
+						</p>
 					{{/if}}
-					{{#unless show_payments_on_invoice}}
-						{{#and show_paid_date paid_date}}
-							{{tt 'invoice.paid_on'}} {{paid_date}}
-						{{/and}}
-					{{/unless}}
-				</p>
-			{{/or}}
-		{{/not_eq}}
+				{{/not_eq}}
+			{{else}}
+				{{#not_eq kind 'act_of_acceptance'}}
+					<p id="outstanding_field">
+						<span>{{tt "invoice.to_pay"}}:</span>
+						{{outstanding}}
+					</p>
 
-		{{#if oid}}
-			<p>
-				<span>{{tt 'invoice.oid'}}:</span> {{oid}}
-			</p>
-		{{/if}}
+					{{#if outstanding_in_words}}
+						<p id="outstanding_in_words_field">
+							<span>{{tt "invoice.in_words"}}:</span>
+							{{{outstanding_in_words}}}
+						</p>
+					{{/if}}
+				{{/not_eq}}
+			{{/eq}}
+
+      {{#if skonto_active }}
+        </br>
+        <p id="skonto-value">
+          <span>{{tt "invoice.skonto.name"}} {{ skonto_value }}%: </span>
+          {{{ skonto_price }}}
+        </p>
+        <p id="skonto-desc">
+          {{tt "invoice.skonto.info"}} <b>{{ skonto_date }}</b>
+        </p>
+      {{/if}}
 
 
-		{{#if show_interest_rate}}
-			<p id="interest_rate_field">
-				<span>{{tt "invoice.interest_note"}}:</span>
-				{{interest_rate}}
-			</p>
-		{{/if}}
+			{{#if exempt_tax_kind}}
+			  <br/>
+			  <p>{{exempt_tax_kind}}</p>
+			{{/if}}
 
 
-		{{#eq additional_fields.sum_recovery 'client_professionnel'}}
-			{{#if buyer_company}}
-				<p id="sum_recovery_field">
-					<span>{{legal_cost_compensation}}</span>
+			{{#not_eq kind 'maintenance_request'}}
+				{{#or paid show_paid_when_zero}}
+					<p id="paid_field">
+						<span>{{tt "invoice.paid"}}:</span>
+						{{#if paid}}
+							{{paid}}
+						{{else}}
+							{{zero_with_currency}}
+						{{/if}}
+						{{#unless show_payments_on_invoice}}
+							{{#and show_paid_date paid_date}}
+								{{tt 'invoice.paid_on'}} {{paid_date}}
+							{{/and}}
+						{{/unless}}
+					</p>
+				{{/or}}
+			{{/not_eq}}
+
+			{{#eq locale 'fr'}}
+				{{#eq kind 'estimate' }}
+					{{#if prepayment_required}}
+						<p id="prepayment_required">
+						<span>{{tt "invoice.prepayment"}}
+						{{#not_eq prepayment_required 'Exact amount'}}
+							{{prepayment_required}}%
+						{{/not_eq}} :</span>
+							{{prepayment_required_exact_amount}}
+						</p>
+					{{/if}}
+				{{/eq}}
+			{{/eq}}
+
+			{{#if oid}}
+				<p>
+					<span>{{tt 'invoice.oid'}}:</span> {{oid}}
 				</p>
 			{{/if}}
-		{{/eq}}
 
 
-		{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
-			{{#if additional_fields.advanced_payment_discount}}
-				<p id="advanced_payment_discount_field">
-					<span>{{tt "invoice.discount_on_advanced_payment_note"}}:</span>
-					{{additional_fields.advanced_payment_discount}} %
-				</p>
-			{{/if}}
-		{{/not_eq}}
+			{{#eq locale 'fr'}}
+				{{#if show_interest_rate}}
+					<p id="interest_rate_field">
+						<span>{{tt "invoice.interest_note"}}:</span>
+						{{interest_rate}}
+					</p>
+				{{/if}}
 
-	</section>
+
+				{{#eq additional_fields.sum_recovery 'client_professionnel'}}
+					{{#if buyer_company}}
+						<p id="sum_recovery_field">
+							<span>{{legal_cost_compensation}}</span>
+						</p>
+					{{/if}}
+				{{/eq}}
+
+
+				{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
+					{{#if additional_fields.advanced_payment_discount}}
+						<p id="advanced_payment_discount_field">
+							<span>{{tt "invoice.discount_on_advanced_payment_note"}}:</span>
+							{{additional_fields.advanced_payment_discount}} %
+						</p>
+					{{/if}}
+				{{/not_eq}}
+			{{/eq}}
+
+		</section>
+
+	{{/not_eq}}
+
+    {{#if final_summary_table}}
+        {{>final_to_pay_table}}
+    {{/if}}
 
 	{{#if show_payments_on_invoice}}
 		{{>payments}}
@@ -339,9 +505,16 @@
 
 	<section id="invoice_signatures">
 		<div id="seller_sign" {{#if qrcode_img}}class="with_qrcode"{{/if}}>
-			{{#or person show_empty_seller_person}}
+			{{#or person show_empty_seller_person act_of_acceptance}}
+				{{#if act_of_acceptance}}
+					<br><br>
+				{{/if}}
 				<p><span>{{tt "invoice.seller_person"}}</span></p>
 				<p>{{person}}</p>
+				{{#if act_of_acceptance}}
+					<br><br><br>
+					...................................................
+				{{/if}}
 			{{else}}
 				{{#if stamp_below_sign_url}}
 				<p><span>{{tt "invoice.seller_person"}}</span></p>
@@ -351,6 +524,11 @@
 			{{#if stamp_below_sign_url}}
 				<img src="{{stamp_url}}" alt="stamp" style="max-width:50%" id="custom_img" />
 			{{/if}}
+      {{#eq locale 'fr'}}
+        {{#if sec_stamp_url}}
+          <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-40px;margin-left:190px;height:120px" src="{{sec_stamp_url}}" />
+        {{/if}}
+      {{/eq}}
 		</div>
 		{{#if qrcode_img}}
 			<div id="qrcode">
@@ -358,13 +536,28 @@
 			</div>
 		{{/if}}
 		<div id="buyer_sign" {{#if qrcode_img}}class="with_qrcode"{{/if}}>
-		{{#if show_date_and_sign}}
-			<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
-			{{#if signature_url}}
-				<p>{{tt "invoice.signature_accept"}} {{signature_date}}</p>
-				<p style="margin: 0% 10%;"><img src="{{signature_url}}" width="60%" height="60%"></p>
+		{{#not_eq locale 'fr'}}
+			{{#or buyer_person show_empty_buyer_person act_of_acceptance}}
+				{{#if act_of_acceptance}}
+					<br><br>
+				{{/if}}
+				<p><span>{{tt "invoice.buyer_person"}}</span></p>
+				<p>{{buyer_person}}</p>
+				{{#if act_of_acceptance}}
+					<br><br><br>
+					...................................................
+				{{/if}}
+
+			{{/or}}
+		{{else}}
+			{{#if show_date_and_sign}}
+				<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
+				{{#if signature_url}}
+					<p>{{tt "invoice.signature_accept"}} {{signature_date}}</p>
+					<p style="margin: 0% 10%;"><img src="{{signature_url}}" width="60%" height="60%"></p>
+				{{/if}}
 			{{/if}}
-		{{/if}}
+		{{/not_eq}}
 		</div>
 	</section>
 	</div><!-- /.nobreak -->
@@ -373,13 +566,23 @@
 {{! ------------------- DO NOT MODIFY ------------------- }}
 </div><!-- invoie outline -->
 
-{{#if department.name}}
-	<section id="description_footer">
-		<div id="company_info_footer">
-			<span>{{>company_info_footer}}</span>
-		</div>
-	</section>
-{{/if}}
+{{#eq locale 'fr'}}
+	{{#if department.name}}
+		<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
+			<div id="company_info_footer">
+				<span>{{>company_info_footer}}</span>
+			</div>
+		</section>
+	{{/if}}
+{{else}}
+	{{#if description_footer}}
+		<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
+			<span>{{{description_footer}}}</span>
+		</section>
+	{{else}}
+		<br class="noprint" />
+	{{/if}}
+{{/eq}}
 
 {{#if description_long}}
 	<hr class="noprint" style="margin-top:0px;width:100%;" />

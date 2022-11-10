@@ -29,6 +29,10 @@
 			</p>
 			{{#if correction}}
 				<p class="document_extra">{{ correction }}</p>
+			{{else if receipt}}
+				<p class="document_extra">{{ receipt }}</p>
+			{{else if proforma}}
+				<p class="document_extra">{{ proforma }}</p>
 			{{/if}}
 			<p>
 				{{#if print_option}}
@@ -78,7 +82,7 @@
 					{{#if tax_no}}
 						<p style="margin-bottom: 0.5em;">{{seller_tax_no_kind}} {{tax_no}}</p>
 					{{/if}}
-				
+
 					{{#if email}}
 						<p>{{email}}</p>
 					{{/if}}
@@ -86,7 +90,7 @@
 					{{#if www}}
 						<p>{{www}}</p>
 					{{/if}}
-				
+
 					{{#if phone}}
 						<p>{{tt 'department.phone'}} : {{phone}}</p>
 					{{/if}}
@@ -112,12 +116,16 @@
 							<p>{{buyer_tax_no_kind}} {{buyer_tax_no}}</p>
 						{{/if}}
 					{{/if}}
-					
+
 					{{#and use_delivery_address delivery_address}}
 						<p style="margin-top: 0.5em;"><strong>{{delivery_address_name}}</strong><br/>
 						{{{delivery_address}}}</p>
 					{{/and}}
-					
+
+					{{#if show_client_phone_on_invoice}}
+						<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+					{{/if}}
+
 					{{#and show_buyer_note buyer_note}}
 						<p style="margin-top: 0.5em;">{{{buyer_note}}}</p>
 					{{/and}}
@@ -178,7 +186,7 @@
 	{{/if}}
 
 	<div class="no-page-break">
-	
+
 	<section id="summary">
 
 	{{#not_eq kind 'estimate'}}
@@ -222,6 +230,15 @@
 	{{/not_eq}}
 
 
+		{{#eq locale 'cz'}}
+			{{#if payment_reference_number}}
+				<p id="payment_reference_number_field">
+					<span>{{tt "invoice.payment_reference_number"}}:</span>
+					{{payment_reference_number}}
+				</p>
+			{{/if}}
+		{{/eq}}
+
 		{{#or payment_to type_of_payment}}
 			<div class="many-p">
 				{{#if payment_to}}
@@ -248,31 +265,45 @@
 			</p>
 		{{/or}}
 
-		{{#if show_interest_rate}}
-			<p id="interest_rate_field">
-				<span>{{tt "invoice.interest_note"}} :</span>
-				{{interest_rate}}
-			</p>
-		{{/if}}
+		{{#eq locale 'fr'}}
+			{{#eq kind 'estimate' }}
+				{{#if prepayment_required}}
+					<p id="prepayment_required">
+					<span>{{tt "invoice.prepayment"}}
+					{{#not_eq prepayment_required 'Exact amount'}}
+						{{prepayment_required}}%
+					{{/not_eq}} :</span>
+						{{prepayment_required_exact_amount}}
+					</p>
+				{{/if}}
+			{{/eq}}
 
-
-		{{#eq additional_fields.sum_recovery 'client_professionnel'}}
-			{{#if buyer_company}}
-				<p id="sum_recovery_field">
-					<span>{{tt "invoice.legal_cost_note"}}</span>
+			{{#if show_interest_rate}}
+				<p id="interest_rate_field">
+					<span>{{tt "invoice.interest_note"}} :</span>
+					{{interest_rate}}
 				</p>
 			{{/if}}
+
+
+			{{#eq additional_fields.sum_recovery 'client_professionnel'}}
+				{{#if buyer_company}}
+					<p id="sum_recovery_field">
+						<span>{{legal_cost_compensation}}</span>
+					</p>
+				{{/if}}
+			{{/eq}}
+
+
+			{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
+				{{#if additional_fields.advanced_payment_discount}}
+					<p id="advanced_payment_discount_field">
+						<span>{{tt "invoice.discount_on_advanced_payment_note"}} :</span>
+						{{additional_fields.advanced_payment_discount}} %
+					</p>
+				{{/if}}
+			{{/not_eq}}
 		{{/eq}}
-
-
-		{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
-			{{#if additional_fields.advanced_payment_discount}}
-				<p id="advanced_payment_discount_field">
-					<span>{{tt "invoice.discount_on_advanced_payment_note"}} :</span>
-					{{additional_fields.advanced_payment_discount}} %
-				</p>
-			{{/if}}
-		{{/not_eq}}
 
 		{{#if additional_field_name}}
 			{{#if additional_field_value}}
@@ -289,12 +320,29 @@
 				{{{notes}}}
 			</p>
 		{{/if}}
+
+		{{#eq locale 'fr'}}
+			{{#if conditional_notes}}
+				<p id="cond_notes">
+					{{{conditional_notes}}}
+				</p>
+			{{/if}}
+		{{/eq}}
+
 		{{#if exempt_tax_kind}}
 			<p>{{exempt_tax_kind}}</p>
 		{{/if}}
 
     {{#if split_payment}}
       <p>{{split_payment_note}}</p>
+    {{/if}}
+
+    {{#if should_print_gtu_codes}}
+      <p>{{gtu_codes_note}}</p>
+    {{/if}}
+
+    {{#if should_print_procedure_designations}}
+      <p>{{procedure_designations_note}}</p>
     {{/if}}
 
 		{{#if gocardless_subscription}}
@@ -336,9 +384,19 @@
 
 			{{#if stamp_below_sign_url}}
 				<img src="{{stamp_url}}" alt="stamp" style="max-width:50%" id="custom_img" />
-			{{/if}}	
+			{{/if}}
+      {{#if sec_stamp_url}}
+        <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-30px;margin-left:190px;height:150px" src="{{sec_stamp_url}}" />
+      {{/if}}
 		</div>
 		<div id="buyer_sign">
+			{{#not_eq locale 'fr'}}
+				{{#or buyer_person show_empty_buyer_person}}
+					<p><span>{{tt "invoice.buyer_person"}}</span></p>
+					<p>{{buyer_person}}</p>
+				{{/or}}
+			{{/not_eq}}
+
 			{{#if show_date_and_sign}}
 				<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
 				{{#if signature_url}}
@@ -357,7 +415,7 @@
 
 
 	{{#if department.name}}
-		<section id="description_footer">
+		<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
 			<div id="company_info_footer">
 				<!-- si vous souhaitez personnaliser le pied de page, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/company_info_footer.handlebars  -->
 				<span>{{>company_info_footer}}</span>

@@ -122,6 +122,10 @@
                             {{{delivery_address}}}</p>
                     {{/and}}
 
+                    {{#if show_client_phone_on_invoice}}
+                        <p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+                    {{/if}}
+
                     {{#and show_buyer_note buyer_note}}
                         <p style="margin-top: 0.5em;">{{{buyer_note}}}</p>
                     {{/and}}

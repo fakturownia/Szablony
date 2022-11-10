@@ -259,7 +259,7 @@
 
 /* ------------------------------------------------- */
 
-	/* INVOICE TITLE (FR ONLY) */
+	/* INVOICE TITLE */
 	#title {
 		clear: both;
 		display: block;
@@ -412,7 +412,6 @@
 	.main_inv_table tbody { font-size: 10pt;}
 	.main_inv_table th { font-weight: normal;font-size:9pt; }
 	table td.empty {border:0;}
-	/* .ean_code{font-size: 0.8em;} */
 
 	table.main_inv_table td, table.main_inv_table th,
 	.totals_inv_table td, .totals_inv_table th {
@@ -523,10 +522,10 @@
 			text-decoration: none;
 		}
 
-	/* PRODUCT CODE (FR ONLY) */
+	/* PRODUCT CODE */
 	.code_col { text-align: left; }
 
-	/* EXTRA DATA (PKWiU - pl) */
+	/* EXTRA DATA */
 	.additional_info_col {}
 
 	/* DISCOUNT IN % */

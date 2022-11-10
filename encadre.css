@@ -1,5 +1,5 @@
-@media all{ 
-	
+@media all{
+
 /* ------------------------------------------------- */
 	/* DO NOT DELETE */
 	.invoice_outline {
@@ -35,14 +35,14 @@
 		page-break-inside: avoid !important;
 	}
 
- 
 
-	
+
+
 
 /* ------------------------------------------------- */
 	/* DO NOT CHANGE */
 	p {margin:0;}
-	
+
 	table{page-break-after:auto}
 	tr{page-break-inside:avoid;page-break-after:auto}
 	td{page-break-inside:avoid;}
@@ -65,7 +65,7 @@
 
 
 /* ------------------------------------------------- */
-	
+
 	/* ALIGNS */
 	table {
 		clear: both;
@@ -73,7 +73,7 @@
 		empty-cells:hide;
 		width:100%;
 		background-color: transparent;
-	}	
+	}
 
 	table.main_inv_table td, table.main_inv_table th {
 		padding: 0.25em 0.25em 0.2em 0.25em;
@@ -84,7 +84,7 @@
 	th.text_left,
 	td.text_left {text-align:left;}
 	.number,.nowrap,
-	td b, td.row1, td.row2, td.row3 {white-space:nowrap}	
+	td b, td.row1, td.row2, td.row3 {white-space:nowrap}
 	th.width3 + th.width1.nowrap {white-space:normal}
 
 
@@ -131,7 +131,7 @@
 
 	/* INFORMATION ABOUT CURRENCY EXCHANGE */
 	#exchange_currency {display:block;margin-top:0em !important;padding-right: 1em;font-size:0.9em; font-weight: bold;}
-	
+
 
 /* ------------------------------------------------- */
 
@@ -155,7 +155,7 @@
 		}
 
 
-		
+
 
 
 		/* LOGO */
@@ -182,7 +182,7 @@
 
 /* ------------------------------------------------- */
 
-	
+
 		/* SELLER'S IDENTIFICATION DATA */
 		#seller {
 			margin-top: 1em;
@@ -197,7 +197,7 @@
 		width: 100%;
 		text-align: center;
 	}
-	
+
 /* ------------------------------------------------- */
 
 	/* INVOICE SUMMARY */
@@ -239,7 +239,7 @@
 			display: table-cell;
 			width: 50%;
 			text-align: center;
-		}	
+		}
 			/* header */
 			#seller_sign span {font-weight: bold;}
 
@@ -320,7 +320,7 @@
 	.main_inv_table th { font-weight: bold; }
 	table td.empty {border:0;}
 
-	
+
 	table.main_inv_table td.footer {vertical-align: middle;}
 	table.main_inv_table td.footer strong {}
 
@@ -342,7 +342,7 @@
 	}
 
 	#pos_table .total, #pos_table .subtotal {
-		
+
 
 	}
 
@@ -452,25 +452,25 @@
 /* ------------------------------------------------- */
 
 	/* TEXT DIRECTIONS */
-	.invoice_outline[dir="rtl"],	
-	.invoice_outline[dir="rtl"] table, 
-	.invoice_outline[dir="rtl"] table th, 
+	.invoice_outline[dir="rtl"],
+	.invoice_outline[dir="rtl"] table,
+	.invoice_outline[dir="rtl"] table th,
 	.invoice_outline[dir="rtl"] table td
 	{
 		text-align:right;
 	}
-	
-	.invoice_outline[dir="rtl"] .inv_paid > td,	
+
+	.invoice_outline[dir="rtl"] .inv_paid > td,
 	.invoice_outline[dir="rtl"] .inv_to_pay > td{
 		text-align:right;
 	}
-	
-	
-	.invoice_outline[dir="rtl"] table.clean.to_right td,		
+
+
+	.invoice_outline[dir="rtl"] table.clean.to_right td,
 	.invoice_outline[dir="rtl"] table.clean.to_right th {text-align:left;}
 
 
-/* ------------------------------------------------- */	
+/* ------------------------------------------------- */
 	/* DO NOT MODIFY */
 	.payment_button {
 		display:block;
@@ -671,10 +671,11 @@
 
 	.invoice_payments_payment > div {
 		display: inline-block;
+		vertical-align: top;
 	}
 
 	.invoice_payments_price {
-		
+
 	}
 
 	.invoice_payments_provider {
@@ -685,7 +686,7 @@
 		content: ' -';
 	}
 
-	.subtotal_col {
+  .subtotal_col {
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
     border-right: none !important;
@@ -700,8 +701,7 @@
   }
 
 }
-@media print {	
-	html, body {width:210mm;}
+@media print {
 	@page {
 	  margin-left: 0in;
 	  margin-right: 0in;
@@ -720,7 +720,7 @@
 /* ------------------------------------------------- */
 
 
-	
+
 
 	#paid_mark {
 		clear:both;
@@ -740,6 +740,22 @@
 	/* DO NOT MODIFY */
 	#description_footer {
 		display: none;
+	}
+
+	#description_footer.description_footer_fr {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 
 	/* DO NOT MODIFY */
@@ -778,7 +794,7 @@
 	.name_col a {
    		color: inherit;
 	}
-	
+
 	#buyer a {
 		color: inherit;
 		text-decoration: none;
@@ -789,7 +805,7 @@
 
 }
 
-@media screen {	
+@media screen {
 
 	table.main_inv_table td { }
 
@@ -802,6 +818,6 @@
 		width:210mm;
 		padding: 0px;
 		padding-top: 1cm;
-	}	
-/* ------------------------------------------------- */	
-}	
+	}
+/* ------------------------------------------------- */
+}

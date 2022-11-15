@@ -13,26 +13,26 @@
 					{{#if use_product_code}}
 						<th class="width2 text_center code_col" id="code_col">
 							{{tt "invoice_position.code"}}
-						</th>				
+						</th>
 					{{/if}}
 
-					{{#if additional_info}}				
+					{{#if additional_info}}
 						<th class="width2 text_center additional_info_col" id="additional_info_col">
 							{{additional_info_desc}}
-						</th>				
+						</th>
 					{{/if}}
 
 					<th class="width2 text_center no_wrap quantity_col" id="quantity_col">
 						{{tt "invoice_position.quantity"}}
 					</th>
 
-					{{#if discount}}				
+					{{#if discount}}
 						<th class="width2 text_center no_wrap discount_col" id="discount_col">
 							{{tt "invoice_position.discount_percent"}}
-						</th>				
+						</th>
 					{{/if}}
 
-					
+
 					{{#if tax_visible}}
 						{{#unless hide_tax}}
 							<th class="width3 text_center no_wrap price_net_col" id="price_net_col">
@@ -54,12 +54,12 @@
 									{{tax2_name}}
 								</th>
 							{{/if}}
-							<th class="width3 text_center tax_value_col" id="tax_value_col">		
-								{{tax_value_name}}					
+							<th class="width3 text_center tax_value_col" id="tax_value_col">
+								{{tax_value_name}}
 							</th>
 							{{#if tax2_details}}
-								<th class="width3 text_center tax2_value_col" id="tax_value_col">		
-									{{tax2_value_name}}					
+								<th class="width3 text_center tax2_value_col" id="tax_value_col">
+									{{tax2_value_name}}
 								</th>
 							{{/if}}
 						{{else}}
@@ -117,26 +117,26 @@
 					{{#if ../../../use_product_code}}
 						<th class="width2 text_center code_col" id="code_col">
 							{{tt "invoice_position.code"}}
-						</th>				
+						</th>
 					{{/if}}
 
-					{{#if ../../../additional_info}}				
+					{{#if ../../../additional_info}}
 						<th class="width2 text_center additional_info_col" id="additional_info_col">
 							{{additional_info_desc}}
-						</th>				
+						</th>
 					{{/if}}
 
 					<th class="width2 text_center no_wrap quantity_col" id="quantity_col">
 						{{tt "invoice_position.quantity"}}
 					</th>
 
-					{{#if ../../../discount}}				
+					{{#if ../../../discount}}
 						<th class="width2 text_center no_wrap discount_col" id="discount_col">
 							{{tt "invoice_position.discount_percent"}}
-						</th>				
+						</th>
 					{{/if}}
 
-					
+
 					{{#if ../../../tax_visible}}
 						{{#unless ../../../../hide_tax}}
 							<th class="width3 text_center no_wrap price_net_col" id="price_net_col">
@@ -158,12 +158,12 @@
 									{{tax2_name}}
 								</th>
 							{{/if}}
-							<th class="width3 text_center tax_value_col" id="tax_value_col">		
-								{{tax_value_name}}					
+							<th class="width3 text_center tax_value_col" id="tax_value_col">
+								{{tax_value_name}}
 							</th>
 							{{#if ../../../../../tax2_details}}
-								<th class="width3 text_center tax2_value_col" id="tax_value_col">		
-									{{tax2_value_name}}					
+								<th class="width3 text_center tax2_value_col" id="tax_value_col">
+									{{tax2_value_name}}
 								</th>
 							{{/if}}
 						{{else}}
@@ -209,7 +209,7 @@
 						<td colspan="100" class='text_left text_separator'>{{item}}</td>
 					</tr>
 				{{else}}
-                    {{#eq kind 'subtotal'}}
+                    {{#in kind 'subtotal,subtotal_with_quantity'}}
                         <tr class="subtotal_row">
                             <td class="nr_col subtotal_col">&nbsp;</td>
                             <td class="name_col subtotal_col">
@@ -224,7 +224,11 @@
                                     <td class="text_right additional_info_col subtotal_col">&nbsp;</td>
                                 {{/if}}
 
-                                <td class="text_right quantity_col subtotal_col">&nbsp;</td>
+                                <td class="text_right quantity_col subtotal_col">
+                                    {{#eq kind 'subtotal_with_quantity'}}
+                                      {{quantity}}
+                                    {{/eq}}
+                                </td>
 
                                 {{#if ../../../../../discount}}
                                     <td class="text_right discount_col subtotal_col">&nbsp;</td>
@@ -301,6 +305,7 @@
 							{{#and barcode ../../../../use_barcodes}}
 								<div class="ean_code hidden">
 									{{{barcode}}}
+									{{ean_code}}
 								</div>
 							{{/and}}
 						</td>
@@ -308,37 +313,45 @@
 							{{#if ../../../../../use_product_code}}
 								<td class="code_col">
 									{{code}}
-								</td>					
+								</td>
 							{{/if}}
-							
+
 							{{#if ../../../../../additional_info}}
 								<td class="text_right additional_info_col">
 									{{additional_info}}
-								</td>				
+								</td>
 							{{/if}}
 
 							<td class="text_right quantity_col">
 								{{quantity}}
 							</td>
-							
+
 							{{#if ../../../../../discount}}
 								<td class="text_right discount_col">
-									{{#eq ../../../../../../discount_kind 'amount'}}
-										{{discount}}
+									{{#if ../../../../../../show_discount_as_net_amount}}
+										{{discount_amount_net}}
+										{{#not_eq ../../../../../../../discount_kind 'amount'}}
+											<br />
+											<small>{{discount}}</small>
+										{{/not_eq}}
 									{{else}}
-										{{#if ../../../../../../../tax_visible}}
-											{{#unless ../../../../../../../../hide_tax}}
-												{{discount_amount_net}}<br />
-											{{else}}
-												{{discount_amount_gross}}<br />
-											{{/unless}}
+										{{#eq ../../../../../../../discount_kind 'amount'}}
+											{{discount}}
 										{{else}}
-											{{discount_amount_net}}<br />
-										{{/if}}
-										<small>{{discount}}</small>
-									{{/eq}}
+											{{#if ../../../../../../../../tax_visible}}
+												{{#unless ../../../../../../../../../hide_tax}}
+													{{discount_amount_net}}<br />
+												{{else}}
+													{{discount_amount_gross}}<br />
+												{{/unless}}
+											{{else}}
+												{{discount_amount_net}}<br />
+											{{/if}}
+											<small>{{discount}}</small>
+										{{/eq}}
+									{{/if}}
 								</td>
-							{{/if}}				
+							{{/if}}
 
 							{{#if ../../../../../tax_visible}}
 								{{#unless ../../../../../../hide_tax}}
@@ -362,10 +375,20 @@
                                     {{/if}}
 									<td class="text_right no_wrap number total_price_net_col">
 										{{total_price_net}}
-									</td>			
+									</td>
 
 									<td class="text_right no_wrap number tax_col">
-										{{tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}}
+										{{#eq kind 'correction'}}
+											{{#eq correction_before.tax correction_after.tax}}
+												{{tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}}
+											{{else}}
+												<span style="text-decoration:line-through;">{{correction_before.tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}}</span>
+												<br />
+												{{correction_after.tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}}
+											{{/eq}}
+										{{else}}
+											{{tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}}
+										{{/eq}}
 									</td>
 									{{#if ../../../../../../../tax2_visible}}
 										<td class="text_right no_wrap number tax2_col">
@@ -412,7 +435,7 @@
 								<td class="text_right number total_price_gross_col">
 									{{total_price_gross}}
 								</td>
-							{{/if}}				
+							{{/if}}
 						{{else}}
 							{{#unless ../../../../../hide_tax}}
 								<td class="text_right number no_wrap total_price_net_col-advance">
@@ -425,21 +448,21 @@
 							{{/unless}}
 						{{/not_eq}}
 					</tr>
-				{{/eq}}
+				{{/in}}
                 {{/eq}}
 				{{/not_eq}}
 
 			{{/each}}
-			
-		
+
+
 			{{#not_eq kind 'advance'}}
-				<tr class="clean no_border summary_row">	
+				<tr class="clean no_border summary_row">
 					<td class="empty nr_col footer total"></td>
 					<td class="empty name_col footer total"></td>
 					{{#if use_product_code}}
 						<td class="empty code_col footer total"></td>
 					{{/if}}
-					{{#if additional_info}}				
+					{{#if additional_info}}
 						<td class="empty additional_info_col footer total"></td>
 					{{/if}}
 					{{#if discount}}
@@ -489,7 +512,7 @@
 									{{#eq kind 'final'}}
 										{{positons_total_tax2}}
 									{{/eq}}
-									
+
 								</td>
 							{{else}}
 								<td class="text_right number tax_value_col footer total">
@@ -499,7 +522,7 @@
 									{{#eq kind 'final'}}
 										{{positons_total_tax}}
 									{{/eq}}
-									
+
 								</td>
 							{{/if}}
 						{{/unless}}
@@ -511,7 +534,7 @@
 					{{#eq kind 'final'}}
 						{{positions_total_price_gross}}
 					{{/eq}}
-					</td>						
+					</td>
 				</tr>
 
 				{{#if show_tax_split}}
@@ -525,7 +548,7 @@
 									{{#if ../../use_product_code}}
 										<td class="code_col footer subtotal"></td>
 									{{/if}}
-									{{#if ../../additional_info}}				
+									{{#if ../../additional_info}}
 										<td class="additional_info_col footer subtotal"></td>
 									{{/if}}
 									{{#if ../../discount}}
@@ -537,7 +560,7 @@
                                         <td class="empty mod2 footer subtotal"></td>
                                     {{/if}}
 									<td class="text_right number including footer subtotal">
-										<strong>{{tt "invoice.including"}}</strong>
+										<strong>{{../../tax_name}}</strong>
 									</td>
 
 									<td class="text_right number total_price_net_col footer subtotal">
@@ -557,7 +580,7 @@
 									</td>
 									<td class="width3 text_right number total_price_gross_col footer subtotal">
 										{{total_price_gross}}
-									</td>					
+									</td>
 								</tr>
 							{{/each}}
 						{{/unless}}
@@ -577,7 +600,7 @@
 			{{#each summary}}
 			<tr class="no_border">
 				<td class="text_right number including">
-					<strong>{{tt "invoice.including"}}</strong>
+					<strong>{{../../tax_name}}</strong>
 				</td>
 				<td class="text_right number tax_col-advance footer">
 					{{tax}}%
@@ -587,7 +610,7 @@
 				</td>
 				<td class="text_right number total_price_gross_col-advance footer">
 					{{total_price_gross}}
-				</td>					
+				</td>
 			</tr>
 			{{/each}}
 			{{/unless}}
@@ -602,7 +625,7 @@
 				<td class="tax_value_col-advance footer"></td>
 				<td class="text_right number total_price_gross_col-advance footer">
 					{{total_price_gross}}
-				</td>						
+				</td>
 			</tr>
 		</table>
 	{{/eq}}

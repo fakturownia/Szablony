@@ -122,7 +122,7 @@
 				{{else}}
 					{{#if discount}}
 						{{#unless hide_tax}}
-						
+
 							<tr>
 								<th>
 									{{tt "invoice.total_price_net" }}
@@ -151,7 +151,7 @@
 								    {{ total_price_net_with_currency }}
 								</td>
 							</tr>
-						
+
 						{{else}}
 
 							<tr>
@@ -182,16 +182,51 @@
 								    {{ total_price_gross_with_currency }}
 								</td>
 							</tr>
-						
+
 						{{/unless}}
+					{{else}}
+						{{#if_created_after_date '2022-03-30'}}
+							{{#eq kind 'final'}}
+								{{#if_created_after_date '2022-06-24'}}
+									{{#if hide_tax}}
+										<tr>
+											<th>
+												{{tt "invoice.total_price_gross" }}
+											</th>
+											<td class="number">
+												{{ total_price_gross_without_discount_with_currency }}
+											</td>
+										</tr>
+									{{else}}
+										<tr>
+											<th>
+												{{tt "invoice.total_price_net" }}
+											</th>
+											<td class="number">
+												{{ total_price_net_without_discount_with_currency }}
+											</td>
+										</tr>
+									{{/if}}
+								{{else}}
+									<tr>
+										<th>
+											{{tt "invoice.total_price_net" }}
+										</th>
+										<td class="number">
+											{{ total_price_net_without_discount_with_currency }}
+										</td>
+									</tr>
+								{{/if_created_after_date}}
+							{{/eq}}
+						{{/if_created_after_date}}
 					{{/if}}
 				{{/if}}
-				
+
 			</table>
 
 			<div class="clear"></div>
 		{{/unless}}
-	{{/if}}  
+	{{/if}}
 
 
 
@@ -206,7 +241,7 @@
 						<td class="number">
 						    {{ total_price_net}}{{currency}}
 						</td>
-						<td class="number">			    
+						<td class="number">
 						    {{ total_price_net_in_exchange_currency }}{{exchange_currency}}
 						</td>
 					</tr>
@@ -218,7 +253,7 @@
 							<td class="number">
 							    {{ tax1_value }}{{currency}}
 							</td>
-							<td class="number">			    
+							<td class="number">
 							    {{ tax1_value_in_exchange_currency }}{{exchange_currency}}
 							</td>
 						</tr>
@@ -229,7 +264,7 @@
 							<td class="number">
 							    {{ tax2_value }}{{currency}}
 							</td>
-							<td class="number">			    
+							<td class="number">
 							    {{ tax2_value_in_exchange_currency }}{{exchange_currency}}
 							</td>
 						</tr>
@@ -241,7 +276,7 @@
 							<td class="number">
 							    {{ tax_value }}{{currency}}
 							</td>
-							<td class="number">			    
+							<td class="number">
 							    {{ tax_value_in_exchange_currency }}{{exchange_currency}}
 							</td>
 						</tr>
@@ -254,7 +289,7 @@
 					<td class="number">
 					    {{ total_price_gross}}{{currency}}
 					</td>
-					<td class="number">			    
+					<td class="number">
 					    {{ total_price_gross_in_exchange_currency }}{{exchange_currency}}
 					</td>
 				</tr>
@@ -268,7 +303,7 @@
 						<td class="number">
 						    {{ total_price_gross}}{{currency}}
 						</td>
-						<td class="number">			    
+						<td class="number">
 						    {{ total_price_gross_in_exchange_currency }}{{exchange_currency}}
 						</td>
 					</tr>
@@ -280,13 +315,13 @@
 						<td class="number">
 						    {{ total_price_net}}{{currency}}
 						</td>
-						<td class="number">			    
+						<td class="number">
 						    {{ total_price_net_in_exchange_currency }}{{exchange_currency}}
 						</td>
 					</tr>
 				{{/if}}
 			{{/unless}}
-				
+
 		</table>
 
 		<div class="clear"></div>
@@ -294,7 +329,7 @@
 
 		<table class="clean" id="exchange_currency">
 			<tbody>
-				<tr>		
+				<tr>
 					<td>
 						{{long_exchange_note}}<br />
 					</td>

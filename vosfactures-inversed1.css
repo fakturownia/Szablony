@@ -83,6 +83,8 @@
 	.full_width {margin-top:0px;margin-bottom:0px;}
 	
 	.hidden{display:none;}	
+
+	/* .ean_code{font-size: 0.8em;} */
 	
 
 	.seller_buyer .vert_align_top > strong {display:none;}

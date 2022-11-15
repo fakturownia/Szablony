@@ -17,7 +17,6 @@
 		<div style="background:transparent url('{{stamp_url}}') no-repeat  94% 82%"  id="custom_stamp">
 	{{/if}}
 
-
 {{/unless}}
 
 
@@ -55,6 +54,14 @@
 				{{#if correction}}
 				<p>
 					{{ correction }}
+				</p>
+				{{else if receipt}}
+				<p>
+					{{ receipt }}
+				</p>
+				{{else if proforma}}
+				<p>
+					{{ proforma }}
 				</p>
 				{{/if}}
 			</td>
@@ -130,6 +137,9 @@
 					<strong>{{delivery_address_name}}:</strong><br/>
 						{{{delivery_address}}}
 					{{/if}}
+				{{/if}}
+				{{#if show_client_phone_on_invoice}}
+					<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
 				{{/if}}
 				</div>
 			</td>
@@ -213,6 +223,20 @@
 					</div>
 				{{/if}}
 
+				{{#eq locale 'fr'}}
+					{{#eq kind 'estimate' }}
+						{{#if prepayment_required}}
+							<div id="prepayment_required">
+							<strong>{{tt "invoice.prepayment"}}
+							{{#not_eq prepayment_required 'Exact amount'}}
+								{{prepayment_required}}%
+							{{/not_eq}} :</strong>
+								{{prepayment_required_exact_amount}}
+							</div>
+						{{/if}}
+					{{/eq}}
+				{{/eq}}
+
 				{{#if show_interest_rate}}
 					<div id="interest_rate_field">
 						<strong>{{tt "invoice.interest_note"}} :</strong> {{interest_rate}} <br/>
@@ -248,6 +272,13 @@
 					<strong>{{tt "invoice.description"}} :</strong>
 					<span id="notes">
 						{{{notes}}}
+					</span>
+				{{/if}}
+
+				{{#if conditional_notes}}
+					<br/>
+					<span id="cond_notes">
+						{{{conditional_notes}}}
 					</span>
 				{{/if}}
 
@@ -299,13 +330,12 @@
 
 
 				{{else}}
-
-
-
 				{{/if}}
 
 
-
+        {{#if sec_stamp_url}}
+          <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-120px;margin-left:250px;height:130px" src="{{sec_stamp_url}}" />
+        {{/if}}
 			</td>
 
 			<td class="text_center half_width">

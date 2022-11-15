@@ -20,6 +20,10 @@
 			</p>
 			{{#if correction}}
 				<p class="document_extra">{{ correction }}</p>
+			{{else if receipt}}
+				<p class="document_extra">{{ receipt }}</p>
+			{{else if proforma}}
+				<p class="document_extra">{{ proforma }}</p>
 			{{/if}}
 			<p>
 				{{#if print_option}}

@@ -1,0 +1,221 @@
+{{#not_eq kind 'maintenance_request'}}
+  {{#if show_totals}}
+    {{#unless exchange_currency}}
+      <table class="clean to_right totals_inv_table">
+        {{#if tax_visible}}
+          {{#unless hide_tax}}
+            {{#if discount}}
+              <tr>
+                <th>{{tt "invoice.total_price_net"}}</th>
+                <td class="number">{{total_price_net_without_discount}}</td>
+              </tr>
+              <tr>
+                <th>
+                  {{#if global_discount_percent}}
+                    {{tt "invoice.global_discount"}} ({{global_discount_percent}})
+                  {{else}}
+                    {{tt "invoice.discount"}}
+                  {{/if}}
+                </th>
+                <td class="number">{{global_discount_net}}</td>
+              </tr>
+              <tr>
+                <th>{{tt "invoice.total_price_net_with_discount"}}</th>
+                <td class="number">{{total_price_net}}</td>
+              </tr>
+            {{else}}
+              <tr>
+                <th>{{tt "invoice.total_price_net"}}</th>
+                <td class="number">{{total_price_net}}</td>
+              </tr>
+            {{/if}}
+
+            {{#if tax2_visible}}
+              {{#if tax2_details}}
+                <tr>
+                  <th>{{../tax1_value_name}}</th>
+                  <td class="number">{{../tax1_value}}</td>
+                </tr>
+                <tr>
+                  <th>{{../tax2_value_name}}</th>
+                  <td class="number">{{../tax2_value}}</td>
+                </tr>
+              {{else}}
+                <tr>
+                  <th>{{../tax_value_name}}</th>
+                  <td class="number">{{../tax_value}}</td>
+                </tr>
+              {{/if}}
+            {{else}}
+              {{#each final_summary}}
+                <tr>
+                  <th>{{../tax_value_name}} ({{tax}}{{#not_eq tax 'N/A'}}%{{/not_eq}})</th>
+                  <td class="number">{{tax_value}}</td>
+                </tr>
+              {{/each}}
+            {{/if}}
+            <tr>
+              <th>{{tt "invoice.total_price_gross"}}</th>
+              <td class="number">{{total_price_gross}}</td>
+            </tr>
+          {{else}}
+            {{#if discount}}
+              <tr>
+                <th>{{tt "invoice.total_price_gross"}}</th>
+                <td class="number">{{total_price_gross_without_discount}}</td>
+              </tr>
+              <tr>
+                <th>
+                  {{#if global_discount_percent}}
+                    {{tt "invoice.global_discount"}} ({{global_discount_percent}})
+                  {{else}}
+                    {{tt "invoice.discount"}}
+                  {{/if}}
+                </th>
+                <td class="number">{{global_discount_gross}}</td>
+              </tr>
+              <tr>
+                <th>{{tt "invoice.total_price_gross_with_discount"}}</th>
+                <td class="number">{{total_price_gross}}</td>
+              </tr>
+            {{else}}
+              <tr>
+                <th>{{tt "invoice.total_price_gross"}}</th>
+                <td class="number">{{total_price_gross}}</td>
+              </tr>
+            {{/if}}
+          {{/unless}}
+        {{else}}
+          {{#if discount}}
+            {{#unless hide_tax}}
+              <tr>
+                <th>{{tt "invoice.total_price_net"}}</th>
+                <td class="number">{{total_price_net_without_discount}}</td>
+              </tr>
+              <tr>
+                <th>
+                  {{#if global_discount_percent}}
+                    {{tt "invoice.global_discount"}} ({{global_discount_percent}})
+                  {{else}}
+                    {{tt "invoice.discount"}}
+                  {{/if}}
+                </th>
+                <td class="number">{{global_discount_net}}</td>
+              </tr>
+              <tr>
+                <th>{{tt "invoice.total_price_net_with_discount"}}</th>
+                <td class="number">{{total_price_net}}</td>
+              </tr>
+            {{else}}
+              <tr>
+                <th>{{tt "invoice.total_price_gross"}}</th>
+                <td class="number">{{total_price_gross_without_discount}}</td>
+              </tr>
+              <tr>
+                <th>
+                  {{#if global_discount_percent}}
+                    {{tt "invoice.global_discount"}} ({{global_discount_percent}})
+                  {{else}}
+                    {{tt "invoice.discount"}}
+                  {{/if}}
+                </th>
+                <td class="number">{{global_discount_gross}}</td>
+              </tr>
+              <tr>
+                <th>{{tt "invoice.total_price_gross_with_discount"}}</th>
+                <td class="number">{{total_price_gross}}</td>
+              </tr>
+            {{/unless}}
+          {{else}}
+            {{#eq locale 'fr'}}
+              {{#if_created_after_date '2022-03-30'}}
+                {{#eq kind 'final'}}
+                  {{#if_created_after_date '2022-06-24'}}
+                    {{#if hide_tax}}
+                      <tr>
+                        <th>
+                          {{tt "invoice.total_price_gross" }}
+                        </th>
+                        <td class="number">
+                          {{ total_price_gross_without_discount }}
+                        </td>
+                      </tr>
+                    {{else}}
+                      <tr>
+                        <th>
+                          {{tt "invoice.total_price_net" }}
+                        </th>
+                        <td class="number">
+                          {{ total_price_net_without_discount }}
+                        </td>
+                      </tr>
+                    {{/if}}
+                  {{else}}
+                    <tr>
+                      <th>
+                        {{tt "invoice.total_price_net" }}
+                      </th>
+                      <td class="number">
+                        {{ total_price_net_without_discount }}
+                      </td>
+                    </tr>
+                  {{/if_created_after_date}}
+                {{/eq}}
+              {{/if_created_after_date}}
+            {{/eq}}
+          {{/if}}
+        {{/if}}
+      </table>
+      <div class="clear"></div>
+    {{/unless}}
+  {{/if}}
+
+  {{#if exchange_currency}}
+    <table class="totals_inv_table clean to_right">
+      {{#if tax_visible}}
+        {{#unless hide_tax}}
+          <tr>
+            <th>{{tt "invoice.total_price_net"}}</th>
+            <td class="number">{{total_price_net}}{{currency}}</td>
+            <td class="number">{{total_price_net_in_exchange_currency}}{{exchange_currency}}</td>
+          </tr>
+          <tr>
+            <th>{{tax_value_name}}</th>
+            <td class="number">{{tax_value}}{{currency}}</td>
+            <td class="number">{{tax_value_in_exchange_currency}}{{exchange_currency}}</td>
+          </tr>
+        {{/unless}}
+        <tr>
+          <th>{{tt "invoice.total_price_gross"}}</th>
+          <td class="number">{{total_price_gross}}{{currency}}</td>
+          <td class="number">{{total_price_gross_in_exchange_currency}}{{exchange_currency}}</td>
+        </tr>
+      {{/if}}
+      {{#unless tax_visible}}
+        {{#if hide_tax}}
+          <tr>
+            <th>{{tt "invoice.total_price_gross"}}</th>
+            <td class="number">{{total_price_gross}}{{currency}}</td>
+            <td class="number">{{total_price_gross_in_exchange_currency}}{{exchange_currency}}</td>
+          </tr>
+        {{else}}
+          <tr>
+            <th>{{tt "invoice.total_price_net"}}</th>
+            <td class="number">{{total_price_net}}{{currency}}</td>
+            <td class="number">{{total_price_net_in_exchange_currency}}{{exchange_currency}}</td>
+          </tr>
+        {{/if}}
+      {{/unless}}
+    </table>
+
+    <div class="clear"></div>
+
+    <table class="" id="exchange_currency">
+      <tbody>
+        <tr>
+          <td>{{long_exchange_note}}<br /></td>
+        </tr>
+      </tbody>
+    </table>
+  {{/if}}
+{{/not_eq}}

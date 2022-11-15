@@ -169,7 +169,7 @@
 				<td colspan="100" class='text_left text_separator'>{{item}}</td>
 			</tr>
 			{{else}}
-                {{#eq kind 'subtotal'}}
+                {{#in kind 'subtotal,subtotal_with_quantity'}}
                     <tr class="subtotal_row">
                         {{#unless ../../../../single_position_advance}}
                             {{#if ../../../../../use_product_code}}
@@ -187,6 +187,9 @@
                             {{/if}}
 
                             <td class="text_center quantity_col subtotal_col">
+                                {{#eq kind 'subtotal_with_quantity'}}
+                                  {{quantity}}
+                                {{/eq}}
                             </td>
 
                             {{#if ../../../../../discount}}
@@ -253,6 +256,7 @@
 					{{#and barcode ../../../../use_barcodes}}
 						<div class="ean_code hidden">
 							{{{barcode}}}
+							{{ean_code}}
 						</div>
 					{{/and}}
 				</td>
@@ -268,19 +272,26 @@
 					</td>
 
 					{{#if ../../../../../discount}}
-						<td class="discount_col text_right">
-							{{#eq ../../../../../../discount_kind 'amount'}}
-								{{discount}}
+						<td class="discount_col number">
+							{{#if ../../../../../../show_discount_as_net_amount}}
+								{{discount_amount_net}}
+								{{#not_eq ../../../../../../../discount_kind 'amount'}}
+									<br />
+									<small>{{discount}}</small>
+								{{/not_eq}}
 							{{else}}
-								{{#if ../../../../../../../hide_tax}}
-									{{discount_amount_gross}}
+								{{#eq ../../../../../../../discount_kind 'amount'}}
+									{{discount}}
 								{{else}}
-									{{discount_amount_net}}
-								{{/if}}
-								<br />
-								<small>{{discount}}</small>
-							{{/eq}}
-
+									{{#if ../../../../../../../../hide_tax}}
+										{{discount_amount_gross}}
+									{{else}}
+										{{discount_amount_net}}
+									{{/if}}
+									<br />
+									<small>{{discount}}</small>
+								{{/eq}}
+							{{/if}}
 						</td>
 						{{!-- <td class="price_net_with_discount_col text_right row1">
 					        {{ unit_price_net_with_discount }}
@@ -338,7 +349,7 @@
 					{{/unless}}
 				{{/unless}}
 			</tr>
-			{{/eq}}
+			{{/in}}
             {{/eq}}
 			{{/not_eq}}
 

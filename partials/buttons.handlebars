@@ -5,8 +5,12 @@
     </p>
 {{/if}}
 {{#if sign_document_url}}
-    <p style="clear: both">
-        <a class="pull-right btn btn-default btn-print" id="sign-document-button"
-           style="margin-bottom:10px; margin-top: -5px;" href="{{sign_document_url}}">{{tt "invoice.signature_view"}}&nbsp;&raquo;</a>
-    </p>
+    {{#unless status_paid}}
+        {{#unless status_accepted}}
+            <p style="clear: both">
+                <a class="pull-right btn btn-default btn-print" id="sign-document-button"
+                   style="margin-bottom:10px; margin-top: -5px;" href="{{sign_document_url}}">{{tt "invoice.signature_view"}}&nbsp;&raquo;</a>
+            </p>
+        {{/unless}}
+    {{/unless}}
 {{/if}}

@@ -81,56 +81,129 @@
 						</th>
 					{{/unless}}
 				{{else}}
-					<th class="text_center total_price_gross_col show_on_classic related_advance">
-						{{tt "invoice.total_price_net" }}
-					</th>
+					{{#if_created_after_date '2022-06-24'}}
+						{{#if ../hide_tax}}
+							<th class="text_center total_price_gross_col related_advance">
+								{{tt "invoice.total_price_gross" }}
+							</th>
+						{{else}}
+							<th class="text_center total_price_gross_col show_on_classic related_advance">
+								{{tt "invoice.total_price_net" }}
+							</th>
+						{{/if}}
+					{{else}}
+						<th class="text_center total_price_gross_col show_on_classic related_advance">
+							{{tt "invoice.total_price_net" }}
+						</th>
+					{{/if_created_after_date}}
 				{{/if}}
 
 
 			</tr>
 		</thead>
 		<tbody>
-			{{#each advanced}}
-			<tr>
-				<td class="name_col related_advance" >
-					{{number}} {{tt "invoice.advance_day"}} {{issue_date}}
-				</td>
+			{{#if_created_after_date '2022-06-24'}}
 
-				{{#if ../tax_visible}}
-					{{#unless ../../hide_tax}}
-						<td class="text_right number total_price_net_col related_advance">
-							{{price_net}}
-						</td>
+				{{#each advanced}}
+				<tr>
+					<td class="name_col related_advance" >
+						{{number}} {{tt "invoice.advance_day"}} {{issue_date}}
+					</td>
 
-						<td class="text_right number tax_col related_advance">
+					{{#if ../tax_visible}}
+						{{#unless ../../hide_tax}}
+							<td class="text_right number total_price_net_col related_advance">
+								{{price_net}}
+							</td>
 
-						</td>
-						{{#if ../../tax2_visible}}
-							<td class="text_right number tax2_col related_advance">
+							<td class="text_right number tax_col related_advance">
 
 							</td>
-						{{/if}}
-						<td class="text_right number tax_value_col related_advance">
-							{{price_tax}}
-						</td>
-						<td class="text_right number total_price_gross_col related_advance">
-							{{price_gross}}
-						</td>
+							{{#if ../../tax2_visible}}
+								<td class="text_right number tax2_col related_advance">
+
+								</td>
+							{{/if}}
+							<td class="text_right number tax_value_col related_advance">
+								{{price_tax}}
+							</td>
+							<td class="text_right number total_price_gross_col related_advance">
+								{{price_gross}}
+							</td>
+						{{else}}
+							<td class="text_right number total_price_gross_col show_on_classic related_advance">
+								{{price_gross}}
+							</td>
+						{{/unless}}
 					{{else}}
-						<td class="text_right number total_price_gross_col related_advance">
-							{{price_gross}}
-						</td>
-					{{/unless}}
-				{{else}}
-					<td class="text_right number total_price_gross_col show_on_classic related_advance">
-						{{price_net}}
+						{{#if ../hide_tax}}
+							<td class="text_right number total_price_gross_col show_on_classic related_advance">
+								{{price_gross}}
+							</td>
+						{{else}}
+							<td class="text_right number total_price_gross_col show_on_classic related_advance">
+								{{price_net}}
+							</td>
+						{{/if}}
+					{{/if}}
+				</tr>
+				{{/each}}
+
+			{{else}}
+
+				{{#each advanced}}
+				<tr>
+					<td class="name_col related_advance" >
+						{{number}} {{tt "invoice.advance_day"}} {{issue_date}}
 					</td>
-				{{/if}}
 
+					{{#if ../tax_visible}}
+						{{#unless ../../hide_tax}}
+							<td class="text_right number total_price_net_col related_advance">
+								{{price_net}}
+							</td>
 
-			</tr>
-			{{/each}}
+							<td class="text_right number tax_col related_advance">
+
+							</td>
+							{{#if ../../tax2_visible}}
+								<td class="text_right number tax2_col related_advance">
+
+								</td>
+							{{/if}}
+							<td class="text_right number tax_value_col related_advance">
+								{{price_tax}}
+							</td>
+							<td class="text_right number total_price_gross_col related_advance">
+								{{price_gross}}
+							</td>
+						{{else}}
+							<td class="text_right number total_price_gross_col related_advance">
+								{{price_gross}}
+							</td>
+						{{/unless}}
+					{{else}}
+						<td class="text_right number total_price_gross_col show_on_classic related_advance">
+							{{price_net}}
+						</td>
+					{{/if}}
+				</tr>
+				{{/each}}
+
+			{{/if_created_after_date}}
 		</tbody>
 	</table>
+
+	<script>
+
+		// var columns = ['nr_col', 'total_price_net_col', 'tax_col', 'tax2_col', 'tax_value_col', 'total_price_gross_col'];
+
+		// $.each(columns, function() {
+		// 	var wid = $('#pos_table tbody tr:first-of-type td.'+this).innerWidth();
+		// 	;
+		// 	$('#rel_adv_table tbody tr:first-of-type td.'+this).css('width', wid);
+		// });
+
+	</script>
 
 {{/if}}

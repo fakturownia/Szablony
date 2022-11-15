@@ -210,6 +210,41 @@
 									</tr>
 
 								{{/unless}}
+							{{else}}
+								{{#if_created_after_date '2022-03-30'}}
+									{{#eq kind 'final'}}
+										{{#if_created_after_date '2022-06-24'}}
+											{{#if hide_tax}}
+												<tr>
+													<th>
+														{{tt "invoice.total_price_gross" }}
+													</th>
+													<td class="number">
+														{{ total_price_gross_without_discount }}
+													</td>
+												</tr>
+											{{else}}
+												<tr>
+													<th>
+														{{tt "invoice.total_price_net" }}
+													</th>
+													<td class="number">
+														{{ total_price_net_without_discount }}
+													</td>
+												</tr>
+											{{/if}}
+										{{else}}
+											<tr>
+												<th>
+													{{tt "invoice.total_price_net" }}
+												</th>
+												<td class="number">
+													{{ total_price_net_without_discount }}
+												</td>
+											</tr>
+										{{/if_created_after_date}}
+									{{/eq}}
+								{{/if_created_after_date}}
 							{{/if}}
 						{{/if}}
 

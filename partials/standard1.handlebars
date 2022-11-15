@@ -68,6 +68,10 @@
 						{{{delivery_address}}}</p>
 					{{/and}}
 
+					{{#if show_client_phone_on_invoice}}
+						<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+					{{/if}}
+
 					{{#and show_buyer_note buyer_note}}
 						<p style="margin-top: 0.5em;">{{{buyer_note}}}</p>
 					{{/and}}
@@ -141,8 +145,9 @@
 		{{#if payment_to}}
 			<p><strong>{{tt "invoice.payment_to"}} :</strong> {{payment_to}} </p>
 		{{/if}}
-		
-		{{#eq kind 'estimate' }}
+
+		{{#eq locale 'fr'}}
+			{{#eq kind 'estimate' }}
 				{{#if prepayment_required}}
 					<p id="prepayment_required">
 					<strong>{{tt "invoice.prepayment"}}
@@ -153,6 +158,7 @@
 					</p>
 				{{/if}}
 			{{/eq}}
+		{{/eq}}
 
 		{{#if show_interest_rate}}
 			<p><strong>{{tt "invoice.interest_note"}} :</strong> {{interest_rate}}</p>
@@ -181,6 +187,14 @@
 				<strong>{{tt "invoice.description"}} :</strong>
 				<span id="notes">
 					{{{notes}}}
+				</span>
+			</p>
+		{{/if}}
+
+		{{#if conditional_notes}}
+			<p>
+				<span id="cond_notes">
+					{{{conditional_notes}}}
 				</span>
 			</p>
 		{{/if}}
@@ -222,13 +236,17 @@
 			{{#if stamp_below_sign_url}}
 				<img src="{{stamp_url}}" alt="stamp" id="custom_img" />
 			{{/if}}
-			
-			 {{#if sec_stamp_url}}
+      {{#if sec_stamp_url}}
         <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-30px;margin-left:190px;height:150px" src="{{sec_stamp_url}}" />
       {{/if}}
-			
 		</div>
 		<div id="buyer_sign">
+			{{#not_eq locale 'fr'}}
+				{{#if buyer_person}}
+					<p><span>{{tt "invoice.buyer_person"}}</span></p>
+					<p>{{buyer_person}}</p>
+				{{/if}}
+			{{/not_eq}}
 			{{#if show_date_and_sign}}
 				<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
 				{{#if signature_url}}

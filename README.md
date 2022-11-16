@@ -125,7 +125,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{{client_panel_view_link}}} - Espace Facturation
 {{{client_panel_view_link_unpaid}}} - Espace Facturation (factures impayées)
 {{client.panel_url}} - lien de l'espace facturation
-{{show_client_phone_on_invoice}} - afficher le numéro de téléphone du client
+{{show_client_phone_on_invoice}} - afficher le(s) n° de téléphone des contacts
 
 
 * Concernant le tableau des produits/services :
@@ -246,7 +246,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 
 * Concernant les autres éléments du document :
 {{notes}} - informations spécifiques
-{{conditional_notes}} - notes conditionnelles
+{{conditional_notes}} - mentions spécifiques
 {{additional_field_name}} - titre du champ additionnel
 {{additional_field_value}} - contenu du champ additionnel
 {{logo_url}} - Url du logo

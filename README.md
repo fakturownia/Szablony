@@ -38,10 +38,16 @@ Vous pouvez visualiser les données d'une facture en handlebars en ajoutant le s
 Les principales variables qui peuvent être utilisées dans les formats sont:
  
 ```htmlbars
+* Concernant le document :
 {{document_type}} Type de document
 {{kind}} - Type : "vat" pour facture, "estimate" pour devis, "proforma" pour facture proforma, "correction" pour avoir, "client_order" pour bon de commande de client, "maintenance_request" pour les bons d'intervention, "payment_receipt" pour les reçus de paiement, "advance" pour facture d'acompte", "final" pour facture de solde, "receipt" pour les reçus, "invoice_other" pour autre type de document comptable, "kw" pour versements en espèces, "kp" pour reçus en espèces.
+{{final}} - Facture de Solde
+{{advanced}} - Facture d'Acompte
+{{advanced_num}} - Nombre de factures d'acompte liées à une facture finale
+{{income}} - Revenu
 {{number}} - Numéro du document
 {{title}} - titre
+{{oid}} - Numéro de commande
 {{created_at}}
 {{issue_date}} - Date de création du document
 {{issue_place}} - Lieu de création du document
@@ -65,6 +71,23 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{correction_reason}} - Motif de l'avoir
 {{corrected_content_after}} - contenu avant correction
 {{corrected_content_before}} - contenu après correction
+{{notes}} - informations spécifiques
+{{conditional_notes}} - mentions spécifiques
+{{internal_note}} - notes privées
+{{additional_field_name}} - titre du champ additionnel
+{{additional_field_value}} - contenu du champ additionnel
+{{logo_url}} - Url du logo
+{{stamp_url}} - Url du tampon
+{{stamp_below_sign_url}} - Url du tampon sous le nom du vendeur
+{{show_date_and_sign}} - Afficher la mention " Date et signature du client..."
+{{description_long}} - Texte additionnel (imprimé sur la page suivante du document)
+{{description_footer}} - Bas de page du document
+{{view_url}} - URL du lien vers l'aperçu du document
+{{view_link}} - Lien vers l'aperçu du document
+{{footer}} - Bas de page (des emails)
+{{client}} 
+{{sales_code}}
+{{locale}}
 
 * Concernant le département vendeur :
 {{department}} - département/compagnie - les champs sont id, nom, type ... par ex: 
@@ -91,7 +114,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{fax}} - Numéro de fax
 {{phone}} - Numéro de téléphone
 {{department.bank_account}} - Numéro de compte bancaire (RIB ou IBAN)
-{{department.bank_iban}} - iban
+{{department.bank_iban}} - Numéro IBAN
 {{department.bank_swift}} - Numéro BIC
 {{department.bank_name}} - Domiciliation bancaire (nom de la banque)
 {{bank}} - Domiciliation bancaire et numéro de compte
@@ -125,11 +148,12 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{{client_panel_view_link}}} - Espace Facturation
 {{{client_panel_view_link_unpaid}}} - Espace Facturation (factures impayées)
 {{client.panel_url}} - lien de l'espace facturation
-{{show_client_phone_on_invoice}} - afficher le(s) n° de téléphone des contacts
+{{show_client_phone_on_invoice}} - Afficher le(s) n° de téléphone des contacts
 
 
 * Concernant le tableau des produits/services :
 {{use_product_code}} - Afficher la colonne Référence
+{{use_barcodes}} - - Afficher les codes-barres
 {{show_product_description}} - afficher la description des produits
 {{show_unit_price_gross}} - afficher le prix unitaire TTC
 {{additional_info}} - Colonne additionnelle
@@ -137,6 +161,10 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{discount}} - Réduction (montant)
 {{total_discount}} - Réduction globale (montant)
 {{global_discount_percent}} - Réduction globale (en %)
+{{global_discount_gross}} - 
+{{global_discount_gross_with_currency}} - 
+{{global_discount_net}} - 
+{{global_discount_net_with_currency}} - 
 {{show_discount}} - Afficher la colonne réduction
 {{hide_tax}} - Afficher les montants TTC uniquement 
 {{tax_visible}} - Afficher la colonne taxe
@@ -159,11 +187,10 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{discount}} - Réduction
   {{has_discount}}
   {{discount_amount_gross}} - Réduction montant TTC
-  {{discount_amount_net}} - - Réduction montant TTC
+  {{discount_amount_net}} - Réduction montant HT
   {{quantity}} - Quantité
   {{quantity_number}}
   {{quantity_unit}}  - Unité
-  {{positions_total_quantity}} - Total des quantités
   {{unit_price_net}} - Prix unitaire ht
   {{unit_price_gross}} - Prix unitaire ttc
   {{unit_price_net_with_discount}} - Prix unitaire ht après réduction
@@ -172,35 +199,39 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{positions_total_price_gross}} - Total TTC de la ligne
   {{positons_total_tax}} - Total taxe de la ligne
   {{tax}} - taux de taxe
+  {{tax_name}} - nom de taxe
+  {{tax_value}} - montant TVA
+  {{tax_value_name}} - nom montant TVA
+  {{tax1_value_name}} 
   {{tax2}} - taux de la deuxième taxe
-{{accounting_activity_code}} - Code Activité du produit 
-{{accounting_code_expenses}} - Compte comptable du produit (charges)
-{{accounting_code_sales}} - Compte comptable du produit (produits)
-{{accounting_code_income}}
-{{accounting_code_tax_purchase}} - Compte comptable taxe achat 
-{{accounting_code_tax_sale}} - Compte comptable taxe vente
+  {{tax2_name}} - nom de deuxième taxe
+  {{tax2_value_name}} - nom montant deuxième taxe
+  {{accounting_code_expenses}} - Compte comptable du produit (charges)
+  {{accounting_code_sales}} - Compte comptable du produit (produits)
+  {{accounting_code_tax_purchase}} - Compte comptable taxe achat 
+  {{accounting_code_tax_sale}} - Compte comptable taxe vente
+  {{accounting_code_income}} - Code Journal associé au produit 
+  {{accounting_activity_code}} - Code Activité associé au produit 
 {{/each}}
-
 
 
 * Concernant les Totaux :
 {{#each summary}} - résumé des totaux :
   {{total_price_net}} - Total HT du document
   {{total_price_gross}} - Total TTC du document
+  {{total_price_gross_without_discount}} - Total HT avant réduction du document
+  {{total_price_net_without_discount}} - Total TTC avant réduction du document
+   {{global_discount_net}} - Montant total HT de la réduction
+  {{global_discount_gross}} - Montant total TTC de la réduction
   {{tax}} - Taux de taxe
   {{tax2}} - taux de la deuxième taxe
   {{tax_name}} - Nom de la taxe
- {{tax2_name}} - Nom de la 2ème taxe
+  {{tax2_name}} - Nom de la 2ème taxe
   {{tax_value}} - Montant total des Taxes du document
-  {{tax_value_name}} 
-  {{tax1_value_name}} - Montant total de la 1ere Taxe du document
-  {{tax2_value_name}} - Montant total de la 2ème Taxe du document
-  {{total_price_net_without_discount}} - Total HT avant réduction
-  {{total_price_gross_without_discount}} - Total TTC avant réduction
-  {{global_discount_net}} - Montant total HT de la réduction
-  {{global_discount_gross}} - Montant total TTC de la réduction
+  {{tax_value_name}} - Nom de la taxe
 {{/each}}
-{{{positions_total_quantity_separated}}} - Quantité totale (distinguée par unité différente) du document
+{{positions_total_quantity}} - Sous-total des quantités
+{{{positions_total_quantity_separated}}} - Sous-total des quantités (distinguée par unité différente)
 {{total_price_net_with_currency}} - Total HT avec devise du document
 {{total_price_gross_with_currency}} - Total TTC avec devise du document
 {{tax_value_with_currency}} - Montant des Taxes avec devise du document
@@ -232,39 +263,36 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 * Concernant les modalités de paiement :
 {{paid}} - Montant payé
 {{status_paid}} - Etat Payé ou non du document
-{{oid}} - Numéro de commande du document
 {{payment_to}} - Date limite de règlement
 {{type_of_payment}} - Mode de règlement
+{{prepayment_required}} - acompte requis (en %)
+{{prepayment_required_exact_amount}} - acompte requis (montant)
 {{show_paid_date}} - afficher la date de paiement
 {{paid_date}} - date de paiement
 {{payment_link}} - Lien vers Paiement en ligne (lien direct permettant au client de payer en ligne la facture)
-{{payment_button_url}} - 
+{{payment_button_url}} - Lien vers le bouton Payer en ligne
+{{payment_reference_number}} - Numéro du paiement
 {{transaction_id}} - ID de la transaction
 {{token}} - Code du paiement en ligne
 {{show_paid_logo}} - afficher le tampon "Payé"
 {{paid_mark_url}} - url du tampon vert "Payé"
+{{show_payments_on_invoice}} - 
+{{show_paid_when_zero}} 
+{{use_paid_dates}} - 
 
-* Concernant les autres éléments du document :
-{{notes}} - informations spécifiques
-{{conditional_notes}} - mentions spécifiques
-{{additional_field_name}} - titre du champ additionnel
-{{additional_field_value}} - contenu du champ additionnel
-{{logo_url}} - Url du logo
-{{stamp_url}} - Url du tampon
-{{stamp_below_sign_url}} - Url du tampon sous le nom du vendeur
-{{show_date_and_sign}} - Afficher la mention " Date et signature du client..."
-{{description_long}} - Texte additionnel (imprimé sur la page suivante du document)
-{{description_footer}} - Bas de page du document
-{{view_url}} - URL du lien vers l'aperçu du document
-{{view_link}} - Lien vers l'aperçu du document
-{{final}} - Facture de Solde
-{{advanced}} - Facture d'Acompte
-{{advanced_num}} - Nombre de factures d'acompte liées à une facture finale
-{{income}} - Revenu
-{{footer}} - Bas de page (des emails)
-{{client}} 
-{{sales_code}}
-{{locale}}
+
+* concernant les comptes comptables : 
+{{accounting_code_tax_sale}} - Compte comptable de la taxe (ventes)
+{{accounting_code_tax_purchase}} - Compte comptable de la taxe (dépenses)
+{{accounting_expense_discount_code}} - Compte comptable des réductions (ventes)
+{{accounting_income_discount_code}} - Compte comptable des réductions (dépenses)
+{{client.additional_accounting_id}} - Compte comptable auxiliaire du contact
+{{client.accounting_id}} - Compte comptable général du contact
+{{accounting_code_sales}} - Compte comptable produit (ventes)
+{{accounting_code_expenses}} - Compte comptable produit (dépenses)
+{{accounting_activity_code}} - Code Activité associé au produit 
+{{accounting_code_income}} - Code Journal associé au produit 
+
 
 ```
 
@@ -307,6 +335,8 @@ Vous pouvez également utiliser les variables suivantes pour vos emails de relan
 {{inc reminder_no}} - numéro de la relance que vous envoyez, ie. N
 {{reminder_no}} - nombre de relances jusque là envoyées, ie. N-1 par rapport à la relance que vous allez envoyer
 {{dec reminder_no}} - nombre de relances jusque là envoyées, ie. N-2 par rapport à la relance que vous allez envoyer
+{{reminder_no}} - nombre de relances envoyée
+{{reminder_number}} - numéro de relance
 ```
 
 <a name="fct"/>

@@ -9,6 +9,7 @@
 + [Formats des Emails](#emails)
 + [Fonctions disponibles dans les formats](#fct)
 + [Importations de données](#import)
++ [Exports de données](#export)
 + [API](#api)
 
 <a name="templates"/>
@@ -421,6 +422,13 @@ Importation de données
 
 Il vous est possible d'importer dans votre compte VosFactures des données existantes depuis n'importe quel programme si celles-ci sont dans un fichier .TXT, .CSV, .XLS, .ODS, XLSX, .TSV, .XML.</br></br> L'importation de fichiers se fait depuis l'onglet Paramètres > Importation.</br> Vous pouvez importer des documents de facturation (factures, devis, dépenses...), des clients et fournisseurs, vos catalogues produits, et des relevés bancaires.</br> Durant l'importation, vous pouvez choisir quelles colonnes et lignes importer. Vous pouvez consulter les sujets d'aide dédiés: [Etapes de l'importation]( https://aide.vosfactures.fr/410101-Principe-et-tapes-de-l-importation) et [Conseils avant d'importer](https://aide.vosfactures.fr/748672-Export-Importation-de-vos-fichiers-vers-VosFactures-Quelques-conseils). 
 
+<a name="export"/>
+
+Export de données
+---------------
+
+Le logiciel vous permet d'exporter vos données de facturation (contacts, produits, documents de facturation, paiements). Plusieurs formats sont disponibles. </br>
+Vous pouvez également créer votre propre modèle d'export pour vos documents de facturation, en format xls, csv, ou xml. [En savoir plus] (https://aide.vosfactures.fr/65137844-Format-d-Export-Personnalis-).
 
 <a name="api"/>
 

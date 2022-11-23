@@ -81,6 +81,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{stamp_url}} - Url du tampon
 {{stamp_below_sign_url}} - Url du tampon sous le nom du vendeur
 {{show_date_and_sign}} - Afficher la mention " Date et signature du client..."
+{{use_barcodes}} - utiliser les codes-barres des produits
 {{description_long}} - Texte additionnel (imprimé sur la page suivante du document)
 {{description_footer}} - Bas de page du document
 {{view_url}} - URL du lien vers l'aperçu du document
@@ -89,6 +90,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{client}} 
 {{sales_code}}
 {{locale}}
+{{signature_url}} - afficher ou non l'url de la signature
 
 * Concernant le département vendeur :
 {{department}} - département/compagnie - les champs sont id, nom, type ... par ex: 
@@ -154,9 +156,9 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 
 * Concernant le tableau des produits/services :
 {{use_product_code}} - Afficher la colonne Référence
-{{use_barcodes}} - - Afficher les codes-barres
-{{show_product_description}} - afficher la description des produits
-{{show_unit_price_gross}} - afficher le prix unitaire TTC
+{{use_barcodes}} - Afficher les codes-barres
+{{show_product_description}} - Afficher la description des produits
+{{show_unit_price_gross}} - Afficher le prix unitaire TTC
 {{additional_info}} - Colonne additionnelle
 {{additional_info_desc}} - Titre de la colonne additionnelle
 {{discount}} - Réduction (montant)
@@ -217,6 +219,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{total_price_gross}} - Total TTC du document
 {{total_price_gross_without_discount}} - Total HT avant réduction
 {{total_price_net_without_discount}} - Total TTC avant réduction
+{{advanced_total_price_gross}} - montant TTC des acomptes
 
 * Concernant les Totaux :
 {{#each summary}} - résumé des totaux :
@@ -248,7 +251,8 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{exchange_note}} - Note sur le taux personnalisé
 {{exchange_date}} - Date de la conversion
 {{exchange_rate}} - Taux de change (utilisé dans les rapports)
-{{long_exchange_note}} - Taux de change appliqué
+{{long_exchange_note}} - Taux et date de change appliqués
+{{long_exchange_note_for_tax}} - Taux et date de change appliqués pour le montant de taxe
 {{total_price_net_in_main_currency}} - Total HT avec devise principale
 {{total_price_gross_in_main_currency}} - Total TTC avec devise principale
 {{total_price_net_in_exchange_currency}} - Total HT avec devise de conversion
@@ -265,11 +269,14 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{absolute_outstanding_in_words}} - Montant total à payer en valeur absolue (en lettres)
 {{absolute_outstanding_in_exchange_currency}} - Montant total à payer converti
 {{absolute_outstanding_in_words_in_exchange_currency}} - Montant total à payer converti (en lettres)
+{{zero_with_currency}} - afficher le symbole de la devise du montant payé égal à zéro
+{{zero_with_currency_in_exchange_currency}} - safficher le symbole de la devise de conversion du montant payé égal à zéro
 
 * Concernant les modalités de paiement & paiements :
 {{paid}} - Montant payé
 {{status_paid}} - Etat Payé ou non du document
 {{payment_to}} - Date limite de règlement
+{{legal_cost_compensation}} - Mention sur l'indemnité forfaitaire légale 
 {{type_of_payment}} - Mode de règlement
 {{prepayment_required}} - acompte requis (en %)
 {{prepayment_required_exact_amount}} - acompte requis (montant)
@@ -283,10 +290,9 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{token}} - Code du paiement en ligne
 {{show_paid_logo}} - afficher le tampon "Payé"
 {{paid_mark_url}} - url du tampon vert "Payé"
-{{show_payments_on_invoice}} - 
-{{show_paid_when_zero}} 
-{{use_paid_dates}} - 
-{{payments}} - détails du paiement lié au document (date, montant, devise, n° chèque ...) dans le cadre de la fonction Gestion des paiements. 
+{{show_payments_on_invoice}} - afficher les paiements 
+{{use_paid_dates}} - afficher la date du paiement
+{{payments}} - détails du paiement lié au document (date, montant, devise, n° chèque ...) de la fonction Gestion des paiements. 
 
 
 * concernant les comptes comptables : 
@@ -343,8 +349,9 @@ Vous pouvez également utiliser les variables suivantes pour vos emails de relan
 {{inc reminder_no}} - numéro de la relance que vous envoyez, ie. N
 {{reminder_no}} - nombre de relances jusque là envoyées, ie. N-1 par rapport à la relance que vous allez envoyer
 {{dec reminder_no}} - nombre de relances jusque là envoyées, ie. N-2 par rapport à la relance que vous allez envoyer
-{{reminder_no}} - nombre de relances envoyée
-{{reminder_number}} - numéro de relance
+{{reminder_no}} - nombre de relances déjà envoyées
+{{reminder_number}} - numéro de relance pour calculer {{reminder_no}}
+
 ```
 
 <a name="fct"/>

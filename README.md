@@ -19,17 +19,20 @@
 <a name="main"/>
 
 ## Principe
-En utilisant notre logiciel de facturation, vous avez accès à un certain nombre de formats (mises en page) de factures et devis, que vous pouvez personnaliser via l'ajout de codes CSS. </br>
+En utilisant notre logiciel de facturation, vous avez accès à un certain nombre de formats (mises en page) de factures, devis que vous pouvez personnaliser via l'ajout de codes CSS. </br>
 Toutefois, si l'un d'eux ne répond pas à vos attentes, <b>vous pouvez créer votre propre modèle</b>.</br></br> 
-Pour cela, il vous suffit de vous connecter à votre compte (si vous n'êtes pas encore inscrit : https://app.vosfactures.fr/signup pour un essai gratuit), de cliquer sur Paramètres > Paramètres du compte > Formats des documents, puis de cliquer sur le bouton "Ajouter un nouveau format". Vous pouvez choisir le format par défaut que vous souhaitez modifier, comme expliqué ici: https://aide.vosfactures.fr/8631976-Cr-er-un-format-personnalis-
+Connectez-vous à votre compte , cliquez sur Paramètres > Paramètres du compte > Formats des documents > Ajouter un nouveau format -> choisissez le format de base que vous souhaitez modifier, comme expliqué ici: https://aide.vosfactures.fr/8631976-Cr-er-un-format-personnalis-
+Vous n'êtes pas encore inscrit ? https://app.vosfactures.fr/signup pour un essai gratuit de 30 jours !
 
 <a name="more"/>
 
 ## Documentation 
 
-Vous trouverez sur Github la documentation de chacun des formats par défaut, c'est-à-dire la partie HTML et la partie CSS de chaque format. Les formats sont créés en HTML et CSS en utilisant [Handlebars](https://handlebarsjs.com/)
+Vous trouverez sur Github la documentation de chacun des formats par défaut, c'est-à-dire la partie HTML et la partie CSS de chaque format. Les formats sont créés en HTML et CSS en utilisant [Handlebars](https://handlebarsjs.com/). 
+Il y a une limite de 65 000 caractères par format. 
 
 Les formats utilisent des fichiers partiels, représentés dans le code HTML par un tag {{>fichier_partiel}}. Ces fichiers partiels sont accessibles ici: https://github.com/vosfactures/Formats/tree/master/partials.
+Vous pouvez également définir vos propres fichiers partiels et vous y référez à plusieurs reprises dans le format personnalisé (voir exemple plus bas dans le § Fonctions disponibles).
 
 <a name="variables"/>
 
@@ -414,10 +417,10 @@ Exemple:
     numéro: {{no}}
 {{/for}}
 
-{{inline_partial "partial1" "{{document_type}} {{number}}: {{total_price_gross_with_currency}} {{tt 'invoice.gross'}}<br>"}}
+{{inline_partial "partiel1" "{{document_type}} {{number}}: {{total_price_gross_with_currency}} {{tt 'invoice.gross'}}<br>"}}
 {{>partial1}}
 
-{{#inline_partial "partial2"}}
+{{#inline_partial "partiel2"}}
   {{#eq lang "fr"}}
     Bonjour,
   {{else}}
@@ -425,7 +428,7 @@ Exemple:
   {{/eq}}
   {{>partial1}}
 {{/inline_partial}}
-{{>partial2}}
+{{>partiel2}}
 
 ```
 

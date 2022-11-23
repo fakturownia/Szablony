@@ -59,7 +59,6 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{today_date}} - Date du jour
 {{invoice_category}} - Catégorie du document
 {{lang}} - Langue du document
-{{bilangual}} - Langues du document
 {{currency}} - Devise du document
 {{currency_symbol}} - Devise (symbole)
 {{currency_short}} - Devise (abrégé)
@@ -77,6 +76,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{internal_note}} - notes privées
 {{additional_field_name}} - titre du champ additionnel
 {{additional_field_value}} - contenu du champ additionnel
+{{additional_fields}} - titre du champ additionnel
 {{logo_url}} - Url du logo
 {{stamp_url}} - Url du tampon
 {{stamp_below_sign_url}} - Url du tampon sous le nom du vendeur
@@ -172,7 +172,6 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{tax_name}} - Nom de la Taxe
 {{tax2_visible}} - Afficher deuxième colonne taxe
 {{tax2_name}} - Nom de la deuxième Taxe
-{{tax_value_name}} - Total des Taxes 
 {{#each positions}}  - ligne des tableaux :
   {{no}} - Numéro de ligne
   {{kind}} - Type de ligne (ligne de produit ou ligne de texte)
@@ -190,7 +189,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{discount_amount_gross}} - Réduction montant TTC
   {{discount_amount_net}} - Réduction montant HT
   {{quantity}} - Quantité
-  {{quantity_number}}
+  {{quantity_number}} - Quantité
   {{quantity_unit}}  - Unité
   {{unit_price_net}} - Prix unitaire ht
   {{unit_price_gross}} - Prix unitaire ttc
@@ -199,14 +198,14 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{positions_total_price_net}} - Total HT de la ligne
   {{positions_total_price_gross}} - Total TTC de la ligne
   {{positons_total_tax}} - Total taxe de la ligne
-  {{tax}} - taux de taxe
-  {{tax_name}} - nom de taxe
-  {{tax_value}} - montant TVA
-  {{tax_value_name}} - nom montant TVA
-  {{tax1_value_name}} 
-  {{tax2}} - taux de la deuxième taxe
-  {{tax2_name}} - nom de deuxième taxe
-  {{tax2_value_name}} - nom montant deuxième taxe
+  {{tax}} - taux de taxe (sans le signe %)
+  {{tax_name}} - Nom de la taxe
+  {{tax_value}} - Montant de la taxe
+  {{tax_value_name}} - Nom commun des deux taxes (utile en cas de 2ème taxe)
+  {{tax1_value_name}} - Nom de la première taxe (utile en cas de 2ème taxe)
+  {{tax2}} - Taux de la deuxième taxe (sans le signe %)
+  {{tax2_name}} - Nom de la deuxième taxe 
+  {{tax2_value_name}} - Nom de la deuxième taxe (utile en cas de 2ème taxe)
   {{accounting_code_expenses}} - Compte comptable du produit (charges)
   {{accounting_code_sales}} - Compte comptable du produit (produits)
   {{accounting_code_tax_purchase}} - Compte comptable taxe achat 
@@ -214,7 +213,10 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{accounting_code_income}} - Code Journal associé au produit 
   {{accounting_activity_code}} - Code Activité associé au produit 
 {{/each}}
-
+{{total_price_net}} - Total HT du document
+{{total_price_gross}} - Total TTC du document
+{{total_price_gross_without_discount}} - Total HT avant réduction
+{{total_price_net_without_discount}} - Total TTC avant réduction
 
 * Concernant les Totaux :
 {{#each summary}} - résumé des totaux :
@@ -222,8 +224,11 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
   {{total_price_gross}} - Total TTC du document
   {{total_price_gross_without_discount}} - Total HT avant réduction du document
   {{total_price_net_without_discount}} - Total TTC avant réduction du document
-   {{global_discount_net}} - Montant total HT de la réduction
-  {{global_discount_gross}} - Montant total TTC de la réduction
+  {{global_discount_net}} - Montant total HT de la réduction (qui a appliquée sur chaque produit)
+  {{global_discount_gross}} - Montant total TTC de la réduction globale (qui a appliquée sur chaque produit)
+  {{global_discount_gross_with_currency}} - Montant total TTC de la réduction globale avec devise (qui a appliquée sur chaque produit)
+  {{global_discount_net_with_currency}} - Montant total HT de la réduction avec devise (qui a appliquée sur chaque produit)
+  {{global_discount_percent}}  - Pourcentage de la réduction globale (qui a appliquée sur chaque produit)
   {{tax}} - Taux de taxe
   {{tax2}} - taux de la deuxième taxe
   {{tax_name}} - Nom de la taxe
@@ -261,7 +266,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{absolute_outstanding_in_exchange_currency}} - Montant total à payer converti
 {{absolute_outstanding_in_words_in_exchange_currency}} - Montant total à payer converti (en lettres)
 
-* Concernant les modalités de paiement :
+* Concernant les modalités de paiement & paiements :
 {{paid}} - Montant payé
 {{status_paid}} - Etat Payé ou non du document
 {{payment_to}} - Date limite de règlement
@@ -272,6 +277,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{paid_date}} - date de paiement
 {{payment_link}} - Lien vers Paiement en ligne (lien direct permettant au client de payer en ligne la facture)
 {{payment_button_url}} - Lien vers le bouton Payer en ligne
+{{payment_url}} - Lien vers le paiement en ligne
 {{payment_reference_number}} - Numéro du paiement
 {{transaction_id}} - ID de la transaction
 {{token}} - Code du paiement en ligne
@@ -280,6 +286,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{show_payments_on_invoice}} - 
 {{show_paid_when_zero}} 
 {{use_paid_dates}} - 
+{{payments}} - détails du paiement lié au document (date, montant, devise, n° chèque ...) dans le cadre de la fonction Gestion des paiements. 
 
 
 * concernant les comptes comptables : 

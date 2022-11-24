@@ -60,6 +60,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{sell_date}} - Date additionnelle
 {{sell_date_kind}} - Intitulé de la date additionnelle
 {{today_date}} - Date du jour
+{{sent_at}} - Date d'envoi
 {{invoice_category}} - Catégorie du document
 {{lang}} - Langue du document
 {{currency}} - Devise du document
@@ -94,6 +95,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{sales_code}}
 {{locale}}
 {{signature_url}} - afficher ou non l'url de la signature
+{{warehouse_document_numbers}} - Numéro(s) du ou des documents de stock liés
 
 * Concernant le département vendeur :
 {{department}} - département/compagnie - les champs sont id, nom, type ... par ex: 
@@ -128,12 +130,15 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 
 * Concernant le contact (client) :
 {{buyer}} - Nom de l'acheteur
-{{buyer_person}} - Nom (et prénom) de l'acheteur
-{{buyer_company}} - Nom de la compagnie de l'acheteur professionnel
+{{buyer_person}} - Nom (et prénom) du client
+{{buyer_company}} - Nom de la compagnie du client professionnel
 {{client.email}} - e-mail
 {{client.first_name}} - Prénom
 {{client.last_name}} - Nom
 {{client.name}} - Nom de la compagnie
+{{buyer_first_name}} - Prénom du client particulier
+{{buyer_last_name}} - Nom  du client particulier
+{{buyer_full_name}} - Nom et prénom du client particulier
 {{buyer_post_code}} - Code postal de l'acheteur
 {{buyer_place}} - Ville de l'acheteur
 {{buyer_street}} - Rue (numéro et nom) de l'acheteur
@@ -155,6 +160,7 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 {{{client_panel_view_link_unpaid}}} - Espace Facturation (factures impayées)
 {{client.panel_url}} - lien de l'espace facturation
 {{show_client_phone_on_invoice}} - Afficher le(s) n° de téléphone des contacts
+{{client.id}} - Numéro ID unique du contact (généré par le logiciel automatiquement)
 
 
 * Concernant le tableau des produits/services :
@@ -318,9 +324,9 @@ Les principales variables qui peuvent être utilisées dans les formats sont:
 
 ## Format des emails
 ---------------
-Le système propose par défaut un contenu pour l'envoi des documents de facturation, et un contenu pour l'envoi de relances en cas de factures impayées. Vous pouvez personnaliser le contenu des e-mails envoyés aux clients. Le texte des emails utilisent les mêmes variables que les formats (voir ci-dessus) et utilise aussi [Handlebars](http://handlebarsjs.com/).
+Le système propose par défaut un contenu dynamique pour les emails d'envoi des documents de facturation, les emails d'envoi des documents de stock, et  les emails d'envoi des relances en cas de factures impayées. Vous pouvez personnaliser le contenu des e-mails envoyés : titre et texte, qui utilisent les mêmes variables dynamiques que les formats (voir ci-dessus).
 
-Contenu par défaut de l'email accompagnant l'envoi des factures:
+Contenu par défaut de l'email accompagnant l'envoi des factures :
 ```htmlbars
 Bonjour, 
 
@@ -329,10 +335,19 @@ Veuillez trouver en pièce jointe le document suivant:
 
 Vous pouvez également visualiser le document en cliquant sur le lien suivant: {{{view_link}}}  
 
-{{footer}}
+{{{footer}}}
+```
+Contenu par défaut de l'email accompagnant l'envoi des documents de stock :
+```htmlbars
+Bonjour,
+Veuillez trouver en pièce jointe le {{document_type}} n° {{number}}. 
+
+Vous en souhaitant bonne réception, 
+
+{{{footer}}}
 ```
 
-Contenu par défaut de l'email de relance en cas de factures impayées:
+Contenu par défaut de l'email de relance en cas de factures impayées :
 ```htmlbars
 Bonjour, 
 
@@ -344,7 +359,7 @@ Dans l’attente de votre prompt règlement,
 
 Bien cordialement,
 
-{{footer}}
+{{{footer}}}
 ```
 
 Vous pouvez également utiliser les variables suivantes pour vos emails de relance: 

@@ -122,6 +122,19 @@
 						{{{delivery_address}}}</p>
 					{{/and}}
 
+					{{#and multiple_delivery_addresses delivery_address_filled}}
+						<div style="margin-top: 0.5em;" id="multiple_delivery_addresses">
+							<p><strong>{{delivery_address_name}}</strong><br/>
+
+							<p>{{delivery_address_street}},<br/>
+							{{#if delivery_address_street_additional}}
+								{{delivery_address_street_additional}},<br/>
+							{{/if}}
+							{{delivery_address_post_code}}, {{delivery_address_city}}<br/>
+							{{delivery_address_country}}</p>
+						</div>
+					{{/and}}
+
 					{{#if show_client_phone_on_invoice}}
 						<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
 					{{/if}}
@@ -152,6 +165,7 @@
 
 	{{#if final}}
 		<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
+		<!-- if you want to customize 'advances', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/advances.hbs.html  -->
 		{{>advances}}
 	{{/if}}
 
@@ -181,7 +195,6 @@
 	{{/unless}}
 
 	{{#if has_corrected_content}}
-		<!-- si vous souhaitez personnaliser le contenu corrigé, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/corrected_content.handlebars  -->
 		{{>corrected_content}}
 	{{/if}}
 
@@ -203,11 +216,19 @@
 				{{#or paid show_paid_when_zero}}
 					<p id="paid_field" class="nowrap">
 						<span>{{tt "invoice.paid"}} :</span>
-						{{#if paid}}
-							{{paid}}
+						{{#if_created_after_date "2023-12-29"}}
+							{{#if paid_fr}}
+								{{paid_fr}}
+							{{else}}
+								{{zero_with_currency}}
+							{{/if}}
 						{{else}}
-							{{zero_with_currency}}
-						{{/if}}
+							{{#if paid}}
+								{{paid}}
+							{{else}}
+								{{zero_with_currency}}
+							{{/if}}
+						{{/if_created_after_date}}
 						{{#unless show_payments_on_invoice}}
 							{{#and paid show_paid_date paid_date}}
 								{{tt 'invoice.paid_on'}} {{paid_date}}
@@ -230,14 +251,14 @@
 	{{/not_eq}}
 
 
-		{{#eq locale 'cz'}}
+		{{#include 'cz sk' locale}}
 			{{#if payment_reference_number}}
 				<p id="payment_reference_number_field">
 					<span>{{tt "invoice.payment_reference_number"}}:</span>
 					{{payment_reference_number}}
 				</p>
 			{{/if}}
-		{{/eq}}
+		{{/include}}
 
 		{{#or payment_to type_of_payment}}
 			<div class="many-p">
@@ -369,6 +390,10 @@
 	{{#if show_payments_on_invoice}}
 		<!-- si vous souhaitez personnaliser la liste des paiements, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/payments.handlebars  -->
 		{{>payments}}
+	{{/if}}
+
+	{{#if show_related_estimates_on_invoice}}
+		{{>estimates}}
 	{{/if}}
 
 	{{#if status_paid}}{{#if show_paid_logo}}{{#not_in kind "proforma,estimate"}}

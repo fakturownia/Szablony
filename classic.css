@@ -412,6 +412,7 @@
 	.main_inv_table tbody { font-size: 10pt;}
 	.main_inv_table th { font-weight: normal;font-size:9pt; }
 	table td.empty {border:0;}
+	/* .ean_code{font-size: 0.8em;} */
 
 	table.main_inv_table td, table.main_inv_table th,
 	.totals_inv_table td, .totals_inv_table th {
@@ -692,6 +693,9 @@
     border-right: 1px solid #000 !important;
   }
 
+  .est_table .summary_row td.tax_col {
+    border-bottom: 1px solid #000;
+  }
 }
 
 @page {

@@ -1,0 +1,842 @@
+@media all{
+
+/* ------------------------------------------------- */
+	/* DO NOT DELETE */
+	.invoice_outline {
+		font-family:helvetica,"lucida grande","lucida sans unicode";
+		font-size: 9pt;
+		margin-bottom: 0in;
+		margin-left: 0.75cm;
+		margin-right: 0.75cm;
+		min-height: 20cm;
+	}
+
+
+/* ------------------------------------------------- */
+	/* DO NOT CHANGE */
+	.nobreak {
+	    page-break-inside: avoid;
+	}
+	.nowrap, .no_wrap {
+		white-space:nowrap;
+	}
+	.nowrap-lines {
+		white-space: pre;
+	}
+	.no_border {
+		border:0px;
+	}
+	.no-page-break {
+		page-break-before: auto;
+		page-break-inside: avoid !important;
+	}
+
+
+
+
+
+/* ------------------------------------------------- */
+	/* DO NOT CHANGE */
+	p {margin:0;}
+
+	table{page-break-after:auto}
+	tr{page-break-inside:avoid;page-break-after:auto}
+	td{page-break-inside:avoid;}
+	thead{display:table-header-group}
+
+/* ------------------------------------------------- */
+
+	/* INVOICE TABLE WIDTHS */
+	th.width0,
+	td.width0{width:1%;white-space:nowrap}
+	th.width1,
+	td.width1{width:2%;}
+	th.width2,
+	td.width2{width:5%;}
+	th.width3,
+	td.width3{width:7%;}
+	th.width4,
+	td.width4{width:25%;}
+
+
+
+/* ------------------------------------------------- */
+
+	/* ALIGNS */
+	table {
+		clear: both;
+		border-collapse: collapse;
+		empty-cells:hide;
+		width:100%;
+		background-color: transparent;
+	}
+
+	table.main_inv_table th.text_left,
+	table.main_inv_table td.text_left,
+	th.text_left,
+	td.text_left {text-align:left;}
+	.number,.nowrap,
+	td b, td.row1, td.row2, td.row3 {white-space:nowrap}
+	th.width3 + th.width1.nowrap {white-space:normal}
+
+
+
+	table.main_inv_table td:not(:empty),
+	table.main_inv_table th:not(:empty) {
+		border-left:1px solid #c1c1c1;
+		border-right:1px solid #c1c1c1;
+	}
+	table.main_inv_table td.correction:not(.empty) {
+		border-left:1px solid #c1c1c1;
+		border-right:1px solid #c1c1c1;
+	}
+	table.main_inv_table thead {
+		border-top:1px solid #c1c1c1;
+		border-bottom:1px solid #c1c1c1;
+	}
+
+	table.main_inv_table .tax_col.footer.total {
+		border-bottom:1px solid #c1c1c1;
+	}
+
+	table.main_inv_table th.footer {
+		border-bottom:1px solid #c1c1c1;
+	}
+
+	.table_header {
+		border:1px solid #c1c1c1;
+	}
+
+	table.main_inv_table .text_separator {
+		border-top:1px solid #c1c1c1;
+		border-bottom:1px solid #c1c1c1;
+		text-align: center !important;
+		font-size: 0.9em;
+		font-weight: bold;
+		padding-bottom: 1px;
+	}
+
+	#pos_table > tbody > tr.position_row:last-of-type > td,
+	#cor_table > tbody > tr.correction_row_changes > td {
+		border-bottom: 1px solid #c1c1c1 !important;
+	}
+	table.main_inv_table tbody tr.position_row:last-of-type td:not(:empty) {
+		border-bottom:1px solid #c1c1c1;
+	}
+	table.main_inv_table tr:last-of-type td:not(:empty) {
+		border-bottom:1px solid #c1c1c1;
+	}
+
+
+
+	.tax_col {white-space: nowrap;}
+
+
+
+
+/* ------------------------------------------------- */
+
+	/* SUMMATIONS */
+	table.to_right {text-align:right;width:100%;}
+	table.to_right th {text-align:right;}
+	table.to_right td {width:15%;text-align:right;}
+
+/* ------------------------------------------------- */
+
+	/* INFORMATION ABOUT CURRENCY EXCHANGE */
+	#exchange_currency {margin-top:7pt !important;margin-bottom: 2pt !important;}
+	#exchange_currency td {
+		font-size: 8pt !important;
+		border-top:1px solid #525252;
+		padding-left: 0px; padding-right: 0px;
+		padding-top: 2px !important;
+		text-align: center;
+	}
+
+
+/* ------------------------------------------------- */
+
+	/* INVOICE HEADER CONTAINER */
+	#invoice_header {
+		clear: both;
+		display: table;
+		width: 100%;
+		text-align: left;
+		line-height: 1.3em;
+	}
+		/* headers */
+		#invoice_header span { }
+
+		/* INVOICE'S DATA (NUMBER, DATE ETC) */
+		#info {
+			display: table-cell;
+			width: 57%;
+			line-height: 1.3em;
+			text-align: right;
+			font-size:8.5pt;
+		}
+			/* DOCUMENT TYPE */
+			#document_type {font-size: 12pt;line-height: 1.25em;font-weight: bold;}
+			/* DOCUMENT NUMBER */
+			#document_number {font-size: 26pt;line-height: 1em; font-weight: normal;}
+			/* BOTH ABOVE */
+			#info p:first-of-type {margin-bottom: 0.75em;}
+
+		#inv_transaction_type_p {
+			margin-top: 0.25em;
+		}
+
+		/* LOGO */
+		#logo {
+			display: table-cell;
+			width: 43%;
+			vertical-align: top;
+			text-align: center;
+		}
+			#logo_place {
+				display: block;
+				position: relative;
+				width: 100% !important;
+				max-width:8.4cm;
+			}
+			/* LOGO IMAGE ONLY */
+			#logo img {
+				display:block;
+				position:relative;
+				width:auto;
+				max-width:100%;
+				max-height: 4cm;
+			}
+
+/* ------------------------------------------------- */
+
+	/* ROW WITH SELLER AND BUYER IDENTIFICATION DATA */
+	#invoice_traders {
+		clear: both;
+		display: table;
+		width: 100%;
+		margin-top:0.75em;
+		line-height: 1.3em;
+		font-size: 10pt !important;
+		text-align: left;
+		width:100%;
+	}
+		/* headers */
+		#invoice_traders span {font-weight: normal;padding-left:0.8em;}
+
+		/* SELLER'S IDENTIFICATION DATA */
+		#seller {
+			display: table-cell;
+			width:43%;
+			background-color: #e3e3e3 !important;
+			padding:0.8em;
+			padding-left:0.9em;
+			padding-bottom: 1em;
+		}
+
+		/* BUYER'S IDENTIFICATION DATA */
+		#buyer {
+			display: table-cell;
+			width:53%;
+			border: 1px solid #C0C0C0;
+			padding:0.8em;
+		}
+
+		#buyer p:first-of-type, #seller p:first-of-type, #recipient p:first-of-type {
+			font-weight: bold;
+		}
+
+		/* FIELD FOR ACT OF ACCEPTANCE */
+		#traders_agreement_text {
+			display: block;
+			width: 100%;
+			line-height: 1.5;
+			padding-top: 4em;
+			padding-bottom: 2em;
+		}
+
+		/* ANOTHER TRADERS DATA WHEN EDDITIONAL INVOICE RECIPIENT IS ACTIVE */
+		/* ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼  */
+		#invoice_traders.with_recipient .traders-spacer {
+			width: 2%;
+		}
+
+		#invoice_traders.with_recipient #seller {
+			width: 36%;
+		}
+
+		#invoice_traders.with_recipient #buyer {
+			width: 30%;
+		}
+
+		#recipient {
+			display: table-cell;
+			width: 30%;
+			border: 1px solid #C0C0C0;
+			padding:0.8em;
+		}
+
+		#traders-spacer {
+			display: table-cell;
+			width: 4%;
+		}
+
+		#invoice_traders .header {
+			display: table-cell;
+			padding-left:0.9em;
+			font-size:0.9em;
+		}
+		/* ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲  */
+		/* ANOTHER TRADERS DATA WHEN EDDITIONAL INVOICE RECIPIENT IS ACTIVE */
+
+/* ------------------------------------------------- */
+
+	/* INVOICE TITLE (FR ONLY) */
+	#title {
+		clear: both;
+		display: block;
+		width: 100%;
+		margin-top: 1em;
+		margin-bottom:-1.7em;
+		font-weight: bold;
+		font-size: 1.5em;
+	}
+
+/* ------------------------------------------------- */
+
+	/* INVOICE SUMMARY */
+	#summary {
+		clear: both;
+		page-break-before: auto;
+		page-break-inside: avoid !important;
+		page-break-after: avoid !important;
+		width: 100%;
+		line-height: 1.3em;
+		padding-top:5pt;
+		text-align: left;
+	}
+		/* header */
+		#summary span { font-weight: bold;}
+
+	.to-pay {
+		font-size:18pt;
+		font-weight: normal !important;
+	}
+	#summary p {
+		margin-top:0.35em;
+	}
+	#tax_based_on_debits {
+		margin: 0.25em 0;
+	}
+
+/* ------------------------------------------------- */
+	/* SIGNATURES AT THE END */
+	#invoice_signatures {
+		clear: both;
+		page-break-before: avoid !important;
+		page-break-inside: avoid !important;
+		page-break-after: avoid !important;
+		display: table;
+		width: 100%;
+		margin-top: 1.5em;
+		line-height: 1.75em;
+	}
+		/* headers */
+		#invoice_signatures span {}
+
+		/* FIELD FOR ACT OF ACCEPTANCE */
+		#signatures_description_text {
+			position: relative;
+			display: table-caption;
+			text-align: center;
+			margin-top: 4em;
+			top: 4em;
+		}
+
+		/* SELLER */
+		#seller_sign {
+			display: table-cell;
+			width: 50%;
+			text-align: center;
+		}
+		/* header */
+		#seller_sign span {font-weight: bold;}
+
+		table.qrs{margin:20px auto 15px auto;}
+		table.qrs td{padding:10px 5px;}
+		td.qrs_empty{width:104px;}
+		td.qrs_left, td.qrs_right, td.qrs_center {width:auto;vertical-align:top;}
+		td.qrs_left img {position: relative; display: block; margin-right: auto;}
+		td.qrs_right img {position: relative; display: block; margin-left: auto;}
+		td.qrs_center img {position: relative; display: block; margin-right: auto; margin-left: auto;}
+		td.qrs_left div.qr_title {font-weight: bold; text-align: left;}
+		td.qrs_right div.qr_title {font-weight: bold; text-align: right; margin-right: 15px;}
+		td.qrs_center div.qr_title {font-weight: bold; text-align: center;}
+		td.qrs_center div.ksef_id_below_qr {margin-left: auto;}
+		.ksef_id_below_qr {
+			position: relative;
+			display: block;
+			max-width: 130px;
+			font-size: 3mm;
+			inline-size: auto;
+			overflow-wrap: break-word;
+			text-align: center;
+			padding-top: 1mm;
+			margin-right: auto;
+		}
+
+		/* BUYER */
+		#buyer_sign {
+			display: table-cell;
+			width: 50%;
+			text-align: center;
+		}
+
+		/* header */
+		#buyer_sign span {font-weight: bold;}
+
+/* ------------------------------------------------- */
+
+	/* RELATED ADVANCED INVOICES*/
+
+	/* nowe cssy dla tabelki z zaliczkami po jej połączeniu z pozycjami */
+	table.main_inv_table td.advanced_header {
+		padding: 3px 3px 1px 3px;
+		border: 0;
+		border-bottom: 1px solid #c1c1c1;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 16px;
+		vertical-align: middle;
+	}
+
+	/* stare cssy zostawiam żeby nic nie rozwalić na szablonach z Francji */
+
+	#rel_adv_table {
+		margin-top: 0.5em;
+		page-break-inside:avoid !important;
+		page-break-after:auto;
+		page-break-before:auto;
+	}
+
+	.related_advance {
+		padding-top: 3px !important;
+		padding-bottom:3px !important;
+	}
+
+	.advances_header_titles {
+		display: none;
+	}
+
+
+	#rel_adv_table th.advanced_header {
+		border-left: 0px;
+		border-right: 0px;
+		border-bottom: 1px solid #c1c1c1;
+		text-align: left !important;
+	}
+
+	#rel_adv_table thead {
+		border-top: 0px;
+	}
+
+	#rel_advanced_table td, #rel_advanced_table th {
+		vertical-align: middle;
+		padding: 3px 3px 1px 3px;
+	}
+
+
+/* ------------------------------------------------- */
+
+	/* EXTRA NOTES IN THE BOTTOM */
+	#description_footer {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block;
+		width:100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+	}
+
+/* ------------------------------------------------- */
+
+	/* EXTRA NOTES ON EXTRA PAGE */
+	#extra_page {
+		clear: both;
+		display: block;
+		text-align: left;
+	}
+
+/* ------------------------------------------------- */
+
+	/* TABLE WITH PRODUCTS AND PARTIAL SUMMATIONS */
+	.main_inv_table { margin-top: 2.5em; }
+	.main_inv_table tbody { font-size: 10pt;}
+	.main_inv_table th { font-weight: normal;font-size:9pt; }
+	table td.empty {border:0;}
+
+
+	table.main_inv_table td.footer {vertical-align: middle;}
+	table.main_inv_table td.footer strong {}
+
+	/* .ean_code{font-size: 0.8em;} */
+
+	/* INVOICE COLUMNS TOTALS */
+	.total {
+		/*border:0px !important;
+		border-top:1px solid #c1c1c1 !important;*/
+		text-align: right;
+		padding-top: 6px;
+	}
+
+	/* INVOICE COLUMNS SUBTOTALS GROOUPED BY TAX RATE VALUES */
+	.subtotal {
+
+	}
+
+	.footer {
+
+	}
+
+	#pos_table .total, #pos_table .subtotal, .est_table .total, #cor_table .total, #cor_table .subtotal {
+		line-height: 1.1em !important;
+		padding: 3px 3px;
+		font-size: 0.9em;
+	}
+
+	/* subtotals in advanced invoice */
+	#positions_summary {
+		text-align: right;
+		margin-right: 8px;
+		font-size: 9pt;
+	}
+
+
+
+
+/* ------------------------------------------------- */
+
+	/* TABLE WITH TOTAL SUM */
+
+	.totals_inv_table {
+		margin-top: 5pt;
+		page-break-inside: avoid !important;
+		page-break-before: auto;
+		page-break-after: auto;
+	}
+	.totals_inv_table td,th {
+		font-size:9pt;
+		line-height:12pt;
+		vertical-align: middle;
+	}
+
+	/* TOTAL DISCOUNT NUMBER */
+	.total_discount {}
+
+	.summary_row {font-weight: normal;}
+
+
+
+
+	/* WHOLE CELLS IN TABLE */
+	.main_inv_table td {padding: 4px 3px 4px 3px;vertical-align: top;}
+
+	/* HEADER ROW */
+	.main_inv_table th {padding: 3px 3px 1px 3px;text-align: center !important;}
+
+	/* NUMBER */
+	.nr_col {text-align: left !important;}
+
+	/* PRODUCT NAME */
+	.name_col {text-align: left;}
+		/* product description (when activated) */
+		.item_description {
+			display:block;
+			font-weight: normal;
+			font-size:8pt;
+			color:#626262;
+			line-height:10pt !important;
+			padding-top: 1px;
+		}
+		.name_col a {
+			text-decoration: none;
+		}
+
+	/* PRODUCT CODE (FR ONLY) */
+	.code_col {}
+
+	/* EXTRA DATA (PKWiU - pl) */
+	.additional_info_col {}
+
+	/* DISCOUNT IN % */
+	td.discount_col {padding-left:10px !important;}
+
+	/* QUANTITY */
+	td.quantity_col {padding-left:10px !important;}
+
+	/* NET PRICE FOR ONE UNIT */
+	td.price_net_col {padding-left:10px !important;}
+
+	/* NET PRICE FOR 1 UNIT WITH DISCOUNT */
+	td.price_net_with_discount_col {padding-left:10px !important; text-align: right;}
+
+	/* GROSS PRICE FOR 1 UNIT */
+	td.price_gross_col {padding-left:10px !important;}
+
+	/* NET VALUE WITH DISCOUNT */
+	td.total_price_net_col {padding-left:10px;}
+
+	/* TAX IN */
+	td.tax_col {padding-left:10px !important;}
+
+	/* SECOND TAX IN % */
+	td.tax2_col {padding-left:10px !important;}
+
+	/* TAX VALUE */
+	td.tax_value_col {padding-left:10px !important;}
+
+	/* GROSS VALUE */
+	td.total_price_gross_col {padding-left:10px !important;}
+
+/* ------------------------------------------------- */
+
+	/* TEXT DIRECTIONS */
+	.invoice_outline[dir="rtl"],
+	.invoice_outline[dir="rtl"] table,
+	.invoice_outline[dir="rtl"] table th,
+	.invoice_outline[dir="rtl"] table td
+	{
+		text-align:right;
+	}
+
+	.invoice_outline[dir="rtl"] .inv_paid > td,
+	.invoice_outline[dir="rtl"] .inv_to_pay > td{
+		text-align:right;
+	}
+
+
+	.invoice_outline[dir="rtl"] table.clean.to_right td,
+	.invoice_outline[dir="rtl"] table.clean.to_right th {text-align:left;}
+
+
+/* ------------------------------------------------- */
+	/* DO NOT MODIFY */
+	.payment_button {
+		display:block;
+		float:right;
+		text-align:right;
+		height:43px;
+		width:190px;
+		z-index:999;
+	}
+
+	.payment_button img{
+		display:block;
+		float:right;
+		text-align:right;
+		width:190px;
+		height:43px;
+		z-index:999;
+	}
+
+	html,
+	body {
+		margin:0;
+		padding:0;
+	}
+/* ------------------------------------------------- */
+
+	.advanced_header_titles {
+		display: none;
+	}
+
+	#corrected_content {
+		width: 100%;
+		margin-top: 6pt;
+		margin-bottom: 12pt;
+	}
+
+	#corrected_content th,
+	#corrected_content td {
+		width: 50%;
+		vertical-align: top;
+		text-align: left;
+	}
+
+/* ------------------------------------------------- */
+	/* payments list */
+	#invoice_payments {
+	  text-align: left;
+	  margin-top: 0.5em;
+	}
+
+	#invoice_payments_title {
+		width: 100%;
+		box-sizing: border-box;
+    	text-align: left !important;
+    	padding: 3px 3px 1px 3px;
+		border-bottom: 1px solid #c1c1c1;
+	}
+
+	#invoice_payments_list {
+		box-sizing: border-box;
+		width: 100%;
+		display: block;
+	}
+
+	.invoice_payments_payment {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		border-bottom: 1px solid #c1c1c1;
+		border-left: 1px solid #c1c1c1;
+		border-right: 1px solid #c1c1c1;
+		padding: 4px 3px 4px 3px;
+	}
+
+	.invoice_payments_payment > div {
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	.invoice_payments_price {
+
+	}
+
+	.invoice_payments_provider {
+		width: 66%;
+	}
+
+	.invoice_payments_date::after {
+		content: ' -';
+	}
+
+
+  .subtotal_col {
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 1px solid #c1c1c1;
+    border-right: none !important;
+    border-left: none !important;
+  }
+
+  .subtotal_row td:first-child {
+    border-left: 1px solid #c1c1c1 !important;
+  }
+  .subtotal_row td:last-child {
+    border-right: 1px solid #c1c1c1 !important;
+  }
+
+  /* fix na nachodzenie diva #buyer_sign.with_qrcode na link do platnosci */
+	#bm-account-no-btn {
+		z-index: 1;
+		position: relative;
+	}
+
+}
+
+@page {
+  size: A4;
+  margin: 0.5cm;
+}
+
+@media print {
+
+
+/* ------------------------------------------------- */
+	/* DO NOT DELETE */
+	.invoice_outline {
+		margin-top:0.4in;
+		padding-top: 0px;
+		background-color: transparent;
+		background-position: 50% 15cm !important;
+		min-height: 25cm;
+	}
+/* ------------------------------------------------- */
+
+
+	#description_footer, #description_footer.description_footer_fr {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	/* DO NOT MODIFY */
+	a.btn-print {
+	  color: #333333 !important;
+	  background-color: #ffffff !important;
+	  border: 2px solid #cccccc !important;
+	  display: inline-block;
+	  padding: 6px 12px !important;
+	  margin-bottom: 0;
+	  font-size: 14px !important;
+	  font-weight: normal;
+	  line-height: 1.428571429 !important;
+	  text-align: center !important;
+	  vertical-align: middle !important;
+	  border-radius: 4px !important;
+	  white-space: nowrap !important;
+	  -webkit-user-select: none;
+	  -moz-user-select: none;
+	  -ms-user-select: none;
+	  -o-user-select: none;
+	  user-select: none;
+	  text-decoration: none;
+	}
+
+	/* DO NOT MODIFY */
+	.pull-right {float: right;}
+
+	.text_right {text-align: right;}
+
+	.text_center {text-align: center;}
+
+	.name_col a {
+   		color: inherit;
+	}
+
+	#recipient a,
+	#buyer a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+
+
+/* ------------------------------------------------- */
+  section#summary a, a:link, a:visited, a:active, a:hover {
+		color: currentColor;
+		pointer-events: none;
+		text-decoration: none;
+	}
+
+}
+
+@media screen {
+
+	table.main_inv_table td { }
+
+/* ------------------------------------------------- */
+	/* DO NOT MODIFY */
+	#paid_mark {display:none;}
+
+	/* DO NOT MODIFY */
+	.invoice_preview.invoice {
+		width:210mm;
+		padding: 0px;
+		padding-top: 1cm;
+	}
+/* ------------------------------------------------- */
+}

@@ -1,0 +1,163 @@
+<table class="main_inv_table" id="cor_table">
+  <thead>
+    <tr>
+      <th class="width0 nr_col adv-colspan-component correction">
+        {{tt "invoice_position.nr"}}
+      </th>
+      <th class="width4 text_left name_col correction" colspan="{{advance_compact_name_colspan}}">
+        {{tt "invoice_position.name"}}
+      </th>
+      <th class="width3 correction"></th>
+      {{#if tax_visible}}
+        <th class="width3 text_right total_price_gross_col correction{{#unless bilangual}} nowrap {{/unless}}">
+          {{tt "invoice_position.total_price_gross"}}
+        </th>
+      {{else}}
+        <th class="width3 text_right total_price_gross_col correction">
+          {{tt "invoice_position.bill_total_price_gross"}}
+        </th>
+      {{/if}}
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="correction_row_before">
+      <td class="nr_col correction">
+        1
+      </td>
+      <td class="row0 text_left name_col correction" colspan="{{advance_compact_name_colspan}}">
+        {{advance_compact_pos_name}}{{estimates_first_no}}
+      </td>
+      <td class="correction_col correction">
+        {{tt "invoice_position.kind_options.correction_before" }}
+      </td>
+      <td class="total_price_gross_col text_right number correction">
+        {{positions_correction_before_total_price_gross}}
+      </td>
+    </tr>
+    <tr class="correction_row_after">
+      <td class="nr_col correction"></td>
+      <td class="row0 text_left name_col correction" colspan="{{advance_compact_name_colspan}}">
+        {{advance_compact_pos_name}}{{estimates_first_no}} {{advance_compact_pos_name_corr_part}}{{estimates_corr_first_no}}
+      </td>
+      <td class="correction_col correction">
+        {{tt "invoice_position.kind_options.correction_after"}}
+      </td>
+      <td class="total_price_gross_col text_right number correction">
+        {{positions_correction_after_total_price_gross}}
+      </td>
+    </tr>
+    <tr class="correction_row_changes" style="background-color:#eee;">
+      <td class="nr_col correction"></td>
+      <td class="row0 text_left name_col correction" colspan="{{advance_compact_name_colspan}}">
+        {{advance_compact_pos_name}}
+        {{#if show_links }}
+          <a href="{{estimates_first_url}}">{{estimates_first_no}}</a>
+        {{else}}
+          {{estimates_first_no}}
+        {{/if}}
+        {{advance_compact_pos_name_corr_part}}
+        {{#if show_links }}
+          <a href="{{estimates_corr_first_url}}">{{estimates_corr_first_no}}</a>
+        {{else}}
+          {{estimates_corr_first_no}}
+        {{/if}}
+      </td>
+      <td class="correction_col correction">
+        {{tt "invoice_position.kind_options.correction"}}
+      </td>
+      <td class="total_price_gross_col text_right number correction">
+        {{total_price_gross}}
+      </td>
+    </tr>
+  </tbody>
+  <thead style="border-bottom: 0">
+    {{#and show_tax_split tax_visible}}
+      <tr class="summary_row">
+        <th class="width0 empty nr_col subtotal correction" style="border:0px;background-color:transparent;"></th>
+        <th class="width4 empty name_col subtotal correction" style="border:0px;background-color:transparent;"></th>
+        <th class="width0 empty footer subtotal correction left_blue_border"> </th> {{!-- ta spacja tu specjalnie, żeby cssa z borderami złapało na gray --}}
+        <th class="width3 text_right number total_price_net_col footer total correction">
+          {{tt "invoice_position.total_price_net"}}
+        </th>
+        <th class="width1 text_right number tax_col footer subtotal correction">
+          {{tax_name}} %
+        </th>
+        {{#if tax2_visible }}
+        <th class="width1 text_right number tax2_col footer subtotal correction">
+          {{tax2_name}} %
+        </th>
+        {{/if}}
+        {{#if tax2_details }}
+          <th class="width3 text_right number tax_value_col footer subtotal correction">
+            {{tax1_value_name}}
+          </th>
+          <th class="width3 text_right number tax2_value_col footer subtotal correction">
+            {{tax2_value_name}}
+          </th>
+        {{else}}
+          <th class="width3 text_right number tax_value_col footer subtotal correction">
+            {{tax_value_name}}
+          </th>
+        {{/if}}
+        <th class="width3 text_right number total_price_gross_col footer subtotal correction">
+          {{tt "invoice_position.total_price_gross"}}
+        </th>
+      </tr>
+    {{/and}}
+  </thead>
+  <tbody>
+    {{#and show_tax_split tax_visible}}
+      {{#each summary}}
+        <tr class="summary_row">
+          <td class="empty nr_col footer subtotal correction"></td>
+          <td class="empty footer subtotal correction"></td>
+          <td class="text_right number total footer subtotal subtotal_header correction">
+            {{#lt @index 1}}
+              <strong>{{tt "invoice_position.including"}}</strong>
+            {{/lt}}
+          </td>
+          <td class="text_right number total_price_net_col footer subtotal correction">
+            {{total_price_net}}
+          </td>
+          <td class="text_right number tax_col footer subtotal correction">
+            {{tax}}
+          </td>
+          <td class="text_right number tax_value_col footer subtotal correction">
+            {{tax_value}}
+          </td>
+          <td class="width3 text_right number total_price_gross_col footer subtotal correction">
+            {{total_price_gross}}
+          </td>
+        </tr>
+      {{/each}}
+    {{/and}}
+
+    <tr class="clean no_border summary_row summary_totals">
+      {{#if show_tax_split}}
+        <td class="empty nr_col footer total correction"></td>
+        <td class="empty footer total correction"></td>
+        <td class="text_right no_border total footer total summary_header subtotal_header correction">
+          <strong>{{tt "invoice.total"}}</strong>
+        </td>
+        {{#if tax_visible}}
+          <td class="text_right number total_price_net_col footer total correction">
+            <strong>
+              {{total_price_net}}
+            </strong>
+          </td>
+          <td class="tax_col footer total correction">&nbsp;</td>
+          <td class="text_right number tax_value_col footer total correction">
+            <strong>
+              {{tax_value}}
+            </strong>
+          </td>
+        {{/if}}
+        <td class="width3 text_right number total_price_gross_col footer total correction">
+          <strong>
+            {{total_price_gross}}
+          </strong>
+        </td>
+      {{/if}}
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+<div id="recipient">
+  {{#each recipients}}
+    {{#if ../ksef_enabled}}
+      <p style="font-weight: normal;font-style: italic;">{{{role_with_share}}}</p>
+      {{/if}}
+        <p style="font-weight: bold;">
+          {{#and url ../show_links}}
+            <a href="{{{url}}}" class="{{#eq ../../locale 'fr'}}incognito-link{{/eq}}">{{{name}}}</a>
+          {{else}}
+            {{{name}}}
+          {{/and}}
+        </p>
+        <p>{{{address}}}</p>
+        {{#if tax_no_with_kind }}
+          <p>{{{tax_no_with_kind}}}</p>
+        {{else}}
+          <p>{{{tax_no}}}</p>
+        {{/if}}
+        {{#and address_note ../show_buyer_note}}
+          <p style="margin-top: 0.5em;" id="recipient_note">{{{address_note}}}</p>
+        {{/and}}
+        <br>
+  {{/each}}
+</div><!-- /recipients -->

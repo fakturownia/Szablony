@@ -1,0 +1,141 @@
+{{#if_created_after_date '2023-05-09'}}
+	{{#gt estimates_size 0}}
+		<div class="clear"></div>
+		{{#each estimates}}
+			<br/>
+			<br/>
+			{{#eq ../locale 'fr'}}
+				<p id="est_section_title">
+					{{tt "invoice.related_document_remind"}} {{tt "invoice.kind_options.estimate"}} {{number}} {{tt "invoice.connecting_word"}} {{issue_date}}
+				</p>
+			{{else}}
+				<p style="font-size: 140%;">
+					{{tt "invoice.kind_options.estimate"}} {{number}}
+				</p>
+			{{#if correction_info}}
+				<p>
+					{{correction_info}}
+				</p>
+			{{/if}}
+			{{/eq}}
+			<table class="main_inv_table est_table" style="margin-top: 1em;">
+				<thead>
+				<tr>
+					<th class="width0 nr_col">
+						{{tt "invoice_position.nr"}}
+					</th>
+					<th class="width4 text_left name_col">
+						{{tt "invoice_position.name"}}
+					</th>
+				{{#eq kind "estimate_correction"}}
+					<th></th>
+				{{/eq}}
+				<th class="width1 quantity_col">
+						{{label_for_quantity}}
+					</th>
+					{{#or invoice_tax_visible estimate_tax_visible}}
+						<th class="width2 text_right price_net_col">
+							{{tt "invoice_position.price_net"}}
+						</th>
+						<th class="width2 text_right total_price_net_col">
+							{{tt "invoice_position.total_price_net"}}
+						</th>
+						{{#if estimate_tax_visible}}
+							<th class="width0 text_center tax_col nowrap">
+								{{tax_name}} %
+							</th>
+						<th class="width0 text_center nowrap">
+							{{tax_value_name}}
+						</th>
+						{{/if}}
+						<th class="width2 text_right total_price_gross_col nowrap">
+							{{tt "invoice_position.total_price_gross"}}
+						</th>
+					{{else}}
+						<th class="width1 text_right price_net_col">
+							{{tt "invoice_position.bill_price_net"}}
+						</th>
+						<th class="width1 text_right total_price_gross_col">
+							{{tt "invoice_position.bill_total_price_gross"}}
+						</th>
+					{{/or}}
+				</tr>
+				</thead>
+				<tbody>
+				{{#each positions}}
+					<tr class="position_row">
+						<td class="nr_col">
+							{{no}}
+						</td>
+						{{#if ../estimate_tax_visible}}
+							<td class="row0 text_left name_col">
+								{{{item}}}
+							</td>
+						{{else}}
+							<td class="row0 text_left name_col">
+								{{{item}}}
+							</td>
+						{{/if}}
+					{{#if kind_txt}}
+						<td class="text_right">
+							{{{kind_txt}}}
+						</td>
+					{{/if}}
+						<td class="quantity_col text_center nowrap">
+							{{quantity}}
+						</td>
+						<td class="price_net_with_discount_col row1">
+							{{unit_price_net_with_discount}}
+						</td>
+						{{#or ../invoice_tax_visible ../estimate_tax_visible}}
+							<td class="total_price_net_col text_right number">
+								{{total_price_net}}
+							</td>
+							{{#if ../../estimate_tax_visible}}
+								<td class="tax_col text_right number">
+									{{tax}}
+								</td>
+							<td class="text_right number">
+								{{total_price_tax}}
+							</td>
+							{{/if}}
+						{{/or}}
+						<td class="total_price_gross_col text_right number">
+							{{total_price_gross}}
+						</td>
+					</tr>
+				{{/each}}
+				</tbody>
+				{{#gt size 0}}
+					<tbody>
+					<tr class="clean no_border summary_row summary_totals">
+						<td class="empty nr_col footer total"></td>
+						<td class="empty name_col footer total"></td>
+					{{#eq kind "estimate_correction"}}
+						<td class="empty footer total"></td>
+					{{/eq}}
+						<td class="empty quantity_col footer total"></td>
+						<td class="text_right no_border total footer summary_header subtotal_header">
+							<strong> {{tt "invoice.total"}} </strong>
+						</td>
+						{{#if ../estimate_tax_visible}}
+							<td class="text_right number total_price_net_col footer total">
+								<strong> {{est_price_net}} </strong>
+							</td>
+							<td class="tax_col footer total"></td>
+						<td class="total_price_tax_col text_right footer total">
+							<strong> {{est_price_tax}} </strong>
+						</td>
+						{{/if}}
+						<td class="text_right number total_price_gross_col footer total">
+							<strong> {{est_price_gross}} </strong>
+						</td>
+					</tr>
+					</tbody>
+				{{/gt}}
+			</table>
+			<br/>
+			<br/>
+		{{/each}}
+	{{/gt}}
+{{/if_created_after_date}}

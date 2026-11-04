@@ -1,21 +1,24 @@
+{{#not_eq kind 'maintenance_request'}}
+	{{#if payments}}
+		<section id="invoice_payments">
 
-{{#if payments}}
-    <section id="invoice_payments">
+			<div id="invoice_payments_title">{{tt 'invoice.payments.header'}}</div>
 
-        <div id="invoice_payments_title">{{tt 'invoice.payments.header'}}</div>
+			<div id="invoice_payments_list">
+				{{#each payments}}
+					<div class="invoice_payments_payment">
+						<div class="invoice_payments_price">{{partial_price_with_currency}}</div>
+						<div class="invoice_payments_date">{{tt 'invoice.paid_on'}} {{date}}</div>
+						<div class="invoice_payments_provider">{{provider}}
+						{{#if cheque_number}}
+							<div class="invoice_payments_cheque_number" style="display: inline-block"> N° {{cheque_number}}</div>
+						{{/if}}
+						</div>
+					</div>
+				{{/each}}
+			</div>
 
-        <div id="invoice_payments_list">
-            {{#each payments}}
-                <div class="invoice_payments_payment">
-                    <div class="invoice_payments_price">{{price_with_currency}}</div> 
-                    <div class="invoice_payments_date">{{tt 'invoice.paid_on'}} {{date}}</div>
-                    <div class="invoice_payments_provider">{{provider}}</div>
-                    {{#if cheque_number}}
-                        <div class="invoice_payments_provider">{{cheque_number}}</div>
-                    {{/if}}
-                </div>
-            {{/each}}
-        </div>
+		</section>
+	{{/if}}
+{{/not_eq}}
 
-    </section>
-{{/if}}

@@ -10,7 +10,11 @@
 				columns = ['total_price_gross_col'];
 			{{/unless}}
 		{{else}}
-			columns = ['total_price_gross_col'];
+			{{#if show_position_tax_without_tax_fields}}
+				columns = ['tax_col', 'total_price_gross_col'];
+			{{else}}
+				columns = ['total_price_gross_col'];
+			{{/if}}
 		{{/if}}
 
 		var style = document.createElement('style');
@@ -20,6 +24,7 @@
 
 		for (var i = 0; i < columns.length; i+=1) {
 		    var getwid = document.getElementById(columns[i])
+		    if (!getwid) continue;
 		    var wid = getwid.offsetWidth + 'px';
 		    scr += ' #rel_adv_table .'+columns[i]+'.related_advance {min-width:'+ wid +' !important;max-width:'+ wid + ' !important;width:'+ wid + ' !important;}';
 		    print += ' #rel_adv_table .'+columns[i]+'.related_advance {min-width:'+ wid +' !important;max-width:'+ wid + ' !important;width:'+ wid + ' !important;}';
@@ -28,17 +33,17 @@
 
 		scr += '}';
 		print += '}';
-		
+
 		style.innerHTML = scr +'\n'+ print;
 		document.body.appendChild(style);
-		
+
 	</script>
 
 
 	<table class="main_inv_table" id="rel_adv_table">
 		<thead>
 			<tr>
-				<th colspan="100" class="text_left advanced_header">{{tt "invoice.related_advance"}} 
+				<th colspan="100" class="text_left advanced_header">{{tt "invoice.related_advance"}}
 				{{#eq advanced_num 0}}
 					<br />{{tt "invoice.have_none"}}
 				{{/eq}}</th>
@@ -55,26 +60,34 @@
 
 				{{#if ../tax_visible}}
 
-					<td class="text_right number total_price_net_col related_advance">
-						{{price_net}}
-					</td>			
+					{{#if ../../show_position_total_price_net}}
+						<td class="text_right number total_price_net_col related_advance">
+							{{price_net_with_currency}}
+						</td>
+					{{/if}}
 
 					<td class="text_right number tax_col related_advance">
-						
+
 					</td>
 					{{#if ../../tax2_visible}}
 						<td class="text_right number tax2_col related_advance">
-							
+
 						</td>
 					{{/if}}
 					<td class="text_right number tax_value_col related_advance">
-						{{price_tax}}
+						{{price_tax_with_currency}}
 					</td>
-				{{/if}}				
-	
-				<td class="text_right number total_price_gross_col related_advance">
-					{{price_gross}}
-				</td>
+				{{/if}}
+
+				{{#if ../show_position_tax_without_tax_fields}}
+					<td class="text_right number tax_col related_advance">
+					</td>
+				{{/if}}
+				{{#if ../show_position_total_price_gross}}
+					<td class="text_right number total_price_gross_col related_advance">
+						{{price_gross_with_currency}}
+					</td>
+				{{/if}}
 
 			</tr>
 			{{/each}}

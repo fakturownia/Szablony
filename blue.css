@@ -1,26 +1,29 @@
 
 
 
-@media screen{ 
+@media screen{
 
 .invoice_outline {
 	margin: 10px auto !important;
-	padding: 0 !important;	
+	padding: 0 !important;
 	font-family: Helvetica,"lucida grande","lucida sans unicode";
-
 	}
 
 
 	.invoice_preview.invoice {
-	    font-size: 120%;
-	    width: 8.25in;
+		font-size: 120%;
+		width: 8.25in;
+	}
+
+	.inv_rr span {
+		margin-left: 16px;
 	}
 
 }
 
 
 
-@media all{ 
+@media all{
 
 
 
@@ -39,17 +42,34 @@
 	.invoice_title span{text-align:center;color:#999;display:block;}
 	.additional_data {
 		max-width:438px;
-	    margin-top: 16px;
-	    padding: 10px;
-	 float: left;
+		margin-top: 16px;
+		padding: 10px;
+		float: left;
 	}
 /*	#content .invoice_preview div{font-size:1.1em;line-height:2em;}*/
 	.inv_left{float:left;width:48%;}
+	.seller {min-height: 165px;}
 	.inv_right {
-	    float: right !important;
-	    width: 48%;
+	  width: 48%;
 		min-height: 154px;
 	}
+  .float_right {
+    float: right !important;
+  }
+  .float_left {
+    float: left !important;
+  }
+  .buyer.full_width, .seller.full_width {
+    max-width: 100%;
+  }
+  .header_blue_left_col {
+    width: 52%;
+    float: left;
+  }
+  .header_blue_right_col {
+    width: 40%;
+    float: right;
+  }
 	.inv_company_logo.inv_right img,
 	.inv_company_logo.inv_right img.right{display:block;margin:auto;float:none}
 	.invoice_preview{width:694px;}
@@ -59,15 +79,15 @@
 	.clean p{margin-bottom:0.5em;line-height:1.4em;}
 	.split_three strong{display:block;margin-bottom:5px;}
 	.split_three br{display:none}
-	
+
 	.inv_company_logo img {
 		max-height: 280px;
 	    max-width: 250px;
-		
+
 	}
 
-		
-	/*TABELE*/	
+
+	/*TABELE*/
 
 	table th,
 	table td{margin:0;padding:10px 5px;}
@@ -79,17 +99,17 @@
 	td.width3{min-width:36px;width:13%;}
 	th.width4,
 	td.width4{width:30%;min-width:100px;}
-	
-	table td,table th{border-bottom:1px solid #DDDDDD;padding:10px 5px !important;background:transparent;}
-	
+
+	table:not(.ui-datepicker-calendar):not(.clean) td:not(.barby-cell),table th{border-bottom:1px solid #DDDDDD;padding:10px 5px !important;background:transparent;}
+
 	tr{page-break-inside:avoid;}
 	table{page-break-after:auto}
 	tr{page-break-inside:avoid;page-break-after:auto}
 	td{page-break-inside:avoid;page-break-after:auto}
 	thead{display:table-header-group}
 
-	
-	
+
+
 	table{font-size:0.7em;margin:auto;clear:both;margin-top:10px;border-collapse:collapse ;empty-cells:hide;background-color:transparent;margin:5px auto 5px auto;width:99%;}
 	table tr{vertical-align:top;}
 	table th,table td,table caption{text-align:right;vertical-align:top;border-collapse:collapse;}
@@ -113,7 +133,7 @@
 	.to_pay th{padding:10px 5px;}
 	table th,
 	table td{margin:0;padding:5px;}
-	table td.empty{border:0;background-color:transparent}
+	table td.empty{border:0 !important;background-color:transparent}
 	html body table tr:hover{background-color:transparent;}
 	th.text_left,
 	td.text_left{text-align:left;padding-left:10px;}
@@ -125,25 +145,35 @@
 	td.width3{min-width:36px;width:13%;}
 	th.width4,
 	td.width4{width:50%;min-width:129px;}
-	table th,
-	strong{text-transform:uppercase;color:#00a6f0;}
+	/*
+		Dla '.main_inv_table' lepiej nie używać 'text-transform:uppercase;' -> to może powodować rozjazd tabeli (wyjście poza stronę)
+		przy wielu kolumnach.
+	*/
+	table:not(.main_inv_table):not(.ui-datepicker-calendar) th, strong{text-transform:uppercase;color:#00a6f0}
+	.main_inv_table th{color:#00a6f0;}
 	td.text_left{font-weight:bold;}
 	html body .buyer,
-	html body .seller{padding:20px 10px;width:30%;}
+	html body .seller{padding:20px 10px;max-width:45%;}
+	.seller.inv_left {width: 100%; max-width: 52%;}
 	table.main_inv_table{margin:15px auto 20px auto;}
+	/* .ean_code{font-size: 0.8em;} */
+
+	.split_three_ksef th,
+	.split_three_ksef td{padding: 5px !important;}
+	table.split_three_ksef{font-size: 100% !important;}
 
 	#exchange_currency {margin-top:20px;}
 	#exchange_currency td {border-top:1px solid #ddd; padding-top:10px !important;}
 	#exchange_currency  + table.clean.to_pay {margin-top:0;}
-	
+
 	td b,
 	td.row1,
 	td.row2,
 	td.row3{white-space:nowrap}
 
-	#content.inside h2, 
+	#content.inside h2,
 	h2{font-size:1.5em;padding-bottom:7px;margin:0 0 7px 0;padding:0;font-weight:normal;}
-	
+
 	.payment_button {
 		display:block;
 		float:right;
@@ -162,49 +192,173 @@
 		z-index:999;
 	}
 
+	/* VAT_RR*/
+
+	.inv_rr span {
+		font-size: 0.9em;
+		color: #999;
+		display: block;
+		margin-top: 10px;
+	}
+
+	.inv_rr p {
+		margin-top: 30px;
+	}
+
+	table.qrs{margin:0 auto;}
+	table.qrs td{padding:10px 5px;}
+	td.qrs_center {width:auto;}
+	td.qrs_center img {position: relative; display: block; margin-right: auto; margin-left: auto;}
+	td.qrs_center div.qr_title {font-weight: bold; text-align: center;}
+	td.qrs_center div.verifactu_id_below_qr {margin-left: auto;}
+	td.qrs_left img {position:relative;margin-right:auto;max-width: none;}
+	td.qrs_right img {display:inline;}
+	td.qrs_left:first-child {width:1%; padding-right:45px !important;}
+	td.qrs_right {text-align:right;}
+	td.qrs_right div.qr_title,
+	td.qrs_left div.qr_title {
+		/* font-weight: bold; */
+		position: relative;
+		display: block;
+		max-width: 120px;
+		font-size: 3mm;
+		inline-size: auto;
+		overflow-wrap: break-word;
+		text-align: center;
+		padding-bottom: 1mm;
+		margin-right: auto;
+		padding-top:10px;
+	}
+	td.qrs_right div.qr_title {margin-left: auto;margin-right: 0;}
+
+	.ksef_below_qr {
+		position: relative;
+		display: block;
+		max-width: 125px;
+		font-size: 3mm;
+		inline-size: auto;
+		overflow-wrap: break-word;
+		text-align: center;
+		padding-top: 1.5mm;
+		margin-left: -2.5px;
+	}
+/* pola istniejące tylko w ANP */
+	.agreement {
+		font-size: 0.75rem;
+		padding: 1em;
+		margin-bottom: 1em;
+		display: block;
+		clear: both;
+	}
+
+	.agreement_footer p {
+		padding-left: 0;
+		text-align: center;
+		position: relative;
+		bottom: 2em;
+	}
+
+	.invoice_preview .agreement {
+		font-size: 1.5rem;
+	}
+
+	.invoice_preview .agreement_footer {
+		font-size: 1.5rem;
+		position: relative;
+		bottom: 0.2em;
+	}
+
+	.invoice_preview .act_of_acceptance_title {
+		font-size: 1rem;
+	}
+
+	.act_of_acceptance_footer .buyer_person, .act_of_acceptance_footer .seller_person {
+		position: relative;
+		left: 2.5em;
+	}
+
+	.act_of_acceptance_footer .buyer_person strong, .act_of_acceptance_footer .seller_person strong {
+		position: relative;
+		left: 2em;
+	}
+
+	.act_of_acceptance_footer {
+		margin-left: 2em;
+	}
 }
 
 
 @media print{
-	
-	
-	.invoice_title.inv_left,.additional_data,.seller.inv_left,.buyer.inv_right{font-size:70% !important}  /*zmniejszenie czcionki kilku elementow podczas drukowania*/
-	
+
+
+  .invoice_title.inv_left,.additional_data,.seller.inv_left,.buyer.inv_right,table.split_three_ksef, .header_blue_left_col, .header_blue_right_col {
+    font-size: 70% !important;
+  }  /*zmniejszenie czcionki kilku elementow podczas drukowania*/
+
+	.additional_data {
+		white-space: nowrap;
+	}
+
 	@page{size:portrait;margin:0;padding:0;margin-top:0.1in}
-	
+
 	@page :first {
 	  margin-top: 0.3in;
 	  margin-bottom: 0.5in;
 	}
-	
+
 	h1 {
 		margin-top:0;
 	}
-	
+
 	.invoice_outline {
-		width:6.8in;
+		width: auto;
 		margin-top:0.2in;
 		margin-bottom: 0.5in;
 		margin-left: 0.4in;
 		margin-right: 0.4in;
 		padding-top:0;
 	}
-	
 
-	@-moz-document url-prefix() { 
+	#description_footer {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	.seller {min-height: 154px;}
+
+
+	@-moz-document url-prefix() {
 
 		.invoice_outline {
-			width:6.9in;
+			width: auto;
 
 			margin-right: 0.3in;
 		}
-		
+
 	}
 
-	
+	#bm-account-no-btn a:link, a:visited {
+		color: currentColor;
+		pointer-events: none;
+		text-decoration: none;
+	}
 
-	
-	
-}	
+  .header_blue_right_col {
+    width: 43%;
+  }
 
 
+	.header_blue_left_col {width: 100%; max-width: 49%;}
+	table.main_inv_table{margin:15px auto 20px auto;}
+}

@@ -362,29 +362,6 @@
 		/* header */
 		#seller_sign span {font-weight: bold;}
 
-		table.qrs{margin:20px auto 15px auto;}
-		table.qrs td{padding:10px 5px;}
-		td.qrs_empty{width:104px;}
-		td.qrs_left, td.qrs_right, td.qrs_center {width:auto;vertical-align:top;}
-		td.qrs_left img {position: relative; display: block; margin-right: auto;}
-		td.qrs_right img {position: relative; display: block; margin-left: auto;}
-		td.qrs_center img {position: relative; display: block; margin-right: auto; margin-left: auto;}
-		td.qrs_left div.qr_title {font-weight: bold; text-align: left;}
-		td.qrs_right div.qr_title {font-weight: bold; text-align: right; margin-right: 15px;}
-		td.qrs_center div.qr_title {font-weight: bold; text-align: center;}
-		td.qrs_center div.ksef_id_below_qr {margin-left: auto;}
-		.ksef_id_below_qr {
-			position: relative;
-			display: block;
-			max-width: 130px;
-			font-size: 3mm;
-			inline-size: auto;
-			overflow-wrap: break-word;
-			text-align: center;
-			padding-top: 1mm;
-			margin-right: auto;
-		}
-
 		/* BUYER */
 		#buyer_sign {
 			display: table-cell;

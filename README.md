@@ -46,6 +46,7 @@ Zmienne których można używać w szablonach:
 {{all_in_words_in_exchange_currency}} - suma brutto słownie po przeliczeniu
 {{arr_due_amount}} - należna stopa zwrotu
 {{arr_due_msg}} - wiadomość do należnej stopy zwrotu
+{{au_member_info}} - dane członka jednolitego podatnika VAT (AU): nazwa, TVA, SIREN, adres (Francja)
 {{bank}} - bank (nazwa banku)
 {{bank_account}} - numer konta bankowego
 {{bank_account_name_uk}} - nazwa konta bankowego w uk
@@ -53,6 +54,7 @@ Zmienne których można używać w szablonach:
 {{bank_iban}}
 {{bdo_no}} - bdo
 {{bilangual}} - dwujęzyczna faktura
+{{bill_default_note}} - treść adnotacji „Rachunek w rozumieniu art. 87 Ordynacji podatkowej” (Polska)
 {{bm_bank_account_link}} - ink do konta bankowego bm
 {{buyer}} - nabywca
 {{buyer_address}} - adres nabywcy
@@ -76,6 +78,7 @@ Zmienne których można używać w szablonach:
 {{buyer_tax_no_kind}} - rodzaj numeru identyfikacyjnego nabywcy
 {{cancel_reason}} - powód anulowania faktury
 {{canceled}} - faktura anulowana
+{{cash_accounting}} - metoda kasowa
 {{client_external_id}} - id klienta z karty klienta
 {{{client_panel_view_link}}} - link do panelu klienta
 {{{client_panel_view_link_unpaid}}} - link do panelu klienta (tylko nieopłacone faktury)
@@ -87,6 +90,7 @@ Zmienne których można używać w szablonach:
 {{corrected_content_before}} - treść korygowana
 {{corrected_issue_date}} - data wystawienia korygowanego dokumentu
 {{corrected_kind}} - typ dokumentu korygowanego
+{{corrected_ksef_number}} - numer KSeF dokumentu korygowanego (Polska, KSeF)
 {{corrected_number}} - numer dokumentu korygowanego
 {{corrected_sell_date}} - data sprzedaży dokumentu korygowanego
 {{correction}} - dokument korygowany
@@ -106,6 +110,8 @@ Zmienne których można używać w szablonach:
 {{document_type}} - rodzaj dokumentu
 {{email}}
 {{estimates}} - zaliczki
+{{estimates_corr_first_no}} - numer ostatniej korekty pierwszego powiązanego zamówienia
+{{estimates_corr_first_url}} - ścieżka (adres względny) do ostatniej korekty pierwszego powiązanego zamówienia
 {{estimates_first}}
 {{estimates_first_no}}
 {{estimates_first_url}}
@@ -130,6 +136,7 @@ Zmienne których można używać w szablonach:
 {{gtu_codes_list}} - lista kodów gtu
 {{gtu_codes_note}} - nazwa + lista kodów gtu
 {{has_corrected_content}} - treść korygowana
+{{hide_advance_pl_simplified_totals}} - ukrycie tabeli sum netto/VAT/brutto na uproszczonej fakturze zaliczkowej (Polska)
 {{hide_tax}} - ukryj podatek i cenę netto
 {{id}}
 {{income}} - przychód
@@ -137,7 +144,9 @@ Zmienne których można używać w szablonach:
 {{invoice_act_of_acceptance}} - numer faktury bazowej
 {{invoice_category}} - kategoria faktury
 {{issue_date}} - data wystawienia
+{{issue_date_raw}} - data wystawienia w formacie RRRR-MM-DD
 {{issue_place}} - miejsce wystawienia
+{{issued_to_receipt_note_visible}} - pokaż adnotację o fakturze wystawionej do paragonu (Polska)
 {{issuer}} - wystawca dokumentu
 {{issuers}} - wystawcy
 {{issuers_header}}
@@ -145,8 +154,18 @@ Zmienne których można używać w szablonach:
 {{kpir_col}} - numer kolumny w księdze
 {{kpir_pos}} - numer pozycji w księdze
 {{ksef_enabled}}
+{{{ksef_gov_link}}} - link do podglądu faktury w KSeF (Polska, KSeF)
+{{{ksef_gov_verification_link}}} - link do certyfikatu wystawcy w KSeF (Polska, KSeF)
 {{ksef_if_below_qr}}
+{{ksef_qr_show_offline}} - faktura w trybie offline (bez numeru KSeF), pokaż kod QR certyfikatu (Polska, KSeF)
+{{ksef_qrcode_cert_img}} - kod QR certyfikatu wystawcy dla trybu offline (Polska, KSeF)
+{{ksef_qrcode_cert_subtitle}} - podpis pod kodem QR certyfikatu (Polska, KSeF)
+{{ksef_qrcode_cert_title}} - tytuł nad kodem QR certyfikatu (Polska, KSeF)
 {{ksef_qrcode_img}}
+{{ksef_qrcode_invoice_img}} - kod QR faktury w KSeF (Polska, KSeF)
+{{ksef_qrcode_invoice_subtitle}} - podpis pod kodem QR faktury: numer KSeF lub „OFFLINE” (Polska, KSeF)
+{{ksef_qrcode_invoice_title}} - tytuł nad kodem QR faktury (Polska, KSeF)
+{{label_for_quantity}} - nagłówek kolumny ilości
 {{lang}} - język
 {{legal_cost_compensation}} - rekompensata kosztów prawnych
 {{locale}} - ustawienia regionalne
@@ -171,6 +190,7 @@ Zmienne których można używać w szablonach:
 {{paid_mark_url}} - adres url znaku opłacono
 {{payment_button_url}} - adres url przycisku "kliknij i zapłacić online"
 {{{payment_link}}} - link do bezpośredniej płatności online
+{{{payment_link}}} - link do bezpośredniej płatności on-line
 {{payment_reference_number}} - numer polecenia zapłaty
 {{payment_to}} - termin płatności
 {{payment_type_sym}} - typ płatności
@@ -197,9 +217,12 @@ Zmienne których można używać w szablonach:
 {{print_option}} - wydruk faktury
 {{procedure_designations_list}} - oznaczenia dotyczące procedur
 {{procedure_designations_note}} - oznaczenia dotyczące procedur z opisem
+{{procedure_vat_margin}} - procedura marży VAT (np. towary używane, biura podróży)
 {{product_cache}} - pamięć podręczna produktu
 {{proforma}} - numer proformy do faktury
 {{qrcode_img}} - oznaczenie kodu qr
+{{qrcode_img_old_position}} - kod QR płatności w starym miejscu (pośrodku), a nie po prawej obok kodu KSeF
+{{real_kind}} - typ dokumentu bez maskowania dowodu korygującego jako faktury korygującej
 {{receipt}} - numer paragonu do faktury
 {{recipient_address}} - adres odbiorcy
 {{recipient_city}} - miejscowość
@@ -219,6 +242,7 @@ Zmienne których można używać w szablonach:
 {{reject_button_text}}
 {{reminder_no}} - liczba wysłanych przypomnień o niepłaconej fakturze
 {{reminder_number}} - numer kolejnego przypomnienia o nieopłaconej fakturze
+{{{required_ksef_information}}} - wymagana informacja o KSeF do treści e-maila: numer KSeF i link do faktury (Polska, KSeF)
 {{reverse_charge}} - odwrotne obciążenie
 {{reverse_charge_code}} - kod transakcji
 {{reverse_charge_cz}} - odwrotne obciążenie cz
@@ -232,8 +256,16 @@ Zmienne których można używać w szablonach:
 {{seller_tax_no_kind}} - rodzaj numeru identyfikacyjnego sprzedawcy
 {{seller_trade_register_cz}} - informacje dotyczące wpisu do rejestru handlowego
 {{sent_at}} - data i godzina wysłania dokumentu
+{{settlement_active}} - czy na dokumencie są pozycje rozliczenia (obciążenia lub odliczenia)
+{{settlement_charges}} - lista obciążeń, każde ma amount (z symbolem waluty) i reason
+{{settlement_charges_sum}} - suma obciążeń (z symbolem waluty)
+{{settlement_deductions}} - lista odliczeń, każde ma amount i reason
+{{settlement_deductions_sum}} - suma odliczeń (z symbolem waluty)
+{{settlement_has_charges}} - czy są obciążenia
+{{settlement_has_deductions}} - czy są odliczenia
 {{should_print_gtu_codes}} - wstaw kody gtu
 {{should_print_procedure_designations}} - wstaw oznaczenie dotyczące procedur
+{{show_bill_note_info}} - pokaż informację o art. 87 Ordynacji podatkowej na rachunku (Polska)
 {{show_buyer_note}} - wstaw dodatkowy opis nabywcy
 {{show_client_phone_on_invoice}} - pokaż numer telefonu klienta na fakturze
 {{show_date_and_sign}} - pokaż datę i podpis
@@ -241,11 +273,19 @@ Zmienne których można używać w szablonach:
 {{show_discount_as_net_amount}} - zawsze pokazuj rabat w postaci netto
 {{show_empty_buyer_person}} - wstaw puste pole na podpis wystawcy
 {{show_empty_seller_person}} - wstaw puste pole na podpis odbiorcy
+{{show_exchange_summary}} - pokaż podsumowanie przeliczenia na walutę
 {{show_links}} - linki na podglądzie dokumentu
+{{show_oid}} - pokaż numer zamówienia
 {{show_paid_date}} - wstaw datę płatności
 {{show_paid_logo}} - pokaż logo "zapłacono"
 {{show_paid_when_zero}} - kwota opłacona …
 {{show_payments_on_invoice}} - pokaż płatności na fakturze
+{{show_position_price_gross}} - pokaż kolumnę cena brutto w pozycjach
+{{show_position_price_gross_with_discount}} - pokaż kolumnę cena brutto po rabacie w pozycjach
+{{show_position_price_net}} - pokaż kolumnę cena netto w pozycjach
+{{show_position_tax_without_tax_fields}} - pokaż kolumnę podatku w pozycjach na dokumencie w kwotach brutto bez pól podatkowych
+{{show_position_total_price_gross}} - pokaż kolumnę wartość brutto w pozycjach
+{{show_position_total_price_net}} - pokaż kolumnę wartość netto w pozycjach
 {{show_price_offer_summary}} - pokaż z podsumowaniem
 {{show_product_description}} - opis produktu na pozycjach faktury
 {{show_reject_button}}
@@ -253,8 +293,10 @@ Zmienne których można używać w szablonach:
 {{show_rr_declaration}} - oświadczenie dostawcy produktów rolnych
 {{show_sell_date}} - pokazuj datę sprzedaży
 {{show_tax_split}} - wyświetlaj podsumowanie podatku
+{{show_tax_split_own_header_in_gross}} - własny nagłówek tabeli podziału na stawki VAT na dokumencie w kwotach brutto
 {{show_totals}} - pokaż sumy
 {{show_unit_price_gross}} - wyświetlaj cenę jednostkową brutto
+{{show_verifactu_qrcode}} - pokaż kod QR Verifactu (Hiszpania, Verifactu)
 {{sign_button_text}}
 {{sign_document_url}} - link do podpisu elektronicznego
 {{signature_date}} - data podpisania elektronicznego
@@ -310,7 +352,11 @@ Zmienne których można używać w szablonach:
 {{total_price_net_without_discount_with_currency}} - wartość netto bez rabatu z oznaczeniem waluty dokumentu
 {{total_tax_inscription}} - opis wartości vat
 {{transaction_id}} - id powiązanej z fakturą transakcji
+{{{transaction_terms_table_html}}} - sekcja warunków transakcji jako wiersze tabeli HTML (Polska)
+{{{transaction_terms_text_html}}} - sekcja warunków transakcji jako akapity HTML (Polska)
 {{transaction_type}} - typ transakcji
+{{transaction_type_code}} - kod typu transakcji (goods, services, goods_and_services)
+{{triangular_transaction}} - transakcja trójstronna
 {{type_of_payment}} - rodzaj płatności
 {{use_arr_due}} - użyj należnej stopy zwrotu
 {{use_barcodes}} - kod ean przy produkcie
@@ -322,9 +368,12 @@ Zmienne których można używać w szablonach:
 {{valid_till_date}} - ważna do
 {{vat_created_from_act_of_acceptance}}
 {{verifactu_enabled}}
+{{verifactu_qrcode_img}} - kod QR Verifactu (Hiszpania, Verifactu)
 {{{view_link}}} - link do dokumentu
+{{{view_link}}} - link do podglądu dokumentu z rodzajem i numerem
 {{view_url}} - bezpośredni link do dokumentu
 {{warehouse_document_numbers}} - numer powiązanego dokumentu magazynowego
+{{warehouse_invoice}} - faktura magazynowa
 {{www}} - adres strony www sprzedawcy
 {{zero_with_currency}} - zero z walutą dokumentu
 {{zero_with_currency_in_exchange_currency}} - zero po przeliczeniu z oznaczeniem waluty
@@ -410,6 +459,11 @@ Zmienne których można używać w szablonach:
 {{total_price_gross_with_currency}} - wartość brutto z oznaczeniem waluty
 {{total_price_net}} - wartość netto
 {{total_price_net_with_currency}} - wartość netto z oznaczeniem waluty
+{{/each}}
+
+{{#each settlement_charges}} : (analogicznie {{#each settlement_deductions}})
+{{this.amount}} - kwota obciążenia z oznaczeniem waluty
+{{this.reason}} - powód obciążenia
 {{/each}}
 
 {{additional_fields}} :

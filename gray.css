@@ -1,5 +1,5 @@
-@media all{ 
-	
+@media all{
+
 /* ------------------------------------------------- */
 	/* DO NOT DELETE */
 	.invoice_outline {
@@ -7,7 +7,7 @@
 		font-size: 9pt;
 		margin-bottom: 0in;
 		margin-left: 0.75cm;
-		margin-right: 0.75cm;	
+		margin-right: 0.75cm;
 		min-height: 20cm;
 	}
 
@@ -33,12 +33,12 @@
 
 
 
-	
+
 
 /* ------------------------------------------------- */
 	/* DO NOT CHANGE */
 	p {margin:0;}
-	
+
 	table{page-break-after:auto}
 	tr{page-break-inside:avoid;page-break-after:auto}
 	td{page-break-inside:avoid;}
@@ -61,7 +61,7 @@
 
 
 /* ------------------------------------------------- */
-	
+
 	/* ALIGNS */
 	table {
 		clear: both;
@@ -69,14 +69,14 @@
 		empty-cells:hide;
 		width:100%;
 		background-color: transparent;
-	}	
+	}
 
 	table.main_inv_table th.text_left,
 	table.main_inv_table td.text_left,
 	th.text_left,
 	td.text_left {text-align:left;}
 	.number,.nowrap,
-	td b, td.row1, td.row2, td.row3 {white-space:nowrap}	
+	td b, td.row1, td.row2, td.row3 {white-space:nowrap}
 	th.width3 + th.width1.nowrap {white-space:normal}
 
 
@@ -97,6 +97,20 @@
 
 	table.main_inv_table .tax_col.footer.total {
 		border-bottom:1px solid #c1c1c1;
+	}
+
+	table.main_inv_table .total_price_tax_col.footer.total {
+		border-bottom:1px solid #c1c1c1;
+		border-left:1px solid #c1c1c1;
+		border-right:1px solid #c1c1c1;
+	}
+
+	table.main_inv_table th.footer {
+		border-bottom:1px solid #c1c1c1;
+	}
+
+	.table_header {
+		border:1px solid #c1c1c1;
 	}
 
 	table.main_inv_table .text_separator {
@@ -127,7 +141,7 @@
 
 
 /* ------------------------------------------------- */
-	
+
 	/* SUMMATIONS */
 	table.to_right {text-align:right;width:100%;}
 	table.to_right th {text-align:right;}
@@ -144,7 +158,7 @@
 		padding-top: 2px !important;
 		text-align: center;
 	}
-	
+
 
 /* ------------------------------------------------- */
 
@@ -174,6 +188,9 @@
 			/* BOTH ABOVE */
 			#info p:first-of-type {margin-bottom: 0.75em;}
 
+		#inv_transaction_type_p {
+			margin-top: 0.25em;
+		}
 
 		/* LOGO */
 		#logo {
@@ -194,7 +211,7 @@
 				position:relative;
 				width:auto;
 				max-width:100%;
-				max-height: 4cm;
+				max-height: 122.1px; /* tyle jest bez logo, jakby było więcej to wszystko idzie trochę niżej */
 			}
 
 /* ------------------------------------------------- */
@@ -235,6 +252,15 @@
 			font-weight: bold;
 		}
 
+		/* FIELD FOR ACT OF ACCEPTANCE */
+		#traders_agreement_text {
+			display: block;
+			width: 100%;
+			line-height: 1.5;
+			padding-top: 4em;
+			padding-bottom: 2em;
+		}
+
 		/* ANOTHER TRADERS DATA WHEN EDDITIONAL INVOICE RECIPIENT IS ACTIVE */
 		/* ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼  */
 		#invoice_traders.with_recipient .traders-spacer {
@@ -257,7 +283,7 @@
 		}
 
 		#traders-spacer {
-			display: table-cell; 
+			display: table-cell;
 			width: 4%;
 		}
 
@@ -281,7 +307,7 @@
 		font-weight: bold;
 		font-size: 1.5em;
 	}
-	
+
 /* ------------------------------------------------- */
 
 	/* INVOICE SUMMARY */
@@ -305,9 +331,11 @@
 	#summary p {
 		margin-top:0.35em;
 	}
+	#tax_based_on_debits {
+		margin: 0.25em 0;
+	}
 
 /* ------------------------------------------------- */
-
 	/* SIGNATURES AT THE END */
 	#invoice_signatures {
 		clear: both;
@@ -322,25 +350,23 @@
 		/* headers */
 		#invoice_signatures span {}
 
+		/* FIELD FOR ACT OF ACCEPTANCE */
+		#signatures_description_text {
+			position: relative;
+			display: table-caption;
+			text-align: center;
+			margin-top: 4em;
+			top: 4em;
+		}
+
 		/* SELLER */
 		#seller_sign {
 			display: table-cell;
 			width: 50%;
 			text-align: center;
 		}
-		#seller_sign.with_qrcode {
-			width: 33%;
-			position: relative;
-			top: -43px;
-		}
 		/* header */
 		#seller_sign span {font-weight: bold;}
-
-		#qrcode {
-			display: table-cell;
-			width: 33%;
-			text-align: center;
-		}
 
 		/* BUYER */
 		#buyer_sign {
@@ -348,17 +374,26 @@
 			width: 50%;
 			text-align: center;
 		}
-		#buyer_sign.with_qrcode {
-			width: 33%;
-			position: relative;
-			top: -43px;
-		}
+
 		/* header */
 		#buyer_sign span {font-weight: bold;}
 
 /* ------------------------------------------------- */
 
 	/* RELATED ADVANCED INVOICES*/
+
+	/* nowe cssy dla tabelki z zaliczkami po jej połączeniu z pozycjami */
+	table.main_inv_table td.advanced_header {
+		padding: 3px 3px 1px 3px;
+		border: 0;
+		border-bottom: 1px solid #c1c1c1;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 16px;
+		vertical-align: middle;
+	}
+
+	/* stare cssy zostawiam żeby nic nie rozwalić na szablonach z Francji */
 
 	#rel_adv_table {
 		margin-top: 0.5em;
@@ -426,9 +461,11 @@
 	.main_inv_table th { font-weight: normal;font-size:9pt; }
 	table td.empty {border:0;}
 
-	
+
 	table.main_inv_table td.footer {vertical-align: middle;}
 	table.main_inv_table td.footer strong {}
+
+	/* .ean_code{font-size: 0.8em;} */
 
 	/* INVOICE COLUMNS TOTALS */
 	.total {
@@ -447,7 +484,7 @@
 
 	}
 
-	#pos_table .total, #pos_table .subtotal {
+	#pos_table .total, #pos_table .subtotal, .est_table .total, #cor_table .total, #cor_table .subtotal {
 		line-height: 1.1em !important;
 		padding: 3px 3px;
 		font-size: 0.9em;
@@ -550,25 +587,25 @@
 /* ------------------------------------------------- */
 
 	/* TEXT DIRECTIONS */
-	.invoice_outline[dir="rtl"],	
-	.invoice_outline[dir="rtl"] table, 
-	.invoice_outline[dir="rtl"] table th, 
+	.invoice_outline[dir="rtl"],
+	.invoice_outline[dir="rtl"] table,
+	.invoice_outline[dir="rtl"] table th,
 	.invoice_outline[dir="rtl"] table td
 	{
 		text-align:right;
 	}
-	
-	.invoice_outline[dir="rtl"] .inv_paid > td,	
+
+	.invoice_outline[dir="rtl"] .inv_paid > td,
 	.invoice_outline[dir="rtl"] .inv_to_pay > td{
 		text-align:right;
 	}
-	
-	
-	.invoice_outline[dir="rtl"] table.clean.to_right td,		
+
+
+	.invoice_outline[dir="rtl"] table.clean.to_right td,
 	.invoice_outline[dir="rtl"] table.clean.to_right th {text-align:left;}
 
 
-/* ------------------------------------------------- */	
+/* ------------------------------------------------- */
 	/* DO NOT MODIFY */
 	.payment_button {
 		display:block;
@@ -594,7 +631,7 @@
 		padding:0;
 	}
 /* ------------------------------------------------- */
-	
+
 	.advanced_header_titles {
 		display: none;
 	}
@@ -636,6 +673,7 @@
 	.invoice_payments_payment {
 		display: block;
 		width: 100%;
+		box-sizing: border-box;
 		border-bottom: 1px solid #c1c1c1;
 		border-left: 1px solid #c1c1c1;
 		border-right: 1px solid #c1c1c1;
@@ -644,14 +682,19 @@
 
 	.invoice_payments_payment > div {
 		display: inline-block;
+		vertical-align: top;
 	}
 
 	.invoice_payments_price {
-		
+
 	}
 
-	.invoice_payments_provider::before {
-		content: '- ';
+	.invoice_payments_provider {
+		width: 66%;
+	}
+
+	.invoice_payments_date::after {
+		content: ' -';
 	}
 
 
@@ -669,6 +712,20 @@
     border-right: 1px solid #c1c1c1 !important;
   }
 
+  /* fix na nachodzenie diva #buyer_sign.with_qrcode na link do platnosci */
+	#bm-account-no-btn {
+		z-index: 1;
+		position: relative;
+	}
+
+  #own_fields.below_invoice_dates {
+    margin-top: 0.25em;
+  }
+}
+
+#notes {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 @page {
@@ -676,7 +733,7 @@
   margin: 0.5cm;
 }
 
-@media print {	
+@media print {
 
 
 /* ------------------------------------------------- */
@@ -691,13 +748,21 @@
 /* ------------------------------------------------- */
 
 
-	/* DO NOT MODIFY */
-	#description_footer {
-		display: none;
+	#description_footer, #description_footer.description_footer_fr {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
-
-	/* DO NOT MODIFY */
-
 
 	/* DO NOT MODIFY */
 	a.btn-print {
@@ -742,11 +807,15 @@
 
 
 /* ------------------------------------------------- */
-
+  section#summary a, a:link, a:visited, a:active, a:hover {
+		color: currentColor;
+		pointer-events: none;
+		text-decoration: none;
+	}
 
 }
 
-@media screen {	
+@media screen {
 
 	table.main_inv_table td { }
 
@@ -759,6 +828,6 @@
 		width:210mm;
 		padding: 0px;
 		padding-top: 1cm;
-	}	
-/* ------------------------------------------------- */	
-}	
+	}
+/* ------------------------------------------------- */
+}

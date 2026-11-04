@@ -30,6 +30,10 @@
 			{{#if correction}}
 				<p style="margin-bottom: 0.5em;">
 					{{ correction }}
+					{{#if corrected_ksef_number}}
+						<br>
+						{{tt "invoice.correction_of_ksef_short"}}: {{ corrected_ksef_number }}
+					{{/if}}
 					{{#if gov_corrected_invoice_number}}
 						<br>
 						{{tt "invoice.gov_corrected_invoice_number"}}: {{ gov_corrected_invoice_number }}
@@ -44,6 +48,13 @@
 					{{ proforma }}
 				</p>
 			{{/if}}
+			{{#unless correction}}
+				{{#if corrected_ksef_number}}
+					<p style="margin-bottom: 0.5em;">
+						{{tt "invoice.correction_of_ksef_short"}}: {{ corrected_ksef_number }}
+					</p>
+				{{/if}}
+			{{/unless}}
 			<p>
 				{{#if print_option}}
 					<p>{{print_option}}</p>
@@ -113,7 +124,7 @@
 
 	<section id="invoice_traders" {{#if recipient_present}}class="with_recipient"{{/if}}>
 		<div style="display:table-row">
-				<div class="header">{{#eq kind 'act_of_acceptance'}}{{tt "invoice.act_of_acceptance_fields.contractor"}}{{else}}{{tt "invoice.seller"}}{{/eq}}:</div>
+				<div class="header">{{#eq kind 'act_of_acceptance'}}{{tt "invoice.act_of_acceptance_fields.contractor"}}:{{else}}{{tt "invoice.seller"}}:{{/eq}}</div>
 			<div style="table-cell;"> </div>
 			<div class="header">
 				{{#eq kind 'receipt'}}

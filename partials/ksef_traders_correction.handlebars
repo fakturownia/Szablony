@@ -1,0 +1,183 @@
+<section id="invoice_traders">
+    {{#if seller_fields_changed}}
+    <div style="display:table-row">
+        <div class="header"></div>
+        <div style="table-cell;"> </div>
+        <div class="header">{{ tt "invoice.corrected_content_before" }}:</div>
+        <div style="table-cell;"> </div>
+        <div class="header">{{ tt "invoice.corrected_content_after" }}:</div>
+    </div>
+    {{/if}}
+    <div style="display:table-row">
+        <div>
+            {{tt "invoice.seller"}}
+        </div>
+        <div id="traders-spacer" class="traders-spacer"> </div>
+        <div id="seller">
+            <div class="box">
+                <p>{{{corrected_seller_company}}}</p>
+                <p>{{{corrected_seller_address}}}</p>
+                {{#if corrected_seller_tax_no}}
+                    <p style="margin-bottom: 0.5em;">{{corrected_seller_tax_no_kind}} {{corrected_seller_tax_no}}
+                    {{#if bdo_no}}
+                        | {{tt "invoice.bdo_no"}} {{bdo_no}}
+                    {{/if}}
+                    </p>
+                {{/if}}
+
+                {{#if email}}
+                    <p>{{email}}</p>
+                {{/if}}
+
+                {{#if www}}
+                    <p>{{{www}}}</p>
+                {{/if}}
+
+                {{#if phone}}
+                    <p>{{tt 'department.phone'}}: {{phone}}</p>
+                {{/if}}
+
+                {{#if fax}}
+                    <p>{{tt 'department.fax'}}: {{fax}}</p>
+                {{/if}}
+
+                {{#if issuer}}
+                    {{#unless hide_recipients }}
+                        <p style="margin-top: 0.5em;" id="issuer">
+                            <strong>{{additional_address_seller_name}}</strong>
+                            <br/>
+                            {{{issuer}}}
+                        </p>
+                    {{/unless}}
+                {{/if}}
+                {{#if show_bank_details}}
+                    {{#if bank_accounts_enabled}}
+                        <p class="nowrap-lines">{{bank_accounts_label}}:</p>
+                        {{#each bank_accounts}}
+                            <p class="nowrap-lines">{{bank_name}}</p>
+                            {{#if ../bm_bank_account_link}}
+                                <p class="nowrap-lines"><a id="bm-account-no-btn" href={{payment_url}}>{{{bank_account_number}}}</a></p>
+                            {{else}}
+                                <p class="nowrap-lines">{{bank_account_number}}</p>
+                            {{/if}}
+                            <p class="nowrap-lines">{{bank_swift_with_currency}}</p>
+                        {{/each}}
+                    {{else}}
+                        {{#if bank}}
+                            <p>{{tt "invoice.seller_bank"}}: {{bank}}</p>
+                        {{/if}}
+                        {{#if bank_account}}
+                            {{#if bm_bank_account_link}}
+                                <p class="nowrap-lines">{{tt "invoice.seller_bank_account"}}: <a id="bm-account-no-btn" href={{payment_url}}>{{{bank_account}}}</a></p>
+                            {{else}}
+                                <p class="nowrap-lines">{{tt "invoice.seller_bank_account"}}: {{{bank_account}}}</p>
+                            {{/if}}
+                        {{/if}}
+                        {{#if swift}}
+                            <p class="nowrap-lines">{{tt "invoice.seller_bank_swift"}}: {{swift}}</p>
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div id="traders-spacer" class="traders-spacer"> </div>
+        <div id="seller">
+            {{#if seller_fields_changed}}
+                <div class="box">
+                    <p>{{{company}}}</p>
+                    <p>{{{address}}}</p>
+                    {{#if tax_no}}
+                        <p style="margin-bottom: 0.5em;">{{seller_tax_no_kind}} {{tax_no}}
+                        {{#if bdo_no}}
+                            | {{tt "invoice.bdo_no"}} {{bdo_no}}
+                        {{/if}}
+                        </p>
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <br>
+    {{#if buyer_fields_changed}}{{#unless seller_fields_changed}}
+    <div style="display:table-row">
+        <div class="header"></div>
+        <div style="table-cell;"> </div>
+        <div class="header">{{ tt "invoice.corrected_content_before" }}:</div>
+        <div style="table-cell;"> </div>
+        <div class="header">{{ tt "invoice.corrected_content_after" }}:</div>
+    </div>
+    {{/unless}}{{/if}}
+    <div style="display:table-row">
+        <div>
+            {{tt "invoice.buyer"}}
+        </div>
+        <div id="traders-spacer" class="traders-spacer"> </div>
+        <div id="buyer">
+            <div class="box">
+                <p>
+                    {{#and client_url show_links }}
+                        <a href="{{{client_url}}}">{{{corrected_buyer_company}}}</a>
+                    {{else}}
+                        {{{corrected_buyer_company}}}
+                    {{/and}}
+                </p>
+                <p>{{{corrected_buyer_address}}}</p>
+
+                {{#if corrected_buyer_tax_no}}
+                    <p>{{corrected_buyer_tax_no_kind}} {{corrected_buyer_tax_no}}</p>
+                {{/if}}
+
+                {{#if_created_after_date '2016-10-11'}}
+                    {{#and show_buyer_note buyer_note}}
+                        <p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
+                    {{/and}}
+                {{/if_created_after_date}}
+
+                {{#and use_delivery_address delivery_address}}
+                    <p style="margin-top: 0.5em;"><strong>{{delivery_address_name}}</strong><br/>
+                    {{{delivery_address}}}</p>
+                {{/and}}
+
+                {{#if show_client_phone_on_invoice}}
+                    <p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+                {{/if}}
+                {{#if recipient_present}}
+                    {{#unless hide_recipients}}
+                    <p style="margin-top: 0.5em;"><strong>{{tt "invoice.recipient"}}</strong><br/>
+                    <p>
+                        {{#and recipient_url show_links }}
+                            <a href="{{{recipient_url}}}">{{{recipient_name}}}</a>
+                        {{else}}
+                            {{{recipient_name}}}
+                        {{/and}}
+                    </p>
+                    <p>{{{recipient_address}}}</p>
+
+                    {{#and show_buyer_note recipient_note}}
+                        <p style="margin-top: 0.5em;" id="recipient_note">{{{recipient_note}}}</p>
+                    {{/and}}
+                    {{/unless}}
+				{{/if}}
+            </div>
+        </div>
+        <div id="traders-spacer" class="traders-spacer"> </div>
+        <div id="buyer">
+            {{#if buyer_fields_changed}}
+                <div class="box">
+                    <p>
+                        {{#and client_url show_links }}
+                            <a href="{{{client_url}}}">{{{buyer}}}</a>
+                        {{else}}
+                            {{{buyer}}}
+                        {{/and}}
+                    </p>
+                    <p>{{{buyer_address}}}</p>
+
+                    {{#if buyer_tax_no}}
+                        <p>{{buyer_tax_no_kind}} {{buyer_tax_no}}</p>
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</section>

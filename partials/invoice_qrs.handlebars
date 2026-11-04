@@ -1,0 +1,75 @@
+<section id="invoice_qrs">
+    <table class="clean qrs">
+        <tr>
+            {{#if ksef_qrcode_cert_img}}
+            <td class="qrs_left">
+                <div class="qr_title">
+                    {{ksef_qrcode_cert_title}}
+                </div>
+                <img src='{{ksef_qrcode_cert_img}}'>
+                <div class="ksef_below_qr">
+                    {{ksef_qrcode_cert_subtitle}}
+                </div>
+            </td>
+            {{/if}}
+            {{#if ksef_qrcode_invoice_img}}
+            <td class="qrs_left">
+                <div class="qr_title">
+                    {{ksef_qrcode_invoice_title}}
+                </div>
+                <img src='{{ksef_qrcode_invoice_img}}'>
+                <div class="ksef_below_qr">
+                    {{ksef_qrcode_invoice_subtitle}}
+                </div>
+            </td>
+            {{/if}}
+            {{#if qrcode_img}}
+            <td class="qrs_{{#if qrcode_img_old_position}}center{{else}}right{{/if}}">
+                <div class="qr_title">
+                    {{tt "invoice.qrcode.payment_title" }}
+                </div>
+                <img src='{{qrcode_img}}'>
+            </td>
+            {{/if}}
+        </tr>
+    </table>
+</section>
+<style>
+    table.qrs{margin:0 auto;}
+    table.qrs td{padding:10px 5px;}
+    td.qrs_left, td.qrs_right, td.qrs_center {width:auto;vertical-align:top;}
+    td.qrs_center {width:auto;}
+    td.qrs_center img {position: relative; display: block; margin-right: auto; margin-left: auto;}
+    td.qrs_center div.qr_title {font-weight: bold; text-align: center;}
+    td.qrs_center div.verifactu_id_below_qr {margin-left: auto;}
+	td.qrs_left img {position:relative;margin-right:auto;max-width: none;}
+	td.qrs_right img {display:inline;}
+    td.qrs_left:first-child {width:1%; padding-right:45px !important;}
+    td.qrs_right {text-align:right;}
+    td.qrs_right div.qr_title,
+    td.qrs_left div.qr_title {
+        /* font-weight: bold; */
+        position: relative;
+        display: block;
+        max-width: 120px;
+        font-size: 3mm;
+        inline-size: auto;
+        overflow-wrap: break-word;
+        text-align: center;
+        padding-bottom: 1mm;
+        margin-right: auto;
+    }
+    td.qrs_right div.qr_title {margin-left: auto;margin-right: 0;}
+
+    .ksef_below_qr {
+        position: relative;
+        display: block;
+        max-width: 125px;
+        font-size: 3mm;
+        inline-size: auto;
+        overflow-wrap: break-word;
+        text-align: center;
+        padding-top: 1.5mm;
+        margin-left: -2.5px;
+    }
+</style>

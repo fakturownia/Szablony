@@ -24,16 +24,24 @@
 
 		<tr>
 			<td >
-				
+
 				<p class="invoice_title">
-					<strong>{{document_type}} {{tt "invoice.number"}}</strong> <span>{{number}}</span> 
-					
+					<strong>{{document_type}} {{tt "invoice.number"}}</strong> <span>{{number}}</span>
+
 				</p>
 
 
 				{{#if correction}}
 					<p class="small">
 						{{ correction }}
+					</p>
+				{{else if receipt}}
+					<p class="small">
+						{{ receipt }}
+					</p>
+				{{else if proforma}}
+					<p class="small">
+						{{ proforma }}
 					</p>
 				{{/if}}
 
@@ -47,7 +55,7 @@
 
 				<p>
 					{{#if issue_place}}
-						<strong>{{tt "invoice.place"}}:</strong> {{issue_place}}, {{issue_date}} <br/>	
+						<strong>{{tt "invoice.place"}}:</strong> {{issue_place}}, {{issue_date}} <br/>
 					{{else}}
 						<strong>
 						{{#if accounting_doc}}
@@ -55,7 +63,7 @@
 						{{else}}
 							{{tt "invoice.print_date"}}:
 						{{/if}}
-						</strong> {{issue_date}}	
+						</strong> {{issue_date}}
 					{{/if}}
 				</p>
 
@@ -67,14 +75,20 @@
 					{{/if}}
 				</p>
 
-                {{#eq locale 'cz'}}
+                {{#include 'cz sk' locale}}
                     {{#if payment_reference_number}}
                         <p id="payment_reference_number_field">
-                            <span>{{tt "invoice.payment_reference_number"}}:</span>
+                            <span>{{tt "invoice.payment_reference_number"}}: </span>
                             {{payment_reference_number}}
                         </p>
                     {{/if}}
-                {{/eq}}
+                    {{#if reverse_charge_code}}
+                        <p id="reverse_charge_code_field">
+							<span>{{tt "invoice.reverse_charge_code"}}:</span>
+							{{reverse_charge_code}}
+						</p>
+                    {{/if}}
+                {{/include}}
 
 				{{#if type_of_payment}}
 					<p>
@@ -96,7 +110,7 @@
 							<strong>{{additional_field_name}}:</strong> {{additional_field_value}}
 						</p>
 					{{/if}}
-				{{/if}}				
+				{{/if}}
 
 			</td>
 
@@ -116,35 +130,31 @@
 	<hr />
 
 	<table class="clean split_half">
-		
+
 		<thead>
 			<tr>
-						
+
 				<th>
 					<span class="seller">{{tt "invoice.seller"}}</span>
 				</th>
-			
+
 				<th>
-					<span class="buyer">
-						{{#and use_delivery_address delivery_address}}
-							{{delivery_address_name}}
-						{{else}}
-							{{tt "invoice.buyer"}}
-						{{/and}}
-					</span>
+          <span class="buyer">
+            {{tt "invoice.buyer"}}
+          </span>
 				</th>
 			</tr>
-			
+
 		</thead>
-		<tbody>	
-			
+		<tbody>
+
 			<tr>
-			
-				<td>				
+
+				<td>
 					<p>{{{company}}}</p>
 					<p>{{{address}}}</p>
 					<p>{{seller_tax_no_kind}} {{{tax_no}}}</p>
-					<p>{{www}}</p>
+					<p>{{{www}}}</p>
 					<p>{{email}}</p>
 					<p>
 						{{#if fax}}{{tt 'department.fax'}}: {{fax}}{{/if}}
@@ -166,76 +176,111 @@
 						</p>
 					{{/if}}
 
+          {{#if seller_postal_address}}
+            <strong>{{tt "invoice.postal_address"}}</strong>
+            <p>
+              {{{seller_postal_address}}}
+            </p>
+          {{/if}}
 
-					{{#and use_delivery_address delivery_address}}
-						<strong>{{tt "invoice.buyer"}}</strong>
-					{{else}}
-						</td>
-						<td id="buyer">
-					{{/and}}
-
-					<p>
-						{{#and client_url show_links }}
-							<a href="{{{client_url}}}">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
-						{{else}}
-							{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}
-						{{/and}}</p>
-					<p>{{{buyer_address}}}</p>
-					{{#if buyer_tax_no}}
-						<p>{{buyer_tax_no_kind}} {{{buyer_tax_no}}}</p>
-					{{/if}}
-					{{{invoice_buyer_note}}}
-
+          {{#if issuers}}
+            <strong>{{issuers_header}}</strong>
+            {{>issuers}}
+          {{/if}}
 				</td>
 
-				{{#and use_delivery_address delivery_address}}
-					<td>
-						{{{delivery_address}}}
-					</td>
-				{{/and}}
+        <td>
 
+					<p>
+            {{#and client_url show_links }}
+              <a href="{{{client_url}}}">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
+            {{else}}
+              {{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}
+            {{/and}}
+          </p>
+          <p>{{{buyer_address}}}</p>
+          {{#if buyer_tax_no}}
+            <p>{{buyer_tax_no_kind}} {{{buyer_tax_no}}}</p>
+          {{/if}}
+          {{{invoice_buyer_note}}}
+
+          {{#and use_delivery_address delivery_address}}
+            <strong>{{delivery_address_name}}</strong>
+            <p>{{{delivery_address}}}</p>
+          {{/and}}
+
+          {{#if buyer_postal_address}}
+            <strong>{{tt "invoice.postal_address"}}</strong>
+            <p>{{{buyer_postal_address}}}</p>
+          {{/if}}
+
+          {{#if recipients}}
+            <strong>{{recipients_header}}</strong>
+            {{>recipients}}
+          {{/if}}
+        </td>
 			</tr>
-		
-		</tbody>	
+
+		</tbody>
 	</table>
 
 	{{#if title}}
-	
+
 	<table class="full_width">
 
 
 
 			<tbody><tr>
 				<td class="small_text text_center">
-				
+
 					<span>
-						<h4>{{title}}</h4>					
+						<h4>{{title}}</h4>
 					</span>
 				</td>
 
 			</tr>
 
 		</tbody></table>
-	
-	
-		
+
+
+
 	{{/if}}
 
 
-	{{#eq kind 'correction'}}
-		<!-- if you want to customize 'positions_correction', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions_correction.hbs.html  -->
-		{{>positions_correction}}
+  {{#in kind 'estimate_correction, correction'}}
+		{{#if advance_compact_look }}
+			{{>positions_correction_advance_compact}}
+		{{else}}
+			<!-- if you want to customize 'positions_correction', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions_correction.hbs.html  -->
+			{{>positions_correction}}
+		{{/if}}
 	{{else}}
-		<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
-		<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
-		{{>positions}}
+		{{#eq locale 'fr'}}
+			<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
+			<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
+			{{>positions}}
+		{{else}}
+			{{#if advance_compact_look }}
+				{{>positions_advance_compact}}
+			{{else}}
+				{{>positions3}}
+			{{/if}}
+		{{/eq}}
+  {{/in}}
+
+	{{#eq locale 'fr'}}
+		{{#if final}}
+			<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
+			<!-- if you want to customize 'advances', you can override this by https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
+			{{>advances}}
+		{{/if}}
 	{{/eq}}
-		
-	{{#if final}}
-		<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
-		<!-- if you want to customize 'advances', you can override this by https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
-		{{>advances}}
-	{{/if}}
+
+
+
+  {{#if sec_stamp_url}}
+    <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-40px;margin-left:60px;height:140px" src="{{sec_stamp_url}}" />
+  {{/if}}
 
 	<!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals.handlebars  -->
 	<!-- if you want to customize 'totals', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/totals.hbs.html  -->
@@ -244,18 +289,25 @@
 	{{#if has_corrected_content}}
 		{{>corrected_content}}
 	{{/if}}
-	
+
 
 	<div style="page-break-inside:avoid">
 	<table class="clean to_pay">
 		<tbody>
 
-		{{#if oid}}
-			<tr  class="inv_oid">
-				<th>{{tt 'invoice.oid'}}:</th>
-				<td>{{oid}}</td>
-			</tr>
-		{{/if}}
+		{{#eq locale 'pl'}}
+			{{#if show_oid}}
+				<p>
+					<span>{{tt 'invoice.oid'}}:</span> {{oid}}
+				</p>
+			{{/if}}
+		{{else}}
+			{{#if oid}}
+				<p>
+					<span>{{tt 'invoice.oid'}}:</span> {{oid}}
+				</p>
+			{{/if}}
+		{{/eq}}
 
 		{{#if correction_reason}}
 			<tr class="inv_cor_reason">
@@ -263,40 +315,102 @@
 				<td>{{{correction_reason}}}</td>
 			</tr>
 		{{/if}}
-
+		{{#if correction_reason_code}}
+			<tr class="inv_cor_reason">
+				<th>{{tt "invoice.correction_reason_code"}}:</th>
+				<td>{{{correction_reason_code}}}</td>
+			</tr>
+		{{/if}}
+		{{#if show_rr_declaration}}
+			<tr class="inv_rr">
+				<th> {{tt "invoice.rr_declaration_title"}}: </th>
+				<td> {{{rr_declaration}}}
+					<p>
+					.............................................................................................................
+					</p>
+					<span>{{tt "invoice.rr_signature"}}</span>
+				</td>
+			</tr>
+		{{/if}}
 		{{#if notes}}
 			<tr class="inv_desc">
 				<th> {{tt "invoice.description"}}: </th>
 				<td> {{{notes}}} </td>
 			</tr>
 		{{/if}}
+		{{{transaction_terms_table_html}}}
 		{{#if exempt_tax_kind}}
 			<p>{{exempt_tax_kind}}</p>
 		{{/if}}
-		
-		{{#or paid show_paid_when_zero}}	
+
+    {{#if show_bill_note_info}}
+      <p>{{bill_default_note}}</p>
+    {{/if}}
+
+    {{#if issued_to_receipt_note_visible}}
+      <p>{{tt "invoice.issued_to_receipt"}}</p>
+    {{/if}}
+
+    {{#if split_payment}}
+      <p>{{split_payment_note}}</p>
+    {{/if}}
+
+    {{#if should_print_gtu_codes}}
+      <p>{{gtu_codes_note}}</p>
+    {{/if}}
+
+    {{#if should_print_procedure_designations}}
+      <p>{{procedure_designations_note}}</p>
+    {{/if}}
+
+		{{#if procedure_vat_margin}}
+			<p>{{procedure_vat_margin}}</p>
+		{{/if}}
+
+		{{#if cash_accounting}}
+			<p>{{tt "invoice.cash_accounting"}}</p>
+		{{/if}}
+
+		{{#eq locale 'pl'}}
+			{{#if triangular_transaction}}
+				<p>{{tt "invoice.triangular_transaction_note"}}</p>
+			{{/if}}
+			{{#each np_tax_kind_notes}}
+				<p>{{this}}</p>
+			{{/each}}
+		{{/eq}}
+
+		{{#or paid show_paid_when_zero}}
 			<tr class="inv_to_pay">
 				<th width="10">{{tt "invoice.paid"}}:</th>
-				<td>{{paid}}</td>
+				{{#if_created_after_date "2023-12-29"}}
+					<td>{{paid_fr}}</td>
+				{{else}}
+					<td>{{paid}}</td>
+				{{/if_created_after_date}}
 			</tr>
 		{{/or}}
 
-		<tr class="inv_to_pay">	
+		<tr class="inv_to_pay">
 			<th width="10">{{tt "invoice.to_pay"}}:</th>
 			<td>
 				{{outstanding}}
-				{{#if outstanding_in_words}}				
+				{{#if outstanding_in_words}}
 					<br />
 					{{tt "invoice.in_words"}}: {{{outstanding_in_words}}}
 				{{/if}}
 			</td>
 		</tr>
-		
-	
+
+
 		</tbody>
 	</table>
 
 	<br/><br/>
+
+	{{#not_eq locale 'fr'}}
+		{{>estimates}}
+	{{/not_eq}}
 
 	<table  class="full_width">
 		<tr>
@@ -310,7 +424,7 @@
 
 			<td class="text_center half_width seller_person" style="width:50%">
 				{{#or person show_empty_seller_person}}
-					<strong style="display:block;margin-bottom: 5px;">{{tt "invoice.seller_person"}}</strong>				
+					<strong style="display:block;margin-bottom: 5px;">{{tt "invoice.seller_person"}}</strong>
 					{{person}}
 				{{/or}}
 
@@ -320,7 +434,7 @@
 					<img src="{{stamp_url}}" alt="stamp" style="display:block;margin:auto;max-width:40%"/>
 				{{else}}
 
-				{{/if}}	
+				{{/if}}
 			</td>
 
 		</tr>
@@ -340,11 +454,11 @@
 	<hr class="noprint" style="margin-top:0px;" />
 
 	<section id="extra_page" style="page-break-before:always !important;">
-		
+
 		<div id="extra_page_content">{{{description_long}}}</div>
 
 	</section>
-{{/if}}	
+{{/if}}
 
 
 

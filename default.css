@@ -1,22 +1,22 @@
 
-@media all{ 
-	
+@media all{
+
 	.invoice_outline{font-family:helvetica,"lucida grande","lucida sans unicode";}
-	
-	
-	
-	/*@page{size:A4 ;}*/	
+
+
+
+	/*@page{size:A4 ;}*/
 	.clear{clear:both;}
 	p{margin:0;}
 	table p{margin-bottom:0.5em;line-height:1.4em;}
 	.split_three strong{display:block;margin-bottom:5px;}
 	.split_three br{display:none}
 	#custom_stamp {background-position: 96% 87% !important}
-	
+
 	/*TABELE*/
-	
+
 	table{font-size:0.6em;}
-	
+
 	tr{page-break-inside:avoid;}
 	table{page-break-after:auto}
 	tr{page-break-inside:avoid;page-break-after:auto}
@@ -28,9 +28,9 @@
 	.nobreak {
 	    page-break-inside: avoid;
 	}
-	
 
-		
+
+
 	table th,
 	table td{margin:0;padding:0;}
 	th.width0,
@@ -43,25 +43,25 @@
 	td.width3{width:7%;}
 	th.width4,
 	td.width4{width:25%;}
-	
+
 	td.logo_inside,
 	td.logo_inside{vertical-align:middle;text-align:center}
-	
+
 	td.logo_inside img {
 		max-height: 187px;
 	    max-width: 250px;
-		
+
 	}
-	
+
 	td:empty {
 	    visibility: hidden;
 	}
-	
+
 	table {
 	    border-collapse: collapse;
 	       empty-cells:hide;
 	}
-	
+
 	html tr,
 	html td{background-color:transparent;empty-cells:hide}
 	table{margin:auto;clear:both;margin-top:10px;border-collapse:collapse ;empty-cells:hide;margin:5px auto 5px auto;width:100%;}
@@ -73,16 +73,64 @@
 	table.main_inv_table th{font-weight:bold;background-color:#f1f1f1 ;border:1px solid #bbbbbb ;font-size:10px;}
 	table.main_inv_table th p,table td a{text-align:left;}
 	table.main_inv_table .tax_col.footer {visibility: visible;}
-	
+
 	table th {
 	    font-weight: bold;
 	}
-	
+
 	table.to_right{float:right;width:99%;}
 	table.to_right th{text-align:right;}
 	table.to_right td{width:15%;text-align:right;}
 	.split_half td{width:50%;}
 	.split_three td{width:33%;}
+	.split_three_extra_center td:nth-of-type(odd){width:25%;}
+	.split_three_extra_center td:nth-of-type(even){width:50%;}
+
+	table.qrs{margin:0 auto;}
+	table.qrs td{padding:10px 5px;}
+	td.qrs_center {width:auto;}
+	td.qrs_center img {position: relative; display: block; margin-right: auto; margin-left: auto;}
+	td.qrs_center div.qr_title {font-weight: bold; text-align: center;}
+	td.qrs_center div.verifactu_id_below_qr {margin-left: auto;}
+	td.qrs_left img {position:relative;margin-right:auto;max-width: none;}
+	td.qrs_right img {display:inline;}
+	td.qrs_left:first-child {width:1%; padding-right:45px !important;}
+	td.qrs_right {text-align:right;}
+	td.qrs_right div.qr_title,
+	td.qrs_left div.qr_title {
+		/* font-weight: bold; */
+		position: relative;
+		display: block;
+		max-width: 120px;
+		font-size: 3mm;
+		inline-size: auto;
+		overflow-wrap: break-word;
+		text-align: center;
+		padding-bottom: 1mm;
+		margin-right: auto;
+	}
+	td.qrs_right div.qr_title {margin-left: auto;margin-right: 0;}
+
+	.ksef_below_qr {
+		position: relative;
+		display: block;
+		max-width: 125px;
+		font-size: 3mm;
+		inline-size: auto;
+		overflow-wrap: break-word;
+		text-align: center;
+		padding-top: 1.5mm;
+		margin-left: -2.5px;
+	}
+
+	.verifactu_id_below_qr {
+		position: relative;
+		display: block;
+		inline-size: auto;
+		text-align: center;
+		padding-top: 12px;
+		margin-right: auto;
+	}
 
 	table.to_pay{margin:40px auto 20px auto;background:transparent;}
 	table.to_pay th,
@@ -94,11 +142,11 @@
 	table th,table td{margin:0;padding:5px;}
 
 
-	
+
 	#exchange_currency {margin-top:20px;}
 	#exchange_currency td {border-top:1px solid #ddd; padding-top:10px !important;}
 	#exchange_currency  + table.clean.to_pay {margin-top:0;}
-	
+
 
 	table td.empty{border:0;}
 	html body table tr:hover{background-color:transparent;}
@@ -107,12 +155,12 @@
 	th.text_left,
 	td.text_left{text-align:left;padding-left:10px;}
 	.number,.nowrap,
-	td b, td.row1, td.row2, td.row3{white-space:nowrap}	
-	
-	th.width3 + th.width1.nowrap {white-space:normal}
-	
+	td b, td.row1, td.row2, td.row3{white-space:nowrap}
 
-	
+	th.width3 + th.width1.nowrap {white-space:normal}
+	/* .ean_code{font-size: 0.8em;} */
+
+
 	.payment_button {
 		display:block;
 		float:right;
@@ -135,25 +183,25 @@
 		margin:0;
 		padding:0;
 	}
-	
-	
-	.invoice_outline[dir="rtl"],	
-	.invoice_outline[dir="rtl"] table, 
-	.invoice_outline[dir="rtl"] table th, 
+
+
+	.invoice_outline[dir="rtl"],
+	.invoice_outline[dir="rtl"] table,
+	.invoice_outline[dir="rtl"] table th,
 	.invoice_outline[dir="rtl"] table td
 	{
 		text-align:right;
 	}
-	
-	.invoice_outline[dir="rtl"] .inv_paid > td,	
+
+	.invoice_outline[dir="rtl"] .inv_paid > td,
 	.invoice_outline[dir="rtl"] .inv_to_pay > td{
 		text-align:right;
 	}
-	
-	
-	.invoice_outline[dir="rtl"] table.clean.to_right td,		
+
+
+	.invoice_outline[dir="rtl"] table.clean.to_right td,
 	.invoice_outline[dir="rtl"] table.clean.to_right th {text-align:left;}
-	
+
 	.nowrap, .no_wrap {
 		white-space:nowrap !important;
 	}
@@ -180,17 +228,38 @@
 		font-size: 9pt;
 	}
 
+	/* RELATED ADVANCED INVOICES*/
+
+	table.main_inv_table td.advanced_header {
+		border: 0 !important;
+	}
+
+	.name_col.related_advance {
+		text-align: left;
+	}
+
+	/* VAT_RR*/
+
+	.inv_rr span {
+		font-size: 10px;
+		color: #999;
+		display: block;
+		margin-top: 10px;
+	}
+
+	.inv_rr p {
+		margin-top: 30px;
+	}
 }
 
-@page:first {
-	margin-top: 0in;
-	margin-bottom: 0.5in;
+.inv_desc td {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
-	
 
 @page {size:portrait;margin:0in;padding:0;margin-top:0.5in;margin-bottom:0.5in;}
 
-@media print {		
+@media print {
 
 	.invoice_outline {
 		margin-top:0.5in;
@@ -198,7 +267,23 @@
 		margin-left: 0.5in;
 		margin-right: 0.5in;
 	}
-	
+
+
+	#description_footer {
+		clear: both;
+		page-break-before: avoid;
+		page-break-inside: avoid;
+		page-break-after: avoid;
+		display: block !important;
+		width: 100%;
+		text-align: center;
+		margin-top: 5em;
+		font-size: 0.9em;
+		position: fixed;
+		bottom: 0;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
 
 	table { page-break-inside:auto }
 
@@ -236,12 +321,14 @@
 
 }
 
-@media screen {	
+@media screen {
 
 	.invoice_preview.invoice {
-		font-size:180%;	
+		font-size:180%;
 		width: 8.25in;
 	}
-	
-	
-}	
+
+	.inv_rr span {
+		margin-left: 39px;
+	}
+}

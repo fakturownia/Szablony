@@ -1,4 +1,19 @@
 
+{{#if show_verifactu_qrcode}}
+	<div>
+		<p style="text-align: center; font-size: 16px;">
+			{{ tt "invoice.qrcode.verifactu_title" }}:
+			<br>
+			<img src='{{verifactu_qrcode_img}}'>
+		</p>
+
+		<p style="text-align: center; font-size: 16px;margin-top:10px">
+			{{ tt "invoice.qrcode.verifactu_copy" }}
+		</p>
+		<br><br>
+	</div>
+{{/if}}
+
 {{#if canceled }}
 	<div style="text-align: center; font-size: 12px;">
 		<h3>{{ tt "invoice.kind_options.canceled" }}</h3>
@@ -11,7 +26,7 @@
 <div class="invoice_outline gray" {{#if status_paid}}{{#if show_paid_logo}}{{#not_in kind "proforma,estimate"}}style="background:transparent url('{{paid_mark_url}}') no-repeat 50% bottom;"{{/not_in}}{{/if}}{{/if}} >
 
 
-    {{>buttons}}
+	{{>buttons}}
 {{! ----------------- end DO NOT MODIFY ----------------- }}
 
 	<section id="invoice_header">
@@ -24,28 +39,63 @@
 		</div>
 		<div id="info">
 			<p>
-				<span id="document_type">{{document_type}} <span id="document_type_spacer"></span>{{tt "invoice.number"}}</span><br />
+				<span id="document_type">{{document_type}} <span id="document_type_spacer"></span>{{number_text}}</span><br />
 				<span id="document_number">{{number}}</span>
 			</p>
 			{{#if correction}}
 				<p style="margin-bottom: 0.5em;">
 					{{ correction }}
+					{{#if corrected_ksef_number}}
+						<br>
+						{{tt "invoice.correction_of_ksef_short"}}: {{ corrected_ksef_number }}
+					{{/if}}
+					{{#if gov_corrected_invoice_number}}
+						<br>
+						{{tt "invoice.gov_corrected_invoice_number"}}: {{ gov_corrected_invoice_number }}
+					{{/if}}
+				</p>
+			{{else if receipt}}
+				<p style="margin-bottom: 0.5em;">
+					{{ receipt }}
+				</p>
+			{{else if proforma}}
+				<p style="margin-bottom: 0.5em;">
+					{{ proforma }}
+				</p>
+			{{else if vat_created_from_act_of_acceptance}}
+				<p style="margin-bottom: 0.5em;">
+					{{ vat_created_from_act_of_acceptance }}
 				</p>
 			{{/if}}
+			{{#unless correction}}
+				{{#if corrected_ksef_number}}
+					<p style="margin-bottom: 0.5em;">
+						{{tt "invoice.correction_of_ksef_short"}}: {{ corrected_ksef_number }}
+					</p>
+				{{/if}}
+			{{/unless}}
 			<p>
 				{{#if print_option}}
 					<p>{{print_option}}</p>
 				{{/if}}
-				{{#eq kind 'vat_mp'}}
-					<p>{{tt "invoice.cash_accounting"}}</p>	
-				{{/eq}}
-				{{#if issue_place}}
-					<p><span>{{tt "invoice.place"}}:</span> {{issue_place}}</p>	
-				{{/if}}
+				{{#not_eq kind 'act_of_acceptance'}}
+					{{#if issue_place}}
+						<p><span>{{tt "invoice.place"}}:</span> {{issue_place}}</p>
+					{{/if}}
+				{{/not_eq}}
 
 				<p><span>
+
+				{{#and act_of_acceptance invoice_act_of_acceptance}}
+					{{tt "invoice.invoice_act_of_acceptance"}}
+					{{invoice_act_of_acceptance}}
+					<br>
+				{{/and}}
+
 				{{#not_eq locale 'fr'}}
-					{{#if accounting_doc}}
+					{{#if use_print_date_short}}
+						{{tt "invoice.print_date_short"}}:
+					{{else if accounting_doc}}
 						{{tt "invoice.issue_date"}}:
 					{{else}}
 						{{tt "invoice.print_date"}}:
@@ -53,8 +103,15 @@
 				{{else}}
 					{{tt "invoice.issue_date"}}:
 				{{/not_eq}}
+
 				</span>
 				{{issue_date}}</p>
+
+			        {{#eq kind 'act_of_acceptance'}}
+					{{#if issue_place}}
+            					<p><span>{{tt "invoice.act_of_acceptance_fields.place"}}:</span> {{issue_place}}</p>
+					{{/if}}
+				{{/eq}}
 
 				{{#if_created_after_date '2016-09-19'}}
 					{{#not_eq locale 'fr'}}
@@ -78,147 +135,263 @@
 					{{/if}}
 				{{/if_created_after_date}}
 
-				{{#if oid}}
-					<p>
-						<span>{{tt 'invoice.oid'}}:</span> {{oid}}
+				{{#if use_delivery_date}}
+					<p id="delivery_date">
+						<span>{{tt "invoice.delivery_date"}} :</span>
+						{{delivery_date}}
 					</p>
+				{{/if}}
+
+				{{#eq locale 'pl'}}
+					{{#if show_oid}}
+						<p>
+							<span>{{tt 'invoice.oid'}}:</span> {{oid}}
+						</p>
+					{{/if}}
+				{{else}}
+					{{#if oid}}
+						<p>
+							<span>{{tt 'invoice.oid'}}:</span> {{oid}}
+						</p>
+					{{/if}}
+				{{/eq}}
+
+				{{#if transaction_type}}
+					<p id="inv_transaction_type_p">
+						<span>{{transaction_type}}</span>
+					</p>
+				{{/if}}
+
+				{{#if own_fields}}
+					{{#eq own_fields_placement 'below_invoice_dates'}}
+						<div id="own_fields" class="below_invoice_dates">
+							{{#each own_fields}}
+								<span>{{this.name}} :</span> {{this.value}}</br>
+							{{/each}}
+						</div>
+					{{/eq}}
 				{{/if}}
 			</p>
 		</div>
 	</section>
 
-
-	<section id="invoice_traders" {{#if recipient_present}}class="with_recipient"{{/if}}>
-		<div style="display:table-row">
-			<div class="header">{{tt "invoice.seller"}}:</div>
-			<div style="table-cell;"> </div>
-			<div class="header">
-				{{#eq kind 'receipt'}}
-					{{#if buyer}}
-						{{tt "invoice.buyer"}}:
-					{{/if}}
-				{{else}}
-					{{tt "invoice.buyer"}}:
-				{{/eq}}
-			</div>
-			{{#if recipient_present}}
+	{{#or seller_fields_changed buyer_fields_changed}}
+		{{>ksef_traders_correction}}
+	{{else}}
+		<section id="invoice_traders" {{#if recipient_present}}class="with_recipient"{{/if}}>
+			<div style="display:table-row">
+			    <div class="header">
+						{{#eq kind 'act_of_acceptance'}}
+							{{tt "invoice.act_of_acceptance_fields.contractor"}}:
+						{{else eq kind 'warehouse_invoice'}}
+							{{tt "invoice.warehouse_invoice_fields.contractor"}}:
+						{{else}}
+							{{tt "invoice.seller"}}:
+						{{/eq}}</div>
 				<div style="table-cell;"> </div>
 				<div class="header">
-					{{tt "invoice.recipient"}}:
+					{{#eq kind 'receipt'}}
+						{{#if buyer}}
+							{{tt "invoice.buyer"}}:
+						{{/if}}
+					{{else eq kind 'act_of_acceptance'}}
+						{{tt "invoice.act_of_acceptance_fields.recipient"}}:
+					{{else eq kind 'warehouse_invoice'}}
+						{{tt "invoice.warehouse_invoice_fields.recipient"}}:
+					{{else}}
+						{{tt "invoice.buyer"}}:
+					{{/eq}}
 				</div>
-			{{/if}}
-		</div>
-		<div style="display:table-row">
-			<div id="seller">
-				
-				<div class="box">
-					<p>{{{company}}}</p>
-					<p>{{{address}}}</p>
-					{{#if tax_no}}
-						<p {{#not_eq locale 'cz'}}style="margin-bottom: 0.5em;"{{/not_eq}}>{{seller_tax_no_kind}} {{tax_no}}</p>
-					{{/if}}
-
-                    {{#eq locale 'cz'}}
-                        {{#if seller_register_number}}
-                            <p> {{tt "invoice.register_number"}} {{seller_register_number}}</p>
-                        {{/if}}
-                    {{/eq}}
-				
-					{{#if email}}
-						<p>{{email}}</p>
-					{{/if}}
-				
-					{{#if www}}
-						<p>{{www}}</p>
-					{{/if}}
-				
-					{{#if phone}}
-						<p>{{tt 'department.phone'}}: {{phone}}</p>
-					{{/if}}
-					{{#if fax}}
-						<p>{{tt 'department.fax'}}: {{fax}}</p>
-					{{/if}}
-
-					{{#if issuer}}
-						<p style="margin-top: 0.5em;" id="issuer">
-							<strong>{{additional_address_seller_name}}</strong>
-							<br/>
-							{{{issuer}}}
-						</p>
-					{{/if}}
-				</div>
+				{{#if recipient_present}}
+					<div style="table-cell;"> </div>
+					<div class="header">
+						{{recipients_header}}:
+					</div>
+				{{/if}}
 			</div>
+			<div style="display:table-row">
+				<div id="seller">
 
-			<div id="traders-spacer" class="traders-spacer"> </div>
+					<div class="box">
+						<p>{{{company}}}</p>
+						<p>{{{address}}}</p>
+						{{#if tax_no}}
+							<p {{#not_eq locale 'cz'}}style="margin-bottom: 0.5em;"{{/not_eq}}>{{seller_tax_no_kind}} {{tax_no}}
+							{{#if bdo_no}}
+								| {{tt "invoice.bdo_no"}} {{bdo_no}}
+							{{/if}}
+							</p>
+						{{/if}}
 
-			<div id="buyer">
-				<div class="box">
-					<p>
-						{{#and client_url show_links }}
-							<a href="{{{client_url}}}" class="{{#eq locale 'fr'}}incognito-link{{/eq}}">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
-						{{else}}
-							{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}
-						{{/and}}
-					</p>
-					<p>{{{buyer_address}}}</p>
-					{{#if buyer_company}}
+						{{#if tva_number}}
+							<p id="tva_number" style="margin-bottom: 0.5em;">
+								{{tva_number}}
+							</p>
+						{{/if}}
+
+						{{#include 'cz sk' locale }}
+							{{#if seller_register_number}}
+								<p> {{tt "invoice.register_number"}} {{seller_register_number}}</p>
+							{{/if}}
+							{{#if seller_trade_register_cz}}
+								<p> {{seller_trade_register_cz}}</p>
+							{{/if}}
+						{{/include}}
+
+						{{#if email}}
+							<p>{{email}}</p>
+						{{/if}}
+
+						{{#if www}}
+							<p>{{{www}}}</p>
+						{{/if}}
+
+						{{#if phone}}
+							<p>{{tt 'department.phone'}}: {{phone}}</p>
+						{{/if}}
+						{{#if fax}}
+							<p>{{tt 'department.fax'}}: {{fax}}</p>
+						{{/if}}
+
+						{{#if issuer}}
+							<p style="margin-top: 0.5em;" id="issuer">
+								<strong>{{additional_address_seller_name}}</strong>
+								<br/>
+								{{{issuer}}}
+							</p>
+						{{/if}}
+
+            {{#if seller_postal_address}}
+              <p style="margin-top: 0.5em;" id="seller_postal_address">
+                <strong>{{tt "invoice.postal_address"}}</strong>
+                <br/>
+                {{{seller_postal_address}}}
+              </p>
+            {{/if}}
+
+						{{#if issuers}}
+							<br>
+							<p id="issuers_header"><strong>{{issuers_header}}</strong></p>
+							{{>issuers}}
+						{{/if}}
+					</div>
+				</div>
+
+				<div id="traders-spacer" class="traders-spacer"> </div>
+
+				<div id="buyer">
+					<div class="box">
+						<p>
+							{{#and client_url show_links }}
+								<a href="{{{client_url}}}" class="{{#eq locale 'fr'}}incognito-link{{/eq}}">{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}</a>
+							{{else}}
+								{{#if buyer_company}} {{else}} {{buyer_title}} {{/if}} {{{buyer}}}
+							{{/and}}
+						</p>
+						<p>{{{buyer_address}}}</p>
 						{{#if buyer_tax_no}}
 							<p>{{buyer_tax_no_kind}} {{buyer_tax_no}}</p>
 						{{/if}}
-					{{/if}}
 
-                    {{#eq locale 'cz'}}
-                        {{#if buyer_register_number}}
-                            <p> {{tt "invoice.register_number"}} {{buyer_register_number}}</p>
-                        {{/if}}
-                    {{/eq}}
-					
-					{{#eq locale 'fr'}}
-						{{#and show_buyer_note buyer_note}}
-							<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
-						{{/and}}
-					{{else}}
-						{{#if_created_after_date '2016-10-11'}}
+						{{#if buyer_tva_number}}
+							<p>{{tt 'invoice.buyer_tva_number_label'}} {{buyer_tva_number}}</p>
+						{{/if}}
+
+						{{#include 'cz sk' locale }}
+							{{#if buyer_register_number}}
+								<p> {{tt "invoice.register_number"}} {{buyer_register_number}}</p>
+							{{/if}}
+						{{/include}}
+
+
+						{{#eq locale 'fr'}}
 							{{#and show_buyer_note buyer_note}}
 								<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
 							{{/and}}
-						{{/if_created_after_date}}
-					{{/eq}}
-					
-					{{#and use_delivery_address delivery_address}}
-						<p style="margin-top: 0.5em;"><strong>{{delivery_address_name}}</strong><br/>
-						{{{delivery_address}}}</p>
-					{{/and}}
-				</div>
-			</div><!-- /buyer -->
+						{{else}}
+							{{#if_created_after_date '2016-10-11'}}
+								{{#and show_buyer_note buyer_note}}
+									<p style="margin-top: 0.5em;" id="buyer_note">{{{buyer_note}}}</p>
+								{{/and}}
+							{{/if_created_after_date}}
+						{{/eq}}
 
-			{{#if recipient_present}}
-				<div class="traders-spacer"> </div>
-
-				<div id="recipient">
-					<div class="box">
-						<p>
-							{{#and recipient_url show_links }}
-								<a href="{{{recipient_url}}}" class="{{#eq locale 'fr'}}incognito-link{{/eq}}">{{{recipient_name}}}</a>
-							{{else}}
-								{{{recipient_name}}}
-							{{/and}}
-						</p>
-						<p>{{{recipient_address}}}</p>
-						
-						{{#and show_buyer_note recipient_note}}
-							<p style="margin-top: 0.5em;" id="recipient_note">{{{recipient_note}}}</p>
+						{{#and use_delivery_address delivery_address}}
+							<p style="margin-top: 0.5em;"><strong>{{delivery_address_name}}</strong><br/>
+							{{{delivery_address}}}</p>
 						{{/and}}
 
+            {{#if buyer_postal_address}}
+              <p style="margin-top: 0.5em;" id="buyer_postal_address">
+                <strong>{{tt "invoice.postal_address"}}</strong>
+                <br/>
+              {{{buyer_postal_address}}}
+              </p>
+            {{/if}}
+
+						{{#and multiple_delivery_addresses delivery_address_filled}}
+							<div style="margin-top: 0.5em;" id="multiple_delivery_addresses">
+								<p><strong>{{delivery_address_name}}</strong><br/>
+
+								<p>{{delivery_address_street}},<br/>
+								{{#if delivery_address_street_additional}}
+									{{delivery_address_street_additional}},<br/>
+								{{/if}}
+								{{delivery_address_post_code}}, {{delivery_address_city}}<br/>
+								{{delivery_address_country}}</p>
+							</div>
+						{{/and}}
+
+						{{#if show_client_phone_on_invoice}}
+							<p>{{tt 'invoice.buyer_phone_short'}} {{buyer_phone}}{{#and buyer_phone buyer_mobile_phone}},{{/and}} {{buyer_mobile_phone}}</p>
+						{{/if}}
+
 					</div>
-				</div><!-- /recipient -->
-			{{/if}}
-		</div>
+				</div><!-- /buyer -->
 
-	</section>
+				{{#if recipient_present}}
+					<div class="traders-spacer"> </div>
+					{{#if recipients }}
+						{{>recipients}}
+					{{else}}
+						<div id="recipient">
+							<div class="box">
+								<p>
+									{{#and recipient_url show_links }}
+										<a href="{{{recipient_url}}}" class="{{#eq locale 'fr'}}incognito-link{{/eq}}">{{{recipient_name}}}</a>
+									{{else}}
+										{{{recipient_name}}}
+									{{/and}}
+								</p>
+								<p>{{{recipient_address}}}</p>
 
+								{{#and show_buyer_note recipient_note}}
+									<p style="margin-top: 0.5em;" id="recipient_note">{{{recipient_note}}}</p>
+								{{/and}}
 
+							</div>
+						</div><!-- /recipient -->
+					{{/if}}
+				{{/if}}
+			</div>
+		</section>
+		{{#eq kind 'act_of_acceptance'}}
+			<div id="traders_agreement_text" class="agreement">
+				{{agreement_heading_text}}
+			</div>
+		{{/eq}}
+	{{/or}}
 
+	{{#if own_fields}}
+		{{#eq own_fields_placement 'above_the_table'}}
+			<div id="own_fields" class="above_the_table">
+				{{#each own_fields}}
+					<br/>
+					<strong>{{this.name}} :</strong> <span>{{this.value}}</span>
+				{{/each}}
+			</div>
+		{{/eq}}
+	{{/if}}
 
 	{{#if title}}
 		<div id="title">
@@ -227,270 +400,523 @@
 	{{/if}}
 
 
-	
-	{{#eq kind 'correction'}}
-		{{#eq locale 'pl'}}
-			<!-- if you want to customize 'positions_correction', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions_correction.hbs.html  -->
-			{{>positions_correction}}
+
+  {{#in kind 'estimate_correction, correction'}}
+		{{#include 'pl es en uk' locale}}
+			{{#if advance_compact_look }}
+				{{>positions_correction_advance_compact}}
+			{{else}}
+				<!-- if you want to customize 'positions_correction', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions_correction.hbs.html  -->
+				{{>positions_correction}}
+			{{/if}}
 		{{else}}
-			<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
-			<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
-			{{>positions}}
-		{{/eq}}
+			{{#include 'delivery_note_no_p maintenance_request' kind}}
+				{{>positions_without_prices}}
+			{{else}}
+				{{#eq locale 'fr'}}
+					<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
+					<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
+					{{>positions}}
+				{{else}}
+					{{>positions3}}
+				{{/eq}}
+			{{/include}}
+		{{/include}}
 	{{else}}
-		<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
-		<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
-		{{>positions}}
+		{{#include 'delivery_note_no_p maintenance_request' kind}}
+			{{>positions_without_prices}}
+		{{else}}
+			{{#eq locale 'fr'}}
+				<!-- si vous souhaitez personnaliser le tableau, vous pouvez le remplacer par https://github.com/vosfactures/Formats/blob/master/partials/positions.handlebars -->
+				<!-- if you want to customize 'positions', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/positions.hbs.html  -->
+				{{>positions}}
+			{{else}}
+				{{#if advance_compact_look }}
+					{{>positions_advance_compact}}
+				{{else}}
+					{{>positions3}}
+				{{/if}}
+			{{/eq}}
+		{{/include}}
+  {{/in}}
+
+	{{#eq locale 'fr'}}
+		{{#if final}}
+			<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
+			<!-- if you want to customize 'advances', you can override this by https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
+			{{>advances}}
+		{{/if}}
 	{{/eq}}
-		
-	{{#if final}}
-		<!-- si vous souhaitez personnaliser la liste des acomptes liés, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/advances.handlebars  -->
-		<!-- if you want to customize 'advances', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/advances.hbs.html  -->
-		{{>advances}}
-	{{/if}}
 
 
 	<div class="clean space-top"></div>
-	
-	{{#eq locale 'fr'}}
-		<!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals2.handlebars  -->
-		{{>totals2}}
 
+	{{#eq locale 'fr'}}
+		<!-- si vous souhaitez personnaliser les totaux, vous pouvez les remplacer par https://github.com/vosfactures/Formats/blob/master/partials/totals2_with_taxes.handlebars  -->
+		{{#if_created_after_date '2021-11-30'}}
+			{{>totals2_with_taxes}}
+		{{else}}
+			{{>totals2}}
+		{{/if_created_after_date}}
 	{{else}}
 		<!-- if you want to customize 'totals', you can override this by https://github.com/fakturownia/Szablony/blob/master/partials/totals.hbs.html  -->
-		{{>totals}}
+		{{#not_eq kind 'delivery_note_no_p'}}
+			{{>totals}}
+		{{/not_eq}}
 	{{/eq}}
 
 	{{#if has_corrected_content}}
 		{{>corrected_content}}
 	{{/if}}
-	
 
-	<div class="no-page-break">
-	
-	<section id="summary">
 
-		{{#eq locale 'fr'}}
-			<p id="absolute_outstanding_field">
-				<span>{{#if negative_outstanding}}{{tt "invoice.to_receive"}}{{else}}{{tt "invoice.to_pay"}}{{/if}}:</span>
-				<span class="to-pay">{{absolute_outstanding}}</span>
-				{{#if exchange_currency}}
-				 &nbsp;|&nbsp; {{absolute_outstanding_in_exchange_currency}}
-				{{/if}}
-			</p>
+	<div>
 
-			{{#if absolute_outstanding_in_words}}
-				<p id="absolute_outstanding_in_words_field">
-					<span>{{tt "invoice.in_words"}}:</span>
-					{{{absolute_outstanding_in_words}}}
-					{{#if exchange_currency}}
-						&nbsp;|&nbsp; {{{absolute_outstanding_in_words_in_exchange_currency}}}
-					{{/if}}
-				</p>
-			{{/if}}
-		{{else}}
-			<p id="outstanding_field">
-				<span>{{tt "invoice.to_pay"}}:</span>
-				<span class="to-pay">{{outstanding}}</span>
-				{{#if exchange_currency}}
-				 &nbsp;|&nbsp; {{outstanding_in_exchange_currency}}
-				{{/if}}
-			</p>
-			{{#if outstanding_in_words}}
-				<p id="outstanding_in_words_field">
-					<span>{{tt "invoice.in_words"}}:</span>
-					{{{outstanding_in_words}}}
-					{{#if exchange_currency}}
-						&nbsp;|&nbsp; {{{outstanding_in_words_in_exchange_currency}}}
-					{{/if}}
-				</p>
-			{{/if}}
+	{{#not_eq kind 'delivery_note_no_p'}}
+		{{#not_eq kind 'act_of_acceptance'}}
 
-			{{#if correction_reason}}
-				<p id="correction_reason_field">
-					<span>{{tt "invoice.correction_reason"}}:</span>
-					{{{correction_reason}}}
-				</p>
-			{{/if}}
-		{{/eq}}
+			<section id="summary">
 
-		
-	
+						{{#eq locale 'fr'}}
+							{{#not_eq kind 'maintenance_request'}}
+								<p id="absolute_outstanding_field">
+									<span>{{#if negative_outstanding}}{{tt "invoice.to_receive"}}{{else}}{{tt "invoice.to_pay"}}{{/if}}:</span>
+									<span class="to-pay">{{absolute_outstanding}}</span>
+									{{#if exchange_currency}}
+									&nbsp;|&nbsp; {{absolute_outstanding_in_exchange_currency}}
+									{{/if}}
+								</p>
 
-		{{#or paid show_paid_when_zero}}
-			<p id="paid_field">
-				<span>{{tt "invoice.paid"}}:</span>
-				{{#if paid}}
-					{{paid}}
-				{{else}}
-					{{zero_with_currency}}
-				{{/if}}
-				{{#unless show_payments_on_invoice}}
-					{{#and paid show_paid_date paid_date}}
-						{{tt 'invoice.paid_on'}} {{paid_date}}
-					{{/and}}
-				{{/unless}}
-			</p>
-		{{/or}}
+								{{#if absolute_outstanding_in_words}}
+									<p id="absolute_outstanding_in_words_field">
+										<span>{{tt "invoice.in_words"}}:</span>
+										{{{absolute_outstanding_in_words}}}
+										{{#if exchange_currency}}
+											&nbsp;|&nbsp; {{{absolute_outstanding_in_words_in_exchange_currency}}}
+										{{/if}}
+									</p>
+								{{/if}}
+							{{/not_eq}}
+						{{else}}
+							<p id="outstanding_field">
+								<span>{{tt "invoice.to_pay"}}:</span>
+								<span class="to-pay">{{outstanding}}</span>
+								{{#if show_exchange_summary}}
+								&nbsp;|&nbsp; {{outstanding_in_exchange_currency}}
+								{{/if}}
+							</p>
+							{{#if outstanding_in_words}}
+								<p id="outstanding_in_words_field">
+									<span>{{tt "invoice.in_words"}}:</span>
+									{{{outstanding_in_words}}}
+									{{#if show_exchange_summary}}
+										&nbsp;|&nbsp; {{{outstanding_in_words_in_exchange_currency}}}
+									{{/if}}
+								</p>
+							{{/if}}
 
-		{{#if payment_to}}
-			<p id="payment_to_field">	
-				<span>{{tt "invoice.payment_to"}}:</span>
-				{{payment_to}}
-			</p>
-		{{/if}}
+							{{#if split_payment}}
+								<p>{{split_payment_note}}</p>
+							{{/if}}
 
-        {{#eq locale 'cz'}}
-            {{#if payment_reference_number}}
-                <p id="payment_reference_number_field">
-                    <span>{{tt "invoice.payment_reference_number"}}:</span>
-                    {{payment_reference_number}}
-                </p>
-            {{/if}}
-        {{/eq}}
+							{{#if correction_reason}}
+								<p id="correction_reason_field">
+									<span>{{tt "invoice.correction_reason"}}:</span>
+									{{{correction_reason}}}
+								</p>
+							{{/if}}
+							{{#if correction_reason_code}}
+								<p id="correction_reason_field">
+									<span>{{tt "invoice.correction_reason_code"}}:</span>
+									{{{correction_reason_code}}}
+								</p>
+							{{/if}}
+						{{/eq}}
 
-		{{#if type_of_payment}}
-			<p id="type_of_payment_field">	
-				<span>{{tt "invoice.payment_type"}}:</span>
-				{{type_of_payment}}
-			</p>
-		{{/if}}
 
-		{{#or bank bank_account swift}}
-			<p id="bank_field">
-				{{#if bank}}<span>{{tt "invoice.seller_bank"}}:</span> {{bank}}<i style="margin-right:2em;"></i>{{/if}}
-	      		{{#if swift}} <span>{{tt "department.bank_swift"}}:</span> {{swift}}<i style="margin-right:2em;"></i>{{/if}}
-	      		{{#if bank_account}} <span>{{tt "invoice.seller_bank_account"}}:</span> {{{bank_account}}} {{/if}}
-      		</p>
-		{{/or}}
 
-		{{#eq locale 'fr'}}
-			{{#not_eq additional_fields.interest_rate 'Néant'}}
-				{{#if additional_fields.interest_rate}}
-					<p id="interest_rate_field">
-						<span>{{tt "invoice.interest_note"}}:</span> 
-						{{additional_fields.interest_rate}}
+
+						{{#not_eq kind 'maintenance_request'}}
+							{{#or paid show_paid_when_zero}}
+								<p id="paid_field">
+									<span>{{tt "invoice.paid"}}:</span>
+									{{#if_created_after_date "2023-12-29"}}
+										{{#if paid_fr}}
+											{{paid_fr}}
+										{{else}}
+											{{zero_with_currency}}
+										{{/if}}
+									{{else}}
+										{{#if paid}}
+											{{paid}}
+										{{else}}
+											{{zero_with_currency}}
+										{{/if}}
+									{{/if_created_after_date}}
+									{{#unless show_payments_on_invoice}}
+										{{#and paid show_paid_date paid_date}}
+											{{tt 'invoice.paid_on'}} {{paid_date}}
+										{{/and}}
+									{{/unless}}
+								</p>
+							{{/or}}
+						{{/not_eq}}
+
+						{{#if payment_to}}
+							<p id="payment_to_field">
+								<span>{{tt "invoice.payment_to"}}:</span>
+								{{payment_to}}
+							</p>
+						{{/if}}
+
+						{{#include 'cz sk' locale}}
+							{{#if payment_reference_number}}
+								<p id="payment_reference_number_field">
+									<span>{{tt "invoice.payment_reference_number"}}:</span>
+									{{payment_reference_number}}
+								</p>
+							{{/if}}
+							{{#if reverse_charge_code}}
+								<p id="reverse_charge_code_field">
+									<span>{{tt "invoice.reverse_charge_code"}}:</span>
+									{{reverse_charge_code}}
+								</p>
+							{{/if}}
+						{{/include}}
+
+						{{#if type_of_payment}}
+							<p id="type_of_payment_field">
+								<span>{{tt "invoice.payment_type"}}:</span>
+								{{type_of_payment}}
+								</p>
+						{{/if}}
+
+						{{#if skonto_active }}
+							</br>
+							<p id="skonto-value">
+								<span>{{tt "invoice.skonto.name"}} {{ skonto_value }}%: </span>
+								<b>{{{ skonto_price }}}</b>
+							</p>
+							<p id="skonto-desc">
+								{{tt "invoice.skonto.info"}} <b>{{ skonto_date }}</b>
+							</p>
+						{{/if}}
+
+					{{#or bank bank_account swift}}
+						<p id="bank_field">
+							{{#eq locale 'uk'}}
+								{{#if bank_account_name_uk}}<span>{{tt "invoice.seller_bank_account_name_uk"}}:</span> {{bank_account_name_uk}}<i style="margin-right:2em;"></i>{{/if}}
+								{{#if sort_code_uk}}<span>{{tt "invoice.seller_sort_code_uk"}}:</span> {{sort_code_uk}}<i style="margin-right:2em;"></i>{{/if}}
+								{{#if bank}}<p><span>{{tt "invoice.seller_bank"}}:</span> {{bank}}<i style="margin-right:2em;"></i></p>{{/if}}
+								{{#if swift}}<p><span>{{tt "department.bank_swift"}}:</span> {{swift}}<i style="margin-right:2em;"></i></p>{{/if}}
+								{{#if bank_account}}
+									{{#if bm_bank_account_link}}
+										<p><span>{{tt "invoice.seller_bank_account"}}:</span> <a id="bm-account-no-btn" href={{payment_url}}>{{{bank_account}}}</a></p><br>
+									{{else}}
+										<p><span>{{tt "invoice.seller_bank_account"}}:</span> {{{bank_account}}}</p>
+									{{/if}}
+								{{/if}}
+								{{#if use_iban}}<p class="nowrap-lines"><strong>IBAN:</strong> {{{bank_iban}}}</p>{{/if}}
+							{{else}}
+								{{#if bank_accounts_enabled }}
+									<p class="nowrap-lines"><strong>{{bank_accounts_label}}:</strong></p>
+									{{#each bank_accounts}}
+										<p class="nowrap-lines">{{bank_name}}</p>
+										{{#if ../bm_bank_account_link}}
+											<p class="nowrap-lines"><a id="bm-account-no-btn" href={{payment_url}}>{{{bank_account_number}}}</a></p>
+										{{else}}
+											<p class="nowrap-lines">{{bank_account_number}}</p>
+										{{/if}}
+										<p class="nowrap-lines">{{bank_swift_with_currency}}</p>
+									{{/each}}
+								{{else}}
+									{{#if bank}}<p><span>{{tt "invoice.seller_bank"}}:</span> {{bank}}<i style="margin-right:2em;"></i></p>{{/if}}
+									{{#if swift}}<p><span>{{tt "department.bank_swift"}}:</span> {{swift}}<i style="margin-right:2em;"></i></p>{{/if}}
+									{{#if bank_account}}
+										{{#if bm_bank_account_link}}
+											<p><span>{{tt "invoice.seller_bank_account"}}:</span> <a id="bm-account-no-btn" href={{payment_url}}>{{{bank_account}}}</a></p><br>
+										{{else}}
+											<p><span>{{tt "invoice.seller_bank_account"}}:</span> {{{bank_account}}}</p>
+										{{/if}}
+									{{/if}}
+									{{#if use_iban}}<p class="nowrap-lines"><strong>IBAN:</strong> {{{bank_iban}}}</p>{{/if}}
+								{{/if}}
+							{{/eq}}
+						</p>
+					{{/or}}
+
+					{{#eq locale 'fr'}}
+						{{#eq kind 'estimate' }}
+							{{#if prepayment_required}}
+								<p id="prepayment_required">
+								<span>{{tt "invoice.prepayment"}}
+								{{#not_eq prepayment_required 'Exact amount'}}
+									{{prepayment_required}}%
+								{{/not_eq}} :</span>
+									{{prepayment_required_exact_amount}}
+								</p>
+							{{/if}}
+						{{/eq}}
+
+						{{#if show_interest_rate}}
+							<p id="interest_rate_field">
+								<span>{{tt "invoice.interest_note"}} :</span>
+								{{interest_rate}}
+							</p>
+						{{/if}}
+
+
+							{{#eq additional_fields.sum_recovery 'client_professionnel'}}
+								{{#if buyer_company}}
+									<p id="sum_recovery_field">
+										<span>{{legal_cost_compensation}}</span>
+									</p>
+								{{/if}}
+							{{/eq}}
+
+
+							{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
+								{{#if additional_fields.advanced_payment_discount}}
+									<p id="advanced_payment_discount_field">
+										<span>{{tt "invoice.discount_on_advanced_payment_note"}}:</span>
+										{{additional_fields.advanced_payment_discount}} %
+									</p>
+								{{/if}}
+							{{/not_eq}}
+
+							{{#if show_paid_dates_on_invoice}}
+								<p id="paid_dates">
+									<span>{{tt "invoice.paid_dates"}}:</span> {{paid_dates}}
+								</p>
+							{{/if}}
+						{{/eq}}
+
+						{{#if additional_field_name}}
+							{{#if additional_field_value}}
+								<p id="additional_field">
+									<span>{{additional_field_name}}: </span>
+									{{additional_field_value}}
+								</p>
+							{{/if}}
+						{{/if}}
+				{{/not_eq}}
+						{{#if show_rr_declaration}}
+							<p id="inv_rr">
+								<span>{{tt "invoice.rr_declaration_title"}}:</span><br />
+								{{{rr_declaration}}}<br /><br /><br />
+							.............................................................................................................<br />
+							<p style="font-size: 0.8em;">{{tt "invoice.rr_signature"}}</p>
+							</p>
+						{{/if}}
+						{{#if tax_based_on_debits}}
+							<p id="tax_based_on_debits">
+								{{tt "invoice.tax_based_on_debits_note"}}
+							</p>
+						{{/if}}
+						{{#if au_member_info}}
+							<p><span>{{tt "invoice.au_note"}}</span> {{au_member_info}}</p>
+						{{/if}}
+
+						{{#if own_fields}}
+							{{#eq own_fields_placement 'below_payment_section'}}
+								<div id="own_fields" class="below_payment_section">
+									{{#each own_fields}}
+										<p><span>{{this.name}} :</span> {{this.value}}</p>
+									{{/each}}
+								</div>
+							{{/eq}}
+						{{/if}}
+
+
+			</section>
+
+
+			<div style="margin:5px">
+				{{#if notes}}
+					<p id="notes">
+						<span><b>{{tt "invoice.description"}}:</b></span><br />
+						{{{notes}}}
 					</p>
 				{{/if}}
-			{{/not_eq}}
-				
-		
-			{{#eq additional_fields.sum_recovery 'client_professionnel'}}
-				{{#if buyer_company}}
-					<p id="sum_recovery_field">
-						<span>{{legal_cost_compensation}}</span>
+				{{{transaction_terms_text_html}}}
+
+			{{#eq locale 'fr'}}
+				{{#if conditional_notes}}
+					<p id="cond_notes">
+						{{{conditional_notes}}}
 					</p>
 				{{/if}}
 			{{/eq}}
-		
 
-			{{#not_eq additional_fields.advanced_payment_discount 'Néant'}}
-				{{#if additional_fields.advanced_payment_discount}}
-					<p id="advanced_payment_discount_field">
-						<span>{{tt "invoice.discount_on_advanced_payment_note"}}:</span>
-						{{additional_fields.advanced_payment_discount}} %
-					</p>
-				{{/if}}
-			{{/not_eq}}
+			{{#if exempt_tax_kind}}
+				<p>{{exempt_tax_kind}}</p>
+			{{/if}}
+
+		{{#if show_bill_note_info}}
+			<p>{{bill_default_note}}</p>
+		{{/if}}
+
+		{{#if issued_to_receipt_note_visible}}
+			<p>{{tt "invoice.issued_to_receipt"}}</p>
+		{{/if}}
+
+		{{#if should_print_gtu_codes}}
+			<p>{{gtu_codes_note}}</p>
+		{{/if}}
+		{{#if should_print_procedure_designations}}
+			<p>{{procedure_designations_note}}</p>
+		{{/if}}
+		{{#if procedure_vat_margin}}
+			<p>{{procedure_vat_margin}}</p>
+		{{/if}}
+
+		{{#if cash_accounting}}
+			<p>{{tt "invoice.cash_accounting"}}</p>
+		{{/if}}
+
+		{{#eq locale 'pl'}}
+			{{#if reverse_charge}}
+				<p>{{tt "invoice.reverse_charge"}}</p>
+			{{/if}}
+			{{#if triangular_transaction}}
+				<p>{{tt "invoice.triangular_transaction_note"}}</p>
+			{{/if}}
+			{{#each np_tax_kind_notes}}
+				<p>{{this}}</p>
+			{{/each}}
 		{{/eq}}
 
-		{{#if additional_field_name}}
-			{{#if additional_field_value}}
-				<p id="additional_field">
-					<span>{{additional_field_name}}: </span>
-					{{additional_field_value}}
-				</p>
-			{{/if}}
-		{{/if}}
+				{{#if gocardless_subscription}}
+					<br/>
+					<strong>{{tt 'account.gocardless.sub_info'}}</strong>
+					<br/>
+					<strong>{{tt 'subscription.interval_unit'}} :</strong> {{subscription_interval_unit}}
+					{{#if subscription_month}}
+						<br/>
+						<strong>{{tt 'subscription.month' }} :</strong> {{subscription_month}}
+					{{/if}}
+					{{#if subscription_day_of_month}}
+						<br/>
+						<strong>{{tt 'subscription.day_of_month'}} :</strong> {{subscription_day_of_month}}
+					{{/if}}
+					{{#if subscription_count}}
+						<br/>
+						<strong>{{tt 'subscription.count'}} :</strong> {{subscription_count}}
+					{{/if}}
+				{{/if}}
 
-		{{#if notes}}
-			<p id="notes">
-				<span>{{tt "invoice.description"}}:</span><br />
-				{{{notes}}}
-			</p>
-		{{/if}}
 
-		{{#if exempt_tax_kind}}
-			<p>{{exempt_tax_kind}}</p>
-		{{/if}}
-		
-		{{#if gocardless_subscription}}
-			<br/>
-			<strong>{{tt 'account.gocardless.sub_info'}}</strong>
-			<br/>
-			<strong>{{tt 'subscription.interval_unit'}} :</strong> {{subscription_interval_unit}}
-			{{#if subscription_month}}
-				<br/>
-				<strong>{{tt 'subscription.month' }} :</strong> {{subscription_month}}
-			{{/if}}
-			{{#if subscription_day_of_month}}
-				<br/>
-				<strong>{{tt 'subscription.day_of_month'}} :</strong> {{subscription_day_of_month}}
-			{{/if}}
-			{{#if subscription_count}}
-				<br/>
-				<strong>{{tt 'subscription.count'}} :</strong> {{subscription_count}}
-			{{/if}}
-		{{/if}}
+	{{/not_eq}}
 
-	</section>
+	{{#if final_summary_table}}
+		{{>final_to_pay_table}}
+	{{/if}}
 
 	{{#if show_payments_on_invoice}}
 		{{>payments}}
 	{{/if}}
 
+	{{#not_eq locale 'fr'}}
+		{{>estimates}}
+	{{else}}
+		{{#if show_related_estimates_on_invoice}}
+			{{>estimates}}
+		{{/if}}
+	{{/not_eq}}
+
 	<section id="invoice_signatures">
-		<div id="seller_sign" {{#if qrcode_img}}class="with_qrcode"{{/if}}>
-			{{#or person show_empty_seller_person}}
-				<p><span>{{tt "invoice.seller_person"}}</span></p>
+		{{#eq kind 'act_of_acceptance'}}
+        		<div id="signatures_description_text">
+				{{tt 'invoice.act_of_acceptance_fields.agreement_footer'}}
+			</div>
+		{{/eq}}
+		<div id="seller_sign">
+			{{#or person show_empty_seller_person act_of_acceptance warehouse_invoice}}
+				{{#if act_of_acceptance}}
+					<br><br>
+				{{/if}}
+				<p><span>
+					{{#eq kind 'act_of_acceptance'}}
+						{{tt "invoice.act_of_acceptance_fields.contractor_sign"}}
+					{{else eq kind 'warehouse_invoice'}}
+						{{tt "invoice.warehouse_invoice_fields.contractor_sign"}}
+					{{else}}
+						{{tt "invoice.seller_person"}}
+					{{/eq}}
+				</span></p>
 				<p>{{person}}</p>
+				{{#if act_of_acceptance}}
+					<br><br>
+					...................................................
+				{{/if}}
 			{{/or}}
 
 			{{#if stamp_below_sign_url}}
+				{{#if act_of_acceptance}}
+					<br><br>
+				{{/if}}
 				<img src="{{stamp_url}}" alt="stamp" style="max-width:50%" id="custom_img" />
-			{{/if}}	
+			{{/if}}
+      {{#if sec_stamp_url}}
+        {{#eq locale 'fr'}}
+            <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:0px;margin-left:190px;height:120px" src="{{sec_stamp_url}}" />
+        {{else}}
+            <img style="display:inline-block;opacity:0.3;position:absolute;margin-top:-60px;margin-left:240px;height:120px" src="{{sec_stamp_url}}" />
+        {{/eq}}
+      {{/if}}
 		</div>
-		{{#if qrcode_img}}
-			<div id="qrcode">
-				<img src="{{qrcode_img}}" style="position: relative; margin-top: 20px"/>
-			</div>
-		{{/if}}
-		<div id="buyer_sign" {{#if qrcode_img}}class="with_qrcode"{{/if}}>
+		<div id="buyer_sign">
 		{{#not_eq locale 'fr'}}
-			{{#or buyer_person show_empty_buyer_person}}
-				<p><span>{{tt "invoice.buyer_person"}}</span></p>
+			{{#or buyer_person show_empty_buyer_person act_of_acceptance warehouse_invoice}}
+				{{#if act_of_acceptance}}
+					<br><br>
+				{{/if}}
+				<p><span>
+					{{#eq kind 'act_of_acceptance'}}
+						{{tt "invoice.act_of_acceptance_fields.recipient_sign"}}
+					{{else eq kind 'warehouse_invoice'}}
+						{{tt "invoice.warehouse_invoice_fields.recipient_sign"}}
+					{{else}}
+						{{tt "invoice.buyer_person"}}
+					{{/eq}}
+					</span></p>
 				<p>{{buyer_person}}</p>
+				{{#if act_of_acceptance}}
+					<br><br>
+					...................................................
+				{{/if}}
+
 			{{/or}}
 		{{else}}
-			{{#in kind "estimate,client_order"}}
-				{{#if show_date_and_sign}}
-					{{#if signature_url}}
-						<p>{{tt "invoice.signature_accept"}} {{signature_date}}</p>
-						<p style="margin: 0% 10%;"><img src="{{signature_url}}" width="60%" height="60%"></p>
-					{{/if}}
-					<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
+			{{#if show_date_and_sign}}
+				{{#if signature_url}}
+					<p>{{tt "invoice.signature_accept"}} {{signature_date}}</p>
+					<p>{{signers_full_name}}</p>
+					<p style="margin: 0% 10%;"><img src="{{signature_url}}" width="60%" height="60%"></p>
 				{{/if}}
-			{{/in}}
+				<p style="margin: 0% 10%;"><span>{{tt "invoice.date_and_signature_etc"}}</span></p>
+			{{/if}}
 		{{/not_eq}}
 		</div>
 	</section>
+	{{>invoice_qrs}}
+		  </div>
 	</div>
-
 
 {{! ------------------- DO NOT MODIFY ------------------- }}
 </div><!-- invoie outline -->
 
 	{{#eq locale 'fr'}}
 		{{#if department.name}}
-			<section id="description_footer" >
+			<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
 				<div id="company_info_footer">
-                	<span>{{>company_info_footer}}</span>
-                </div>
+					<span>{{>company_info_footer}}</span>
+				</div>
 			</section>
 		{{/if}}
 	{{else}}
 		{{#if description_footer}}
-			<section id="description_footer">
+			<section id="description_footer"{{#eq locale 'fr'}} class="description_footer_fr"{{/eq}}>
 				<span>{{{description_footer}}}</span>
 			</section>
 		{{else}}
@@ -504,6 +930,6 @@
 		<div class="invoice_outline" id="extra_page" style="page-break-before:always !important;">
 			<div id="extra_page_content">{{{description_long}}}</div>
 		</div>
-	{{/if}}	
+	{{/if}}
 
 {{! ----------------- end DO NOT MODIFY ----------------- }}

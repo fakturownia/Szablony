@@ -1,7 +1,8 @@
 
+	<div class="clear"></div>
 
-	<div class="clear"></div>  
-
+	{{! uproszczona zaliczka PL: bez tabeli sum netto/VAT/brutto - ten sam warunek co w templates/invoice.html.erb (silnik erb) }}
+	{{#unless hide_advance_pl_simplified_totals}}
 	<table class="totals_inv_table clean to_right">
 
 		{{#if total_discount}}
@@ -12,100 +13,156 @@
 				<td class="number">
 				    {{total_discount_with_currency}}
 				</td>
-				{{#if exchange_currency}}
+				{{#if show_exchange_summary}}
 				<td class="number">
 					{{total_discount_in_exchange_currency_with_currency}}
 				</td>
 				{{/if}}
 			</tr>
 		{{/if}}
-
-		{{#if tax_visible}}
-			<tr>
-				<th>
-					{{tt "invoice.total_price_net" }}
-				</th>
-				<td class="number">
-				    {{total_price_net_with_currency}}
-				</td>
-				{{#if exchange_currency}}
-				<td class="number">			    
-				    {{total_price_net_in_exchange_currency_with_currency}}
-				</td>
-				{{/if}}
-			</tr>
-			{{#if tax2_details}}
-				<tr>
-					<th>
-						{{tax1_value_name}}
-					</th>
-					<td class="number">
-					    {{tax1_value_with_currency}}
-					</td>
-					{{#if exchange_currency}}
-						<td class="number">			    
-						    {{tax1_value_in_exchange_currency_with_currency}}
-						</td>
-					{{/if}}
-				</tr>
-				<tr>
-					<th>
-						{{tax2_value_name}}
-					</th>
-					<td class="number">
-					    {{tax2_value_with_currency}}
-					</td>
-					{{#if exchange_currency}}
-						<td class="number">			    
-						    {{tax2_value_in_exchange_currency_with_currency}}
-						</td>
-					{{/if}}
-				</tr>
-			{{else}}
-				<tr>
-					<th>
-						{{tax_value_name}}
-					</th>
-					<td class="number">
-					    {{tax_value_with_currency}}
-					</td>
-					{{#if exchange_currency}}
-						<td class="number">			    
-						    {{tax_value_in_exchange_currency_with_currency}}
-						</td>
-					{{/if}}
-				</tr>
-			{{/if}}
-			<tr>
-				<th>
-					{{tt "invoice.total_price_gross" }}
-				</th>
-				<td class="number">
-				    {{total_price_gross_with_currency}}
-				</td>
-				{{#if exchange_currency}}
-				<td class="number">			    
-				    {{total_price_gross_in_exchange_currency_with_currency}}
-				</td>
-				{{/if}}
-			</tr>
-		{{else}}
-			<tr>
-				<th>
-					{{tt "invoice_position.bill_total_price_gross"}}
-				</th>
-				<td class="number">
-				    {{total_price_gross_with_currency}}
-				</td>
-				{{#if exchange_currency}}
-				<td class="number">			    
-				    {{total_price_gross_in_exchange_currency_with_currency}}
-				</td>
-				{{/if}}
-			</tr>
-		{{/if}}
-			
+    {{#unless final_summary_table}}
+        {{#if tax_visible}}
+                <tr>
+                    <th>
+                        {{tt "invoice.total_price_net" }}
+                    </th>
+                    <td class="number">
+                        {{total_price_net_with_currency}}
+                    </td>
+                    {{#if show_exchange_summary}}
+                        <td class="number">
+                            {{total_price_net_in_exchange_currency_with_currency}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{#if tax2_details}}
+                <tr>
+                    <th>
+                        {{tax1_value_name}}
+                    </th>
+                    <td class="number">
+                        {{tax1_value_with_currency}}
+                    </td>
+                    {{#if show_exchange_summary}}
+                        <td class="number">
+                            {{tax1_value_in_exchange_currency_with_currency}}
+                        </td>
+                    {{/if}}
+                </tr>
+                <tr>
+                    <th>
+                        {{tax2_value_name}}
+                    </th>
+                    <td class="number">
+                        {{tax2_value_with_currency}}
+                    </td>
+                    {{#if show_exchange_summary}}
+                        <td class="number">
+                            {{tax2_value_in_exchange_currency_with_currency}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{else}}
+                <tr>
+                    <th>
+                        {{tax_value_name}}
+                    </th>
+                    <td class="number">
+                        {{tax_value_with_currency}}
+                    </td>
+                    {{#if show_exchange_summary}}
+                        <td class="number">
+                            {{tax_value_in_exchange_currency_with_currency}}
+                        </td>
+                    {{/if}}
+                </tr>
+            {{/if}}
+            <tr>
+                <th>
+                    {{tt "invoice.total_price_gross" }}
+                </th>
+                <td class="number">
+                    {{total_price_gross_with_currency}}
+                </td>
+                {{#if show_exchange_summary}}
+                    <td class="number">
+                        {{total_price_gross_in_exchange_currency_with_currency}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{else}}
+            <tr>
+                <th>
+                    {{tt "invoice_position.bill_total_price_gross"}}
+                </th>
+                <td class="number">
+                    {{total_price_gross_with_currency}}
+                </td>
+                {{#if show_exchange_summary}}
+                    <td class="number">
+                        {{total_price_gross_in_exchange_currency_with_currency}}
+                    </td>
+                {{/if}}
+            </tr>
+        {{/if}}
+        {{#if use_arr_due}}
+            <tr>
+                <th>
+                    {{{arr_due_msg}}}
+                </th>
+                <td class="number">
+                    {{arr_due_amount}}
+                </td>
+            </tr>
+        {{/if}}
+    {{/unless}}
 	</table>
+	{{/unless}}
+
+	{{#if settlement_active}}
+		<div style="clear: both;"></div>
+		{{!-- Ciasny kontener: bez niego wkhtmltopdf tnie tabelki na granicy stron i dubluje nagłówek. --}}
+		<div style="margin-bottom: 10px; overflow: hidden; page-break-inside:avoid;">
+			{{#if settlement_has_charges}}
+				<table class="main_inv_table" style="width: 49%; float: left; clear: none;">
+					<thead>
+						<tr><th colspan="2" style="text-align: left !important;">{{tt "invoice.settlement_charges"}}</th></tr>
+					</thead>
+					<tbody>
+						{{#each settlement_charges}}
+							<tr>
+								<td style="word-break: break-word; text-align: left !important;">{{this.reason}}</td>
+								<td style="white-space: nowrap; min-width: 25%; text-align: right !important;">{{this.amount}}</td>
+							</tr>
+						{{/each}}
+						<tr style="font-weight: bold;">
+							<td style="text-align: right !important;">{{tt "invoice.settlement_charges_sum"}}</td>
+							<td style="text-align: right !important;">{{settlement_charges_sum}}</td>
+						</tr>
+					</tbody>
+				</table>
+			{{/if}}
+			{{#if settlement_has_deductions}}
+				<table class="main_inv_table" style="width: 49%; float: right; clear: none;">
+					<thead>
+						<tr><th colspan="2" style="text-align: left !important;">{{tt "invoice.settlement_deductions"}}</th></tr>
+					</thead>
+					<tbody>
+						{{#each settlement_deductions}}
+							<tr>
+								<td style="word-break: break-word; text-align: left !important;">{{this.reason}}</td>
+								<td style="white-space: nowrap; min-width: 25%; text-align: right !important;">{{this.amount}}</td>
+							</tr>
+						{{/each}}
+						<tr style="font-weight: bold;">
+							<td style="text-align: right !important;">{{tt "invoice.settlement_deductions_sum"}}</td>
+							<td style="text-align: right !important;">{{settlement_deductions_sum}}</td>
+						</tr>
+					</tbody>
+				</table>
+			{{/if}}
+		</div>
+	{{/if}}
 
 	<div class="clear"></div>
 
@@ -113,7 +170,7 @@
 	{{#if long_exchange_note}}
 		<table class="clean" id="exchange_currency">
 			<tbody>
-				<tr>		
+				<tr>
 					<td>
 						{{!-- long_exchange_note: i.long_exchange_note --}}
 						{{long_exchange_note}}<br />
@@ -132,7 +189,7 @@
 		{{#if exchange_tax}}
 			<table class="clean" id="exchange_currency">
 				<tbody>
-					<tr>		
+					<tr>
 						<td>
 							{{#if tax_visible }}
 								{{long_exchange_note_for_tax}}<br />
@@ -144,4 +201,3 @@
 			</table>
 		{{/if}}
 	{{/if}}
-

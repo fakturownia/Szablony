@@ -57,6 +57,8 @@
 	table.full_width{width:100%;}
 	td.half_width{width:50%;}
 
+	/* .ean_code{font-size: 0.8em;} */
+
 	@page{size:A4 ;}
 	
 	

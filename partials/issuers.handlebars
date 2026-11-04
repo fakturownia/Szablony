@@ -1,7 +1,7 @@
 <div id="issuer">
     {{#each issuers}}
         {{#if ../ksef_enabled}}
-        <p style="font-weight: normal;font-style: italic;">{{{role}}}</p>
+        <p style="font-weight: normal;font-style: italic;">{{{role_with_share}}}</p>
         {{/if}}
         <p style="font-weight: bold;">
             {{#and url ../show_links}}

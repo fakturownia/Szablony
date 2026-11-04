@@ -1,0 +1,230 @@
+{{#if print_ean_codes}}
+	<style>
+		table.barby-barcode {
+			height: 18px !important;
+			width: auto !important;
+			margin: 0 0 1px !important;
+			table-layout: fixed !important;
+		}
+
+		table.barby-barcode td.barby-cell {
+			width: 1px !important;
+			visibility: visible !important;
+			border: 0 !important;
+			padding: 0 !important;
+		}
+
+		table.barby-barcode td.barby-cell.on {
+			background-color: black !important;
+		}
+	</style>
+{{/if}}
+
+<table class="main_inv_table full_width" id="pos_table">
+	<thead>
+		<tr>
+			<th class="width1 no_wrap nr_col nr_col" id="nr_col">
+				{{tt "invoice_position.nr"}}
+			</th>
+			<th class="width4 text_left name_col" id="name_col">
+				{{tt "invoice_position.name"}}
+			</th>
+			{{#if use_product_code}}
+				<th class="width2 code_col" id="code_col">
+					{{tt "invoice_position.code"}}
+				</th>
+			{{/if}}
+			{{#if additional_info}}
+				<th class="width2 additional_info_col" id="additional_info_col">
+					{{additional_info_desc}}
+				</th>
+			{{/if}}
+			<th class="width1 text_center no_wrap quantity_col" id="quantity_col">
+				{{label_for_quantity}}
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each positions}}
+			{{#eq kind 'page_break'}}
+	</tbody>
+</table>
+<div style="page-break-after:always !important;"></div>
+<table class="main_inv_table full_width" id="pos_table">
+	<thead>
+		<tr>
+			<th class="width1 no_wrap nr_col nr_col" id="nr_col">
+				{{tt "invoice_position.nr"}}
+			</th>
+			<th class="width4 text_left name_col" id="name_col">
+				{{tt "invoice_position.name"}}
+			</th>
+			{{#if ../../use_product_code}}
+				<th class="width2 code_col" id="code_col">
+					{{tt "invoice_position.code"}}
+				</th>
+			{{/if}}
+			{{#if ../../additional_info}}
+				<th class="width2 additional_info_col" id="additional_info_col">
+					{{additional_info_desc}}
+				</th>
+			{{/if}}
+			<th class="width2 text_center no_wrap quantity_col" id="quantity_col">
+				{{label_for_quantity}}
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{/eq}}
+		{{#not_eq kind 'page_break'}}
+			{{#eq kind 'text_separator'}}
+				<tr>
+					<td colspan="100" class="text-left text_separator">{{#if_invoice_created_after "2022-11-30"}}{{{item}}}{{else}}{{item}}{{/if_invoice_created_after}}</td>
+				</tr>
+			{{else}}
+				{{#eq kind 'subtotal'}}
+					<tr class="subtotal_row">
+						<td class="nr_col subtotal_col">&nbsp;</td>
+						<td class="name_col subtotal_col">
+							{{{item}}}
+						</td>
+						{{#if ../../../../use_product_code}}
+							<td class="code_col subtotal_col">&nbsp;</td>
+						{{/if}}
+						{{#if ../../../../additional_info}}
+							<td class="additional_info_col subtotal_col">&nbsp;</td>
+						{{/if}}
+						<td class="text_center quantity_col subtotal_col">&nbsp;</td>
+					</tr>
+				{{else}}
+					<tr>
+						<td class="nr_col" style="text-align: center">
+							{{no}}
+						</td>
+						<td class="name_col">
+							{{#and item_url ../../../../show_links}}
+								<a href="{{{item_url}}}" class="incognito-link">{{{item}}}</a>
+							{{else}}
+								{{{item}}}
+							{{/and}}
+							<span id="product_description" class="item_description">
+								{{#if ../../../../show_product_description}}
+									{{{description}}}
+								{{/if}}
+							</span>
+							{{#and barcode ../../../../use_barcodes}}
+								<div class="ean_code {{#unless ../../../../../print_ean_codes}}hidden{{/unless}}">
+									{{{barcode}}}
+									{{ean_code}}
+								</div>
+							{{/and}}
+						</td>
+						{{#if ../../../../use_product_code}}
+							<td class="code_col" style="text-align: center">
+								{{code}}
+							</td>
+						{{/if}}
+						{{#if ../../../../additional_info}}
+							<td class="additional_info_col">
+								{{additional_info}}
+							</td>
+						{{/if}}
+						<td class="text_center quantity_col" style="text-align: center">
+							{{quantity}}
+						</td>
+					</tr>
+				{{/eq}}
+			{{/eq}}
+		{{/not_eq}}
+	{{/each}}
+	</tbody>
+
+	<tbody>
+		{{#unless single_position_advance}}
+			<tr class="clean no_border summary_row summary_totals">
+				<td class="empty nr_col footer total"></td>
+				<td class="empty name_col footer total"></td>
+				{{#if use_product_code}}
+					<td class="empty code_col footer total"></td>
+				{{/if}}
+				{{#if additional_info}}
+					<td class="empty additional_info_col footer total"></td>
+				{{/if}}
+				<td class="empty quantity_col quantity_footer footer total"></td>
+				{{#if show_unit_price_gross}}
+					{{#if tax_visible }}
+						{{#unless hide_tax }}
+							<td class="empty mod2 footer subtotal"></td>
+						{{/unless}}
+					{{/if}}
+				{{/if}}
+				<td class="empty price_net_col price_gross_col price_gross_col-hide_tax footer total" style="display: none;"></td>
+			</tr>
+
+			{{#if show_tax_split}}
+				{{#if tax_visible}}
+					{{#unless hide_tax}}
+						{{#each summary}}
+							<tr class="no_border">
+								<td class="nr_col footer subtotal"></td>
+								<td class="name_col footer subtotal"></td>
+								{{#if ../../use_product_code}}
+									<td class="code_col footer subtotal"></td>
+								{{/if}}
+								{{#if ../../additional_info}}
+									<td class="additional_info_col footer subtotal"></td>
+								{{/if}}
+
+								<td class="quantity_col footer subtotal"></td>
+								<td class="empty price_net_col footer subtotal" style="display: none;"></td>
+								{{#if ../../show_unit_price_gross}}
+									<td class="empty mod2 footer subtotal"></td>
+								{{/if}}
+							</tr>
+						{{/each}}
+					{{/unless}}
+				{{/if}}
+			{{/if}}
+		{{/unless}}
+	</tbody>
+</table>
+
+{{#if single_position_advance}}
+	<table class="clean to_right" style="width:auto;" id="positions_summary" align="right">
+		{{#if show_tax_split}}
+			{{#if tax_visible}}
+				{{#unless hide_tax}}
+					{{#each summary}}
+						<tr class="no_border">
+							<td class="text_right number including">
+								<strong>{{tt "invoice.including"}}</strong>
+							</td>
+							<td class="text_right number tax_col-advance footer">
+								{{tax}}%
+							</td>
+							<td class="text_right number tax_value_col-advance footer">
+								{{tax_value}}
+							</td>
+							<td class="text_right number total_price_gross_col-advance footer">
+								{{total_price_gross}}
+							</td>
+						</tr>
+					{{/each}}
+				{{/unless}}
+			{{/if}}
+		{{/if}}
+		<tr class="clean no_border">
+			<td class="text_right no_border total">
+				<strong>{{tt "invoice.total"}}</strong>
+			</td>
+			<td class="tax_col-advance footer"></td>
+			<td class="tax_value_col-advance footer"></td>
+			<td class="text_right number total_price_gross_col-advance footer">
+				{{total_price_gross}}
+			</td>
+		</tr>
+	</table>
+{{/if}}
+
+<div class="clear"></div>
+<div class="double-space-bottom"></div>

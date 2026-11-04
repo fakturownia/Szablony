@@ -1,0 +1,62 @@
+{{!-- Ciasny kontener: bez niego wkhtmltopdf tnie tabelę na granicy stron i dubluje nagłówek.
+      Zewnętrzny `div.nobreak` (simple, plain_black) nie wystarcza — `avoid` jest ignorowany na obszarze większym niż strona. --}}
+<div style="page-break-inside:avoid">
+<table class="main_inv_table VAT">
+    <thead style="border: 0">
+    <tr>
+        <th class="width1 invisible" style="border: 0px;"></th>
+        <th class="width4 invisible" style="border: 0px;"></th>
+        <th class="width2 invisible" style="border: 0px;"></th>
+        <th class="width3 invisible" style="border: 0px;"></th>
+        <th class="width3 total_price_net_col nowrap table_header first_not_empty">
+            {{ tt 'invoice_position.total_price_net' }}
+        </th>
+        <th class="width1 tax_col nowrap table_header">
+            {{ tt 'invoice_position.total_price_tax' }} %
+        </th>
+        <th class="width3 tax_value_col nowrap table_header">
+            {{ tt 'invoice_position.tax_value' }}
+        </th>
+        <th class="width3 total_price_gross_col nowrap table_header">
+            {{ tt 'invoice_position.total_price_gross' }}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each final_summary}}
+        <tr class="row0">
+            <td class="empty footer"></td>
+            <td class="empty footer"></td>
+            <td class="empty footer"></td>
+            <td class="empty footer" style="border: 0px;">‎</td>
+            <td class="total_price_gross_col nowrap footer">{{total_price_net_with_currency}}</td>
+            <td class="tax_col nowrap footer ">{{tax}}</td>
+            <td class="tax_value_col nowrap footer ">{{tax_value_with_currency}}</td>
+            <td class="width3 total_price_gross_col footer">{{total_price_gross_with_currency}}</td>
+        </tr>
+    {{/each}}
+    <tr>
+        <td class="empty footer"></td>
+        <td class="empty footer"></td>
+        <td class="empty footer"></td>
+        <td class="empty footer text_center empty-footer" style="border: 0px !important;"><b> {{ tt 'invoice.total' }}</b></td>
+        <td class="total_price_gross_col nowrap footer"><b>{{total_price_net_with_currency}}</b></td>
+        <td class="tax_col nowrap footer">‎</td>
+        <td class="tax_value_col nowrap footer"><b>{{tax_value_with_currency}}</b></td>
+        <td class="width3 total_price_gross_col footer"><b>{{total_price_gross_with_currency}}</b></td>
+    </tr>
+    {{#if show_exchange_summary}}
+    <tr>
+        <td class="empty footer"></td>
+        <td class="empty footer"></td>
+        <td class="empty footer"></td>
+        <td class="empty footer text_center empty-footer" style="border: 0px !important;"><b> {{ tt 'invoice.exchanged_total' }}</b></td>
+        <td class="total_price_gross_col nowrap footer"><b>{{total_price_net_in_exchange_currency_with_currency}}</b></td>
+        <td class="tax_col nowrap footer">‎</td>
+        <td class="tax_value_col nowrap footer"><b>{{tax_value_in_exchange_currency_with_currency}}</b></td>
+        <td class="width3 total_price_gross_col footer"><b>{{total_price_gross_in_exchange_currency_with_currency}}</b></td>
+    </tr>
+    {{/if}}
+    </tbody>
+</table>
+</div>

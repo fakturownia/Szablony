@@ -4,9 +4,23 @@
            style="margin-bottom:10px;" href="{{payment_url}}">{{tt "account.pay_online_button"}}&nbsp;&raquo;</a>
     </p>
 {{/if}}
-{{#if sign_document_url}}
+{{#if expense_payment_url}}
     <p style="clear: both">
-        <a class="pull-right btn btn-default btn-print" id="sign-document-button"
-           style="margin-bottom:10px; margin-top: -5px;" href="{{sign_document_url}}">{{tt "invoice.signature_view"}}&nbsp;&raquo;</a>
+        <a class="pull-right btn btn-default btn-print" id="pay-online-button"
+           style="margin-bottom:10px;" href="{{expense_payment_url}}">{{tt "account.pay_online_button"}}&nbsp;&raquo;</a>
     </p>
+{{/if}}
+{{#if sign_document_url}}
+    {{#unless status_paid}}
+        {{#unless status_accepted}}
+            <p style="clear: both">
+                {{#if show_reject_button}}
+                     <a class="pull-right btn btn-default btn-print" id="reject-document-button" style="margin-left:10px; margin-bottom:10px; margin-top: -5px;" href="{{view_url}}?trigger_reject=true">{{reject_button_text}}&nbsp;&raquo;</a>
+                {{/if}}
+
+                <a class="pull-right btn btn-default btn-print" id="sign-document-button"
+                   style="margin-bottom:10px; margin-top: -5px;" href="{{sign_document_url}}">{{sign_button_text}}&nbsp;&raquo;</a>
+            </p>
+        {{/unless}}
+    {{/unless}}
 {{/if}}
